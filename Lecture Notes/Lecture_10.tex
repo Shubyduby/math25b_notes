@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 10: Uniform Continuity}\\
+{\large Monday, 13 February 2023}\\
+
+\end{center}
+
+\prop Let $f:A\subseteq M\to N$. Then $f$ is not uniformly continuous if and only if there exists an $\varepsilon>0$ and two sequences $\{x_k\}$ and $\{y_k\}$ in $A$ such that $\{d_m(x_k,y_k)\}\to 0$ and $d_N(f(x_k),f(y_k))\geq \varepsilon$ for all $k\in \N$.
+
+\begin{proof}
+    Suppose $f:A\subset M\to N$ is not uniformly continuous. Then there exists an $\varepsilon>0$ such that there exists $\delta>0$ there exists $x,y\in A$ with $d(x,y)<\delta$ but $d(f(x),f(y))\geq \varepsilon$. Let $\delta_k=1/k>0$, $k\in \N$. Choose $x_k,y_k$ with $d(x_k,y_k)<\delta_k$ but $d(f(x_k),f(y_k))\geq \varepsilon$ for all $k\in \N$.
+
+    The converse is easy to prove.
+\end{proof}
+
+\ex The function $f:(0,1]\to \R$ defined as $x\mapsto 1/x$ is not uniformly continuous over its domain. Consider the sequence $x_n=1/n$ and $y=1/(n+1)$.
+
+\prop Let $f:K\subseteq M\to N$ be continuous and $K$ compact. Then $f$ is uniformly continuous on $K$.
+\begin{proof}
+    Suppose that $f$ is continuous on $K$ but \textit{not} uniformly continuous. By the previous proposition, there exists an $\varepsilon>0$ and two sequences $\{x_j\}$ and $\{y_j\}$ with $d(x_j,y_j)\to 0$ but $d(f(x_j),f(y_j))\geq \varepsilon$ for all $j$.
+
+    Since $K$ is compact, $K$ is sequentially compact. So we can find a subsequence $\{x_{j_\ell}\}$ that converges to some $x\in K$. We claim that $\{y_{j_\ell}\}\to x$ as well. Given any $\eta >0$, we can choose an $N\in \N$ such that both $d_M(x_{j_\ell},x)<\eta/2$ and $d_M(x_{j_\ell},y_{j_\ell})<\eta/2$ whenever $\ell \geq N$. Then $d_M(y_{j_\ell},x)<\eta$ by the triangle inequality. But $f$ is continuous so $\{f(x_{j_\ell}\}\to f(x)$ and $\{f(y_{j_\ell}\}\to f(x)$ as $\ell\to\infty$ contradicts that $d_N(f(x_{j_\ell}),f(y_{j_\ell})\geq \varepsilon$ for all $\ell \in \N$.
+\end{proof}
+\note Marsden and Hoffman have a definition based on the open cover definition, if you would like to see multiple approaches.
+\end{document}

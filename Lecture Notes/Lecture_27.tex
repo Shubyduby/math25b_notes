@@ -1,0 +1,157 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 27: Implicit Function Theorem}\\
+{\large Monday, 3 April 2023}\\
+\end{center}
+\section{Using the Inverse Function Theorem}
+
+Last time we proved the inverse function theorem, quite a beast. 
+
+\ex Consider the system
+$$
+\begin{cases}
+u=y+3\cos(xy)\\
+v=\ln(x+2y)
+\end{cases}
+$$
+Can we solve for $x$ and $y$ as a function of $u$ and $v$ locally near $(1,0)$?
+
+\textit{Solution:} Let $f:\Omega \subseteq \R^2\to \R^2$ be defined by
+$$
+\mat x\\y\trix \mapsto \mat y+3\cos (xy)\\ \ln(x+2y) \trix
+$$
+on $\Omega=\{(x,y)\in\R^2:x+2y>0\}$. Note that $f(1,0)=(3,0)$. When we compute the derivative at $(1,0)$, we get
+$$
+Df(1,0)=\mat 0 & 1 \\ 1 & 2 \trix,
+$$
+which is invertible. Then by the inverse function theorem, there exists a local inverse; we can find a linear approximation of $f^{-1}$ near $(3,0)$. We have that near $(1,0)$,
+$$
+f(x,y)\approx f(1,0)+Df(1,0)\mat x-1 \\ y-0 \trix.
+$$
+We know that 
+$$
+Df^{-1}(3,0)=[Df(1,0)]^{-1}=\mat -2 & 1 \\ 2 & 0 \trix.
+$$
+Thus, near $(3,0)$, we have that
+$$
+f^{-1}(u,v)\approx (1,0)+\mat -2 & 1 \\ 1& 0\trix \mat u-3 \\ v-0 \trix .
+$$
+\section{Implicit Function Theorem}
+
+This is a generalization of the inverse function theorem! The motivation of the implicit function theorem comes from the question: does equation $F(x,y)=0$ \textit{implicitly} define a function $y=f(x)$ (at least locally)?
+
+\ex Consider the implicitly defined function $x^2+y^2-9=0$. For every point on this curve, a function $y=f(x)$ is implicitly defined \textit{except} at the points except $(3,0)$. In particular, the functions implicitly defined are $y=\pm\sqrt{9-x^2}$ depending on the region of the curve we are looking at.
+
+\ex Consider the curve
+$$
+\frac{y^2}{2}-\frac{x^2}{2}+\frac{x^4}{4}=0.
+$$
+Now, a function $y=f(x)$ is implicitly defined everywhere except $(\pm \sqrt{2},0)$ and $(0,0)$.
+
+We will begin with a special case of the implicit function theorem for the sake of comprehension:
+
+\begin{shaded}
+\theorem (\textit{Implicit Function Theorem})(\textit{Special Case}) Suppose $F:\Omega\subseteq \R\times \R \to \R$ is of class $C^r$ on the open set $\Omega$. Suppose $(x_0,y_0)\in \Omega$  is such that  $F(x_0,y_0)=0$ and $\dell F/ \dell y (x_0,y_0)\neq 0$. Then there exist open intervals $U$ containing $x_0$ and $V$ containing $y_0$ such that $U\times V \subseteq \Omega$ and a unique function $f:U\to V$ such that $F(x,f(x))=0$ for all $x\in U$. Moreover, $f$ is of class $C^r$ on $U$.
+\end{shaded}
+
+\begin{proof}
+    Without loss of generality, assume $\dell F/\dell y (x_0,y_0)>0$. Since $\Omega$ is open, we can choose some $\delta>0$ such that the closed box $K=[x_0-\delta,x_0+\delta]\times [ y_0-\delta,y_0+\delta]$ is contained in $\Omega$. Furthermore, since $\dell F/ \dell y$ is continuous, $\delta$ can be small enough such that $\dell F/\dell y >0$ throughout $K$. Consider values of $F(x_0,y)$ for points $(x_0,y)\in K$. We define $g_{x_0}(y)=F(x_0,y)$ for $y\in[y_0-\delta, y_0+\delta]$. Note that $g_{x_0}'(y)=\dell F/\dell y (x_0,y)>0$, so $g_{x_0}$ is strictly increasing, and that $g_{x_0}(y_0)=0=F(x_0,y_0)$. Then we have that 
+    $$
+    g_{x_0}(y_0+\delta)=F(x_0,y_0+\delta)>0
+    $$
+    and
+    $$
+    g_{x_0}(y_0-\delta)=F(x_0,y_0-\delta)<0.
+    $$
+    Since we have the inequality above and that $F$ is continuous, there exists a $\delta_1>0$ such that $F(x,y_0-\delta)<0$ for all $x$ in $(x_0-\delta_1,x_0+\delta_1)$. Also, there exists a $\delta_2>0$ such that $F(x,y_0+\delta)>0$ if $x\in(x_0-\delta_2, x_0+\delta_2)$. Finally, let $\delta_0=\min\{\delta_1,\delta_2\}$. We will define $U$ to be $(x_0-\delta_0,x_0+\delta_0)$. We defined $V=(y_0-\delta, y_0+\delta)$. Then $U\times V\subseteq K\subset \Omega$. For each $x\in U$, consider the single variable functions $g_x(y)=F(x,y)$ (note that $g_x$ is \textit{not} a partial!). Then $g_x(y_0-\delta)<0$ and $g_x(y_0+\delta)>0$. Moreover, we know that $g_x'(y)=\dell F/\dell y (x,y)>0$. Then by the intermediate value theorem, there exists a $y\in(y_0-\delta, y_0+\delta)$ with $g_x(y)=0$. By the mean value theorem, this $y$ is \textit{unique}. Then we define $f:U\to V$ as $f(x)=y$ where $y$ is the unique value such that $g_x(y)=0$. Then $F(x,f(x))=0$ for all $x\in U$.
+
+    We will not show now that $f$ is of class $C^r$ during class. You can check this out in Marsden and Hoffman, where they recycle much of our labor from the inverse function theorem.
+\end{proof}
+We are now ready to look at the full theorem... but first, some notation to brace ourselves. For a point in $\R^n\times\ \R^m$, we write
+$$
+\begin{aligned}
+    (x,y)&=(x_1,\dots,x_n,y_1,\dots,y_m)\\
+    (x_0,y_0)&=(x_1^{(0)},\dots,x_n^{(0)},y_1^{(0)},\dots,y_m^{(0)})\\
+\end{aligned}
+$$
+\begin{shaded}
+    \theorem (\textit{Implicit Function Theorem})(\textit{Full}) Suppose $F:\Omega\subseteq \R^n\times \R^m\to \R^m$ is of class $C^r$ on the open set $\Omega$, $F(x_0,y_0)=0\in \R^m$, and the determinant of
+    $$
+    \mat \frac{\dell F_1}{\dell y_1}&\cdots & \frac{\dell F_1}{\dell y_m}\\
+    \vdots & \ddots &\vdots \\
+    \frac{\dell F_m}{\dell y_1}&\cdots & \frac{\dell F_m}{\dell y_m} \trix
+    $$
+    is nonzero at $(x_0,y_0)$. Then there exist open sets $U\subseteq \R^n$ with $x_0\in U$ and $V\subseteq \R^m$ with $y_0\in V$ with $U\times V\subseteq \Omega$ and a unique function $f:U\to V$ such that $F(x,f(x))=0$ for all $x\in U$. Moreover, $f$ is of class $C^r$ on $U$.
+\end{shaded}
+Not proving this lmao tf way too much
+
+\ex \textit{Bioswitch (Gardner et al. 2000)} We have a system of two differential equations:
+$$
+\begin{cases}
+    \frac{du}{dt}=\frac{\alpha_1}{1+v^\beta}-u\\
+    \frac{dv}{dt}=\frac{\alpha_2}{1+u^\gamma}-v
+\end{cases}
+$$
+where $\alpha_1$, $\alpha_2$, $\beta$, and $\gamma$ are all real, positive parameters. Given that $(u,v)=(1,2)$ is an equilibrium if $\alpha_1=5$, $\alpha_2=4$, $\beta=2$, $\gamma =2$, is this the only equilibrium in this vicinity for these parameter values?
+
+If so, then we are claiming that it is possible to solve at least locally for $(u,v)$ uniquely in terms of $(\alpha_1,\alpha_2,\beta,\gamma)$. We are dealing with a function $F:\Omega \subseteq \R^4\times\R^2\to \R^2$. In this case, the implicit function theorem tells us that yes, there is a unique function so the equilibrium is indeed unique.
+\end{document}

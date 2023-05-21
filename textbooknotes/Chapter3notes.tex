@@ -1,0 +1,203 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\brar}{$[-R,R]$}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Chapter 3: Compact and Connected Sets}\\
+
+\end{center}
+\section{Compact Sets}
+\subsection{Preliminary Ideas}
+Some definitions before we give a precise definition for a compact set in $\R^{n}$.
+\defn A set $A\subset \R^n$ is \textit{bounded} if and only if there is a constant $M\geq 0$ such that $A\subset D(0,M)$.
+
+You can think of this as a set $A$ is bounded (that is, does not go one indefinitely) if and only if we can find some circle around the origin large enough to contain all of $A$. Another way to think of this is that for all $x\in A$, we can find an $M$ such that $\|x\|\leq M$.
+
+\defn A \textit{cover} of a set $A$ is a collection $\{U_i\}$ of sets whose union contains $A$. If each set $U_i$ in the cover $\{U_i\}$ is open, then we say the collection $\{U_i\}$ is an \textit{open cover} of $A$. A \textit{subcover} of a given cover is just a subcollection of sets whose union also contains $A$, or as we say, \textit{covers} A. A subcover is a \textit{finite subcover} if the subcollection contains only a finite number of sets.
+
+\ex The set of discs $\{D((x,0), 1) | x\in\R\}$ in $\R^2$ covers the real axis, and the subcollection of all discs $D((n,0),1)$ centered an integer points on the real line form a subcover. However, the same subcollection centered only at even integer points on the real line does not form a subcovering. this is becuase the discs are open sets so they area their boundaries touch do not contain what we want them to (e.g. (1,0)).
+
+\note Open covers are not necessarily countable collections of open sets.
+
+We now state the main theorem with an associated definition!
+
+\subsection{The Heine-Borel and Bolzano-Weirstrass Theorems}
+\begin{shaded}
+\theorem Let $A\subset \R^n$. Then the following conditions are equivalent:
+    \begin{enumerate}[(i)]
+        \item A is closed and bounded.
+        \item Every open cover of $A$ has a finite subcover.
+        \item Every sequence in $A$ has a subsequence which converges to a point of $A$.
+    \end{enumerate}
+The equivalence of (i) and (ii) constitute the Heine-Borel theorem while the equivalence of (i) and (iii) form the Bolzano-Weirstrass theorem.
+\end{shaded}
+\note For metric spaces, in general (ii) and (iii) are equivalent but (i) is \textit{not} equivalent to (ii) and (iii). The equivalenve is a \textit{special} and very important property of $\R^n$.
+
+Notice that the Bolzano-Weirstrass theorem is reasonably intuitive: if $A$ is bounded, then any subsequence of points must bunch up somewhere, and if $A$ is closed, that somewhere must be somewhere in $A$.
+
+The Heine-Borel theorem is less intuitive. Let's take a look at some examples.
+\ex The entire real line is not compact becase it is closed but not bounded. In terms of Heine-Borel, this means that there exists some open cover of $A$ such that it has no finite subcover of $A$. Consider that 
+$$
+\{D(n,1)\; | \;n\in \mathbb{Z}\}
+$$
+forms an open cover for $A$ but it has no finite subcover.
+
+\ex Consider the set $A=(0,1]$. Evidently, it is not compact because it is not closed. Thus, we should be able to find some cover of $A$ such that it does not have a finite subcover. Consider the open cover
+$$
+\{(1/n,2)\;|\; n\in\mathbb{N}\}.
+$$
+Notice this cover has no finite subcover for $A$.
+
+There are two other ways of formulating (ii) and (iii):
+\begin{enumerate}[(i)']
+\addtocounter{enumi}{1}
+    \item Every collection of closed sets with the finite intersection property for $A$ has a non-empty intersection with $A$.
+    \item Every infinite subset of $A$ has an accumulation point in $A$.
+\end{enumerate}
+
+Let us now prove theorem 1. We shall prove that (i) $\Rightarrow$ (ii) $\Rightarrow$ (iii) $\Rightarrow$ (i). First, we show (i) $\Rightarrow$ (ii). We begin by proving a special case.
+    \lem The Heine-Borel property (ii) holds for closed intervals $[a,b]$ in $\R$.
+\begin{proof}
+    Let $\mathcal{U}=\{U_i\}$ be an open covering of $[a,b]$ and define the set $A=\{x\in[a,b]\;|\; \mbox{the set $[a,x]$}\\
+    \mbox{can be covered by a finite collection of the } U_i\}$. In other words, $A$ is the set of all intervals in $[a,b]$ starting at $a$ such that $U_i$ has a finite subcover for said interval. Then we want to show that $A=[a,b]$, since this would be the same as saying any open cover of $[a,b]$ has a finite subcover. To this end, let $c=\sup (A)$. The sup exists because $A\neq\emptyset$ (as $a\in A$) and $A$ is bounded above by $b$. Also, since $[a,b]$ is closed, $c\in [a,b]$ (since a closed set includes its boundaries). Now, suppose $c\in U_{i_0}$; such a $U_{i_0}$ exists since $[a,b]\subset\{U_i\}$. Since $U_{i_0}$ is open, here exists an $\varepsilon > 0$ such that $(c-\varepsilon,c+\varepsilon)\subset U_{i_0}$. Since $c=\sup(A)$, there exists an $x\in A$ such that $c-\varepsilon < x\leq c$. Because $x\in A$, $[a,x]$ has a finite subcover, say $U_1,\dots,U_N$; then $[a,c+\varepsilon/2]$ also has the finite subcover $U_1,\dots,U_N,U_{i_0}$. Thus, we conclude that $c\in A$ and moreover, $c=b$. Indeed, if $c<b$, we would get a member of $A$ larger than c, since $[a,c+\varepsilon/2]$ has a finite subcover. The latter cannot happen since $c=\sup(A)$.
+\end{proof}
+    \lem In $A\subset \R^n$ is compact and $x_0\in \R^m$ then $A\times \{x_0\}$ is compact.
+\begin{proof}
+    Let $\mathcal{U}$ be an open cover of $A\times\{x_0\}$, and $\mathcal{V}=\{V\;|\; V= \{y\;|\; (y,x_0)\in U\}, U\in\mathcal{U}\}$. Then $\matchcal{V}$ is an open cover of $A$ in $\R^n$, and hence, $\mathcal{V}$ has a finite subcover of $A$, $\mathcal{V}^'=\{V_1,\dots,V_k\}$. Each $V_i\in\mathcal{V}^'$ corresponds to a $U_i\in \mathcal{U}$, and $\mathcal{U}=\{U_1,\dots,U_k\}$ is then a finite subcover in $\mathcal{U}$ of $A\times\{x_0\}$.
+\end{proof}
+That proof is a little hard to understanding but the basic idea is that because $A$ is closed, we can form some open finite subcover for $A$ and just extend each set in the subcover to contain the point $x_0$ in the subcover, creating an open finite subcover for $A\times\{x_0\}$. Moving on.
+\lem If $[-R,R]^{n-1}\subset \R^{n-1}$ has the Hiene-Borel property, then $[-R,R]^n\subset \R^n$ has the Heine-Borel property, where $[-R,R]^n=[-R,R]\times\cdots\times[-R,R]$, $n$ times.
+
+\begin{proof}
+    Suppose $[-R,R]^{n-1}$ has the Heine-Borle property and that $\mathcal{U}$ is an open cover of $\brar^n$. Let $S=\{x\in\brar\;|\;\brar^{n-1} \times[-R,x] \mbox{ can be covered by a finite number of set in $\mathcal{U}$} \} $. Now, $-R\in S$, since $\brar^{n-1}$ satisfies (ii) by hypothesis, and so by Lemma 2 we know $\brar^{n-1}\times {-R}$ has a finite subcover in $\mathcal{U}$. Also, $S$ is bounded above by $R$ and therefore $S$ has a supremum, say $x_0$. We will show that $x_0=R$, which will prove the lemma.
+
+    Let $\mathcal{U}^{'} \subset\mathcal{U}$ be a finite subcover of $\brar^{n-1}\times\{x_0\}$. For each $(y,x_0)\in[-R,R]^{n-1}\times\{x_0\}$ there exists $\varepsilon_y>0$ such that $D((y,x_0),\sqrt2 \varepsilon_y)$ is coverd by $\mathcal{U}^'$. But $V_y=D(y,\varepsilon_y) \times (x_0-\varepsilon_y,x_0+\varepsilon_y)\subset D((y,x_0),\sqrt{2}\varepsilon_y)$ so $V_y$ is covered by $\mathcal{U}^'$. Consider the open cover $\mathcal{V}=\{V_y\;|\; y\in\brar^{n-1}\}$ of $\brar^{n-1}\times \{x_0\}$. By Lemma 2, $\mathcal{V}$ has a finite subcover of $\brar^{n-1}\times \{x_0\}$, say $\{V_{y1},\dots,V_{yN}\}$. Let $\varepsilon=\inf\{\varepsilon_{y1},\dots,\varepsilon_{yN}\}$. Then $\brar^{n-1}\times(x_0-\varepsilon,x_0+\varepsilon)\subset \cup_{i=1}^N V_{yi} $, and so $\brar^{n-1}\times(x_0-\varepsilon,x_0+\varepsilon)$ is covered by $\mathcal{U}^'$. 
+    
+    Now, with this $\varepsilon$, there exists some $x\in S$ such that $x_0-\varepsilon<x\leq x_0$. Since $x\in S$, there exists a finite subcover $\mathcal{U}^{''}\subset \mathcal{U}$ which covers $\brar^{n-1}\times [-R,x]$, and $\mathcal{U}^{'}\cup \mathcal{U}^{''}$ is a finite cover of $\brar^{n-1}\times [-R,x_0+\varepsilon)$. Thus, $x_0\in S$. Suppose $x_0<R$, then choose $\delta$ such that $x+\delta<R$ and $x_0+\delta<x_0+\epsilon$. Thus, $\brar^{n-1}\times [-R,x_0+\delta]$ is covered by $\mathcal{U}^{''} \cup \mathcal{U}^'$, and $x_0+\delta\in S$, a contradiction, and therefore $X_0\in R$. 
+\end{proof}
+Just one more lemma, hang in there.
+\lem If $A$ satisfies (ii), $B$ is closed and $B\subset A$, then $B$ also satisfies (ii).
+\begin{proof}
+    Let $\{U_i\}$ be an open covering of $B$, and let $V=\R^n \symbol{92} B$. Then $\{U_i,V\}$ is an open cover of $A$. If $\{U_1,\dots,U_N,V\}$ is a finite subcover of $A$, then $\{U_1,\dots,U_N\}$ is a finite subcover for $B$.
+\end{proof}
+Finally, we prove Heine-Borel. If (i) then (ii).
+\begin{proof}
+    If $A$ bounded, then it lies in some cube $\brar^n$. By Lemma 3 and induction on $n$, this cube satisfies (ii). By Lemma 4, $A$ does also, since $A$ is closed.
+\end{proof}
+That was real underwhelming, wasn't it. Now to prove that (ii) implies (iii).
+\begin{proof}
+    Suppose for the sake of contradiction, suppose that the sequence $x_k\in A$ has \textit{no} convergent subsequences. In particular, this means that $x_k$ has an infinity of distinct points, say, $y_1,y_2,\dots$. Since there are no convergent subsequences, there is a neighborhood $U_k$ of $y_k$ containing no other $y_j$. This is because if every neighborhood of $y_k$ contained another $y_j$, we could, by choosing the neighborhoods $D(y_k,1/m), m=1,2,\dots$ select out a subsequence converging to $y_k$. Also, we claim that the set $y_1,y_2,\dots$ is closed. Indeed, it has no accumulation points by the assumption that there are no convergent subsequences. Now, by Lemma 3 above, $\{y_1,y_2,\dots\}$ satisfies (ii). But $\{U_k\}$ is an open cover which has no finite subcover, a contradiction. Thus, $x_k$ must has a convergent subsequence. Now we only have to show that the limit lies within $A$ to show that it is closed. Figure that yourself loser!
+\end{proof}
+Finally, we prove that (iii) implies (i).
+\begin{proof}
+    First, we show that $A$ is closed. For this, we use the theorem stating that a set $A\subset \R^n$ is closed if and only if for every sequence $x_k\in A$ which converges, the limit lies in $A$. Consider the sequence $x_k\to x$ with $x_k\in A$. By (iii), the limit lies in $A$, so $A$ is closed.
+
+    Now, we prove $A$ is bounded. Suppose the contrapositive, that $A$ is not bounded. Then there are points $x_k\in A$ with $\|x_k\|\geq k,k=1,2,\dots$. This implies that the sequence $x_k$ cannot have any convergent subsequences since, if $y$ was a limit point, $\|y\|=\lim_{k\to\infty}\|x_k\|=\infty$. This is impossible if we have $y\in\R^n$.
+\end{proof}
+\section{Nested Set Property}
+An important consequence of Theorem 1 is called the \textit{nested set property}.
+\theorem Let $F_k$ be a sequence of compact non-empty sets in $\R^n$ such that $F_{k+1}\subset F_k$ for all $k=1,2,\dots$. Then there is at least one point in $\bigcap_{k=1}^\infty F_k$.
+\begin{proof}
+    Let us observe that in the compact set $A=F_1$, the sets $F_1,F_2,\dots$ have the finite intersection property. Indeed, the intersection of any finite collection equals the $F_k$ with the highest index. Thus, since (ii)' holds for compact sets, we have 
+    $$
+    F_1\cap \left(\bigcap_{k=1}^\infty F_k\right)=\bigcap_{k=1}^\infty\{F_k\}\neq\emptyset.
+    $$
+\end{proof}
+    Intuitively, this makes sense as the sets are getting smaller and smaller but still contain something. However, if the $F_k$ are non-compact, you can imagine that this proof would require a little more than just that.
+\note Theorem 2 is not true if "compact non-empty" is replaced by "open non-empty". Indeed, consider the sequence of open non-empty sets $F_k=(k,\infty)$ or $[k,\infty)$.
+    \ex Verify theorem 2 for $F_k=[0,1/k]\subset \R$.
+
+    \textit{Solution:} Each $F_k$ is compact and clearly, $F_{k+1}\subset F_k$. The intersection is $\{0\}$ which is non-empty.
+\section{Path-Connected Sets}
+Intuitively, we have a decent sense of what "connectedness" means for a set. No gaps. But this intuition can get hazy with more complicated sets, for instance, is the set $\{(x,\sin 1/x)\;|\;x>0\}\cup\{(0,y)\;|\;y\in[1,0]\}$ in $\R^2$ connected? Therefore, we want a more formal definition.
+
+There are two different but closely-related notions of connectedness. The more intuitive and applicable of these is that of path-connectedness, so we begin there. Our definition first define what is meant by a curve (path) joining two points.
+\defn A \textit{continuous path} joining two points $x$ and $y$ in $\R^n$ is a mapping $\varphi:[a,b]\to\R^n$ such that $\varphi(a)=x, \varphi(b)=y$, and $\varphi$ is continuous. Here, $x$ may or may not equal $y$ and $b\geq a$.
+\note For now, we will use a rough definition of continuous: a mapping $\varphi$ is continuous if 
+$$
+(t_k\to t)\Rightarrow (\varphi(t_k)\to\varphi(t))
+$$
+for every sequence $t_k$ in $[a,b[$ converging to some $t\in[a,b]$. Also, a path $\varphi$ is said to \textit{lie in a set} $A$ if $\varphi(t)\in A$ for all $t\in[a,b]$.
+
+Given this, we say that a set $A$ is \textit{path-connected} if any two points in the set can be joined by a continuous path lying in the set $A$. The set we described above is therefore not path-connected (though the proof is somewhat difficult).
+
+\ex The set $[0,1]$ is path-connected.
+\begin{proof}
+    For any two points $x,y\in[0,1]$, define the mapping $\varphi(t)=(y-x)t+x$. This is a path connected $x$ and $y$, and it lies in $[0,1]$.
+\end{proof}
+\ex Must a path-connected set be closed? Or open?
+
+\textit{Solution:} No; $[0,1]$, $[0,1)$, and $(0,1)$ are all path-connected sets.
+
+\ex Let $\varphi:[0,1]\to \R^3$ be a continuous path, and $\mathcal{C}=\varphi([0,1])$. Show that $\mathcal{C}$ is path-connected.
+
+\textit{Solution:} This is intuitively clear, for we can use the path $\varphi$ itself to join any two points on $\mathcal{C}$. Precisely, if $x=\varphi(a)$ and $y=\varphi(b)$, where $0\leq a\leq b \leq 1$, let $c:[a,b]\to \R^3$, $c(t)=\varphi(t)$. Then, $c$ is a path joining $x$ to $y$ and $c$ lies in $\mathcal{C}$.
+
+\section{Connected Sets}
+We can now define what it means for a set to be connected.
+\defn A set $A\subset \R^n$ is called \textit{connected} if there do not exists two non-empty, open set $U, V$ such that:
+\[A\subset U\cup V\]
+\[A\cap U\neq \emptyset\]
+\[A\cap V\neq \emptyset\]
+\[A\cap U\cap V= \emptyset\].
+
+Intuitively, this definition is stating that if $A$ is connected, we can't find two set $U$ and $V$ that would separate $A$ into two pieces. Notice then that the set at the beginning of \S3 is connected but not path-connected. Then these two notions are not the same. However, there is thie following relation:
+\theorem If a set $A$ is path-connected, then $A$ is connected.
+
+Let us first start with a special case:
+\lem The interval $[a,b]$ is connected.
+\begin{proof}
+    Suppose, for the sake of contradiction, that the interval were not connected. Then there would be two open set $U$ and $V$ with $U\cap [a,b]\neq \emptyset$, $V\cap [a,b]\neq\emptyset$, $[a,b]\cap U\cap V = \emptyset$, and $[a,b]\subset U\cup V$. Further, suppose that $b\in V$. Let $c=\sup(U\cap [a,b])$, which exists as the set is bounded above. Now $U\cap [a,b]$ is closed since its complement is $V\cup (\R\symbol{92}[a,b])$, which is open. Thus, $c\in U\cap [a,b]$. Now, $c\neq b$, since $c\not\in V$ and $b\in V$. Any neighborhood of $c$ intersects $V\cap [a,b]$ since $c\neq b$ and no neighborhood of $c$ can be entirely contained in $U$ as $c=\sup(U\int [a,b])$, so that $c$ is an accumulation point of $V\cap[a,b]$. But as with $U,V\cap[a,b]$ is closed, so $c\in V\cap [a,b]$. This contradicts the fact that $V\cap U\cap [a,b]\neq \emptyset$.
+\end{proof}
+
+Now we prove Theorem 3.
+\begin{proof}
+    Suppose that $A$ is path-connected and, for the sake of contradiction, that $A$ not connected. Then, by definition, there exists open sets $U,V$ such that $A\subset U\cup V$, $A\cap U \cap V= \emptyset$, $A\cap U \neq \emptyset$, and $A\cap V\neq\emptyset$. Choose some $x\in U\cap A$ and $y\in V\cap A$. Since $A$ is path-connected, there exists a path $\varphi:[a,b]\to\R^n$ in $A$ joining $x$ and $y$. Set $U_0=\varphi^{-1}(U)$ and $V_0=\varphi^{-1}(V)$ so $U_0,V_0\subset[a,b]$. Now $U_0$ is closed, because if we let $t_k\to t$, with $t_k\in U_0$, then, by the continuity of $\varphi$, $\varphi(t_k)\to \varphi(t)$; but since $V$ is open, $\varphi(t)\not\in V$, or else $\varphi(t_k)\in V$ for large $k$. Hence $\varphi(t)\in U\cap A$ or $t\in U_0$. Thus $U_0$ is closed. Similarly, $V_0$ is closed. Let $U^{'}=(-\infty,a)\cup (\R\symbol{92} V_0$), and $V^{'}=(b,\infty)\cup (\R\symbol{92} U_0)$, which are open sets. Observe that $U^{'}\cap [a,b]\neq\emptyset$, $V^{'}\cap[a,b]\neq\emptyset$, $U^{'}\cap V^{'}=\emptyset$, and $[a,b]\subset U^'\cup V^'$. Thus, $[a,b]$ is not connected, contradicting Lemma 5.
+\end{proof}
+This is usually the easiest way to identify a connected set. Finally, if a set $A$ is not connected (and hence not path-connected), we can divide it into piece, called components. More precisely, a \textit{component} of a set $A$ is a connected subset $A_0\subset A$ such that there is no connected set in $A$ containing $A_0$ other than $A_0$ itself. 
+
+\end{document}

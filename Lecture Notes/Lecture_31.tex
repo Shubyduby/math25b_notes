@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 31: Integration Techniques}\\
+{\large Wednesday, 12 April 2023}\\
+\end{center}
+
+\section{Change of Variables from $\R\to\R$}
+We did finishing proving this proposition from last class:
+\prop (\textit{First substitution theorem}) Let $I=[a,b]$ and $\varphi:I\to \R$ be of class $C^1$. If $f$ is continuous on some interval $J$ containing $\varphi(I)$, then 
+$$
+\int_a^b f(\varphi(t))\varphi'(t)~dt=\int_{\varphi(a)}^{\varphi(b)} f(x)~dx.
+$$
+
+\begin{proof}
+    If $c=\varphi(a)$ and $d=\varphi(b)$, then $J$ contains the interval with endpoints $c$ and $d$. Define $F:J\to \R$ by 
+    $$
+    F(u)=\int_c^u f(x)~dx
+    $$
+    and $g:I\to \R$ by $g(t)=F(\varphi(t))$. Then $g$ is differentiable and $g'(t)=F'(\varphi(t))\varphi'(t)=f(\varphi(t))\varphi'(t)$ so
+    $$
+    \begin{aligned}
+    \int_a^b f(\varphi(t))\varphi'(t)~dt&=\int_a^b g'(t)~dt \\
+    &=g(b)-g(a)\\
+    &=F(\varphi(b))-F(\varphi(a))\\
+    &=F(d)-F(c)\\
+    &=\int_c^d f(x)~dx.
+    \end{aligned}
+    $$
+\end{proof}
+\prop (\textit{Second substitution theorem}) Let $I=[a,b]$ and $\varphi:I\to \R$ be of class $C^1$ and $\varphi'(t)\neq 0$ for all $(t)\in I$. If $f$ is continuous on $\varphi(I)$ then 
+$$
+\int_a^b f(\varphi(t))~dt=\int_{\varphi(a)}^{\varphi(b)} f(x)\left(\varphi^{-1}\right)'(x)~dx.
+$$
+\begin{proof}
+    Note that since $\varphi$ is continuous on the compact, connected set $I$, then the set $J=\varphi(I)$ is also compact and connected. Moreover, the fact that $\varphi'$ is continuous and non-zero on $I$ means that $\varphi$ cannot change sign on $I$. Then $\varphi$ is strictly monotone on $I$ and $\varphi:I\to J$ is a bijection, where $J=\varphi(I)$. The inverse function theorem then guarantees that $\varphi^{-1}:J\to I$  is of call $C^1$ on $J$.
+
+    Now, let $G:I\to \R$ be an antiderivative of $f\circ \varphi$. Then $G$ is differentiable on $I$ and, by the chain rule,
+    $$
+    (G\circ \varphi^{-1})'(x) = G'(\varphi^{-1}(x)) \cdot (\varphi^{-1})'(x) = f\circ \varphi(\varphi^{-1}(x))\cdot (\varphi^{-1})'(x)=f(x)(\varphi^{-1})'(x).
+    $$
+    By the fundamental theorem of calculus,
+    $$
+    \begin{aligned}
+        \int_{\varphi(a)}^{\varphi(b)} f(x)\left(\varphi^{-1}\right)'(x)~dx &= (G\circ \varphi^{-1})'(\varphi(b)) -(G\circ \varphi^{-1})'(\varphi(b))\\
+        &=G(b)-G(a)\\
+        &=\int_a^b f(\varphi(t))~dt.
+    \end{aligned}
+    $$
+\end{proof}
+
+\ex Evaluate the following integral:
+$$
+\int_1^4 \frac{1}{1+\sqrt{t}}~dt.
+$$
+
+\textit{Solution:} Let $\varphi(t)=\sqrt{t}$. Then $\varphi^{-1}$ exists on this domain and $\varphi^{-1}(s)=s^2$. Let $t=s^2$. Then our new integral by Proposition 2 is
+$$
+\int_1^2 \frac{2s}{1+s}~ds=\int_1^2 2-\frac{2}{1+s}~ds.
+$$
+The rest should be easily solvable.
+
+\section{Multivariate Change of Variables}
+
+\begin{shaded}
+\theorem Let $\varphi:U\to W$ be a $C^1$ diffeomorphism, where $U$ and $W$ are open subsets of $\R^n$. Let $R\subseteq U$ be a rectangle and $f:W\to R$ be bounded and integrable. Then then the composition $(f\circ\varphi)\cdot |\det(D\varphi)|$ is integrable on $R$ and 
+$$
+\int_R (f\circ \varphi)|\det(D\varphi)| =\int_{\varphi(R)}f
+$$
+\end{shaded}
+\begin{proof}
+    This is only a sketch. Think about slicing $R$ into subrectangles that are \textit{small}. We want to compare the contributions to the integral area over a small slice, so pick some subrectangle $S$ with $x_0\in S$. Then we have that
+    $$
+    \int_S (f\circ\varphi)|\det(D\varphi)|\approx f(\varphi(x_0))\cdot|\det(D\varphi(x_0))|\cdot v(S)
+    $$
+    Looking the other way around, we have that
+    $$
+    \int_{\varphi(S)}f\approx f(\varphi(x_0))\cdot v(\varphi(S))\approx f(\varphi(x_0))\cdot |\det(D\varphi(x_0))|\cdot v(S),
+    $$
+    since at such a small scale every thing looks roughly linear.
+\end{proof}
+
+\ex Let $f:\R^2\to \R$ defined as $f(x,y)=x$ and $K$ be the parallelogram containing the vertices $(0,0)$, $(0,1)$, $(2,3)$, and $(2,2)$. Evaluate the integral of $f$ over $K$.
+
+\textit{Solution:} We will make a substituion to deform the parallelogram into a square. Build a linear transformation $\varphi$ that maps $R=[0,1]\times [0,1]$ onto $K$, in particular, $\varphi$ will send $e_1\mapsto e_2$ and $e_2\mapsto 2e_1+2e_2$. Then we have that the standard matrix for $\varphi$ is
+$$
+A=\mat 0 & 2 \\ 1 & 2 \trix,
+$$
+so $\varphi^{-1}$ has standard matrix
+$$
+A^{-1} = \frac{1}{-2}\mat 2 & -2 \\ -1 & 0 \trix.
+$$
+Then under $\varphi^{-1}$,
+$$
+\mat x \\ y \trix \mapsto \mat -x + y \\ \frac{1}{2}x \trix
+$$
+and $\varphi^{-1}(K)=R,$ the unit square. Then Theorem 1 tells us
+$$
+\begin{aligned}
+\int_R f &= \int_R (f\circ \varphi)|\det(D\varphi)|\\
+&= \int_R 2y\cdot 2\\
+&=\int_0^1 \int_0^1 4y ~dydx.
+\end{aligned}
+$$
+
+\subsection{Polar Coordinates}
+ Polar coordinates are particularly useful from $\R^2\to \R^2$ if the domain has certain radial symmetries or the integrand becomes much simpler in polar coordinates. Consider the function $\varphi$ defined as
+ $$
+ \mat r \\ \theta \trix \mapsto \mat r\cos\theta \\ r\sin\theta \trix
+ $$
+defined for $(r,\theta)$ satisfying $r>0$ and $0<\theta<2\pi$. Let $U=\{(r,\theta):r>0,0<\theta<2\pi\}$. Then $\varphi$ is a $C^1$ diffeomorphism from $U$ onto $\R^2\bslash\{(x,y):y=0, x\geq 0\}$. If we do not cut the non-negative $x$-axis, then $\varphi^{-1}$ is discontinuous along $\theta = 0$, and thus no longer a diffeomorphism. However, this is not bad nuance since the cut has measure zero.
+
+Doing a polar coordinate substitution works by Theorem 1.
+
+
+\subsection{Spherical Coordinates}
+
+Recall the change of coordinates transformation $\psi:\R^3\to \R^3$ from spherical coordinates to Cartesian coordinates was defined as
+$$
+\mat \rho \\ \phi \\ \theta \trix \mapsto \mat \rho\sin\phi\cos\theta \\
+\rho \sin\phi \sin\theta \\ \rho\cos\phi \trix
+$$
+over the domain $U=\{(\rho,\phi,\theta)\in\R^3 : \rho>0, 0<\phi<\pi , 0<\theta<2\pi\}$. Then $\psi$ is a $C^1$ diffeomorphism fro $U$ onto $\R^3\bslash \{(x,y,z):x\geq 0, y=0\}$.
+
+For reference, $|\det(D\psi)|=\rho^2\sin\phi$.
+\end{document}

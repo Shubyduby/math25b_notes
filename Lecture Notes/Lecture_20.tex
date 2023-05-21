@@ -1,0 +1,250 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 20: Differential Maps and Jacobians}\\
+{\large Friday, 10 March 2023}\\
+\end{center}
+
+\section{Building the Differential Operator}
+Today, we will generalize the notion of a \say{derivative} to functions $f:\Omega\subseteq \R^n\to\R^m$, where $\Omega$ is open.
+
+Recall that if $f:(a,b)\subseteq \R\to \R$ and $x_0\in(a,b)$, we said $f$ is \textit{differentiable} at $x_0$ if 
+$$
+\lim_{x\to x_0} \frac{f(x)-f(x_0)}{x-x_0}
+$$
+exists. Remember that differentiability at $x_0$ is equivalent to the existence of a number $f'(x_0)$ such that
+$$
+\lim_{x\to x_0}\left|\frac{f(x)-f(x_0)-f'(x_0)(x-x_0)}{x-x_0} \right|=0.
+$$
+The numerator of the expression above is the separation between $f(x)$ and the tangent line approximation $f(x_0)+f'(x_0)(x-x_0)$. At $x_0$, the separation is negligible relative to $|x-x_0|$ if $x$ is close to $x_0$. Locally, $f$ is \say{linear} near $(x_0,f(x_0))$.
+
+Then we want the derivative of $f:\Omega \subseteq \R^n\to \R^m$ at $x_0\in \Omega$ should be associated with a \say{best} linear approximation of $f$
+$$
+f(x)\approx f(x_0)+f'? (x-x_0)
+$$
+if $x$ close to $x_0$. We then want the derivative $f'?$ to be a map from $\R^n\to \R^m$.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn Let $f:\Omega\subseteq \R^n\to\R^m$ where $\Omega$ is open. We say $f$ is \textit{differentiable} at $x_0\in\Omega$ if there exists a linear transformation $Df(x_0):\R^n\to\R^m$ such that 
+$$
+\lim_{x\to x_0} \frac{\|f(x)-f(x_0)-Df(x_0)(x-x_0)\|}{\|x-x_0\|}=0
+$$
+This transformation $Df(x_0)$ is called the derivative.
+\end{mdframed}
+\note The derivative is unique when it exists. We can go about showing this by demonstrating that if there exists another derivative operator, the two derivatives have the same output for any basis.
+
+\ex Find the differential operator of $T:\R^n\to \R^m$ if $T$ is a linear transformation.
+
+\textit{Solution:} Since $T$ is a \textit{linear} transformation,
+$$
+\underbrace{DT(x_0)}_{\mathcal{L}(\R^n,\R^m)}=T
+$$
+for all $x_0\in\R^n$. Notice that
+$$
+\frac{\|T(x)-T(x_0)-T(x-x_0)\|}{\|x-x_0\|}=\frac{\|T(x-x_0)-T(x-x_0)\|}{\|x-x_0\|}=0
+$$
+so the limit as $x\to x_0$ is 0.
+
+\ex Find the derivative of $f(x)=x$.
+
+\textit{Solution:} The function $f$ is equivalent to the matrix $[1]$ so the derivative is 1.
+
+\section{Partial Derivatives}
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+Let $f:\Omega\subseteq \R^n\to\R^m$, where $\Omega$ is open. Pick some $(x_1,\dots,x_m)\in\Omega$. Then the \textit{partial derivative} of $f$ with respect to its $j^\mathrm{th}$ component is 
+$$
+\frac{\partial f}{\partial x_j}=\lim_{h\to 0} \frac{f(x_1,\dots,x_j+h,\dots,x_n)-f(x_1,\dots,x_j,\dots,x_n)}{h},
+$$
+provided the limit exists.
+\end{mdframed}
+
+\ex Let $f:\R^2\to \R$ be given by $f(x,y)=e^{-(x^2+y^2)}$. Find the partial derivative of the surface with respect to $x$ at the point $(1,2)$.
+
+\textit{Solution:} Holding $y$ constant,
+$$
+\frac{\partial f}{\partial x}(x,y)=-2xe^{-(x^2+y^2)}.
+$$
+So we have
+$$
+\frac{\partial f}{\partial x}(1,2)=-2e^{-5}.
+$$
+
+\ex Be careful that the existence of partial derivatives \textit{does not} mean $f$ is differentiable. Consider the function $f:\R^2\to\R$ such that
+$$
+f(x,y)=\left\{ 
+\begin{aligned}
+&1, \;x=0\mbox{ or }y=0\\
+&0, \mbox{ else}.
+\end{aligned}
+\right.
+$$
+But $f$ is not continuous at $(0,0)$ so cannot be differentiable there even though partial derivatives exist at $(0,0)$.
+
+\section{Matrix Representations of the Derivative}
+Let $f:\Omega\subseteq \R^n\to\R^m$, where $\Omega$ is open. We will show that if $x\in\Omega$, then the partial derivatives of each component of  $f$ exist at $x$ and will give a standard matrix for $Df(x)$.  We will express 
+$$
+f(x_1,\dots,x_2)=\begin{bmatrix}
+f_1(x_1,\dots,x_n)\\
+\vdots\\
+f_m(x_1,\dots,x_n)
+\end{bmatrix}.
+$$
+To find the standard matrix representation for $Df(x)$, look at how $Df(x)$ acts on the standard basis $e_1,\dots,e_n$ for $\R^n$. Then we express the standard matrix as
+$$
+A=[Df(x)e_1\;|\;\cdots\;|\;Df(x)e_n].
+$$
+Note then that $A_{ij}$ is the $i^\mathrm{th}$ component of $Df(x)e_j$. Since $Df(x)$ exists,
+$$
+\lim_{y\to x}\frac{\|f(y)-f(x)-Df(x)(y-x)\|}{\|y-x\|}=0,
+$$
+which is equivalent to 
+$$
+\lim_{h\to 0}\frac{\|f(x+he_j)-f(x)-Df(x)(he_j)\|}{|h|}=0.
+$$
+This expressions says that if we look at the $i^\mathrm{th}$ component, we get 
+$$
+\lim_{h\to 0}\frac{|f_i(x+he_j)-f_i(x)-A_{ij}h|}{|h|}=0
+$$
+so
+$$
+\lim_{h\to 0}\left|\frac{f_i(x+he_j)-f_i(x)}{h}-A_{ij}\right|=0.
+$$
+Thus, the partial derivative exists and equals $A_{ij}$.
+
+\prop The standard matrix representation for $Df(x)$ is given by
+$$
+\begin{bmatrix}
+    \frac{\partial f_1}{\partial x_1} &\cdots & \frac{\partial f_1}{\partial x_n}\\
+    \vdots & & \vdots \\
+    \frac{\partial f_m}{\partial x_1} &\cdots & \frac{\partial f_m}{\partial x_n}
+\end{bmatrix}.
+$$
+This matrix is called the \textit{Jacobian} of $f$ at $x$.
+
+\begin{proof}
+    We have proved this in the construction above!
+\end{proof}
+
+\ex If $f:\R^n\to \R$ is differentiable, then the Jacobian at $x$ is a row vector
+$$
+\begin{bmatrix}
+\frac{\partial f}{\partial x_1}& \cdots & \frac{\partial f}{\partial x_n}
+\end{bmatrix},
+$$
+denoted as $\nabla f(x)$, called the \textit{gradient} of $f$ at $x$.
+
+\ex Let $f:\R^2\to\R$ by given by $f(x,y)=9-x^2-y^2$. Find the gradient.
+
+\textit{Solution:} the gradient is 
+$$
+\nabla f(x,y)=[-2x\; -2y]
+$$
+so 
+$$
+\nabla f(1,2)= [-2\; -4].
+$$
+If $f$ is differentiable, then the matrix we found above is the standard matrix (will prove this later). Observe,
+$$
+\lim_{(x,y)\to(1,2)}\frac{\left\|f(x,y)-f(1,2)-\begin{bmatrix}
+    -2&-4
+\end{bmatrix}\begin{bmatrix}
+    x-1\\ y-2
+\end{bmatrix}\right\|}{\left\|\begin{bmatrix}
+    x\\y
+\end{bmatrix}-\begin{bmatrix}
+    1\\2
+\end{bmatrix}\right\|}=0.
+$$
+So the \say{best} linear approximation to $f$ near $(1,2)$ is
+$$
+P(x,y)=f(1,2)+\nabla f(1,2)\cdot \begin{bmatrix}
+    x-1\\y-2 
+\end{bmatrix} = 4-2(x-1)-4(y-2),
+$$
+the tangent plane at $(1,2,4)$.
+
+\ex Let $f:\R^2\to\R^2$ be defined as
+$$
+\begin{bmatrix}
+    x\\y
+\end{bmatrix}\mapsto \begin{bmatrix}
+    x-xy\\-y+xy
+\end{bmatrix}.
+$$
+
+the Jacobian of this function will be
+$$
+Df(x,y)=\begin{bmatrix}
+    \frac{\partial f_1}{\partial x}& \frac{\partial f_1}{y}\\
+    \frac{\partial f_2}{\partial x}& \frac{\partial f_2}{y}
+\end{bmatrix}=
+\begin{bmatrix}
+    1-y& -x\\
+    y & x-1
+\end{bmatrix}.
+$$
+so 
+$$
+Df(1,1)=\begin{bmatrix}
+    0 & 1\\ -1&0
+\end{bmatrix}
+$$
+a rotation matrix, so around the fixed point $(1,1)$ there is rotation happening.
+\end{document}

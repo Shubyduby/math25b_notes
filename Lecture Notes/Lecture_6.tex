@@ -1,0 +1,114 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\newcommand{\bslash}{\symbol{92}}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 6: Metric Space Topology Continued: Compactness}\\
+{\large Friday, 3 February 2023}\\
+
+\end{center}
+\section{Recap of Convergent Series}
+
+Last time, we found certain tests that allowed us to check the convergence of infinite sums. This is an often understated part of calculus courses but is of vital importance to calculus as many functions, integrals, and derivatives are defined by infinite series and we want to know if these functions are well defined.
+
+\section{Compactness}
+\subsection{Preliminary ideas}
+The compactness will be critical when we talk about optimization and the extreme value theorem. Then we want to carefully craft a definition of compactness that will allow us to effectively use the idea of compactness. We will find one that is true for \textit{any} topological space, not just metric ones. It seems helplessly abstract so here is the set up.
+
+\defn A \textit{cover} of a set $A$ is a collection $\{U_i\}$ of sets whose union contains $A$. If each set $U_i$ in the cover $\{U_i\}$ is open, then we say the collection $\{U_i\}$ is an \textit{open cover} of $A$. A \textit{subcover} of a given cover is just a subcollection of sets whose union also contains $A$, or as we say, \textit{covers} A. A subcover is a \textit{finite subcover} if the subcollection contains only a finite number of sets.
+
+\subsection{Definition}
+
+Now we define a compact set for any topological space.
+
+\defn We say a set $K$ is \textit{compact} if every open cover of $K$ has a finite subcover.
+
+\ex (Bounded but not closed) Consider the set $E=(0,1]$ in the metric space $\R=M$ with the usual metric. Is $E$ compact?
+
+\textit{Solution:} Intuitively, no. But we shall show that this is true using Heine-Borel. Consider the set $I=(0,1]$ and define $U_x=(x/2,2)$ open for each $x\in I$. Notice that $E\subseteq \{U_x\}$. Since if $y\in \E$ for some $0<y\leq 1$, then $y\in U_y$. Then this is an open cover. Suppose there were some finite subcover $U_{x_1},\dots,U_{x_m}$. Let $\delta=\min\{x_1,\dots,x_m\}$. Then $\delta/3\in E$ but $\delta/3 \not\in \bigcup_{j=1}^m U_{x_j}$. So there is not a finite subcover.
+
+\ex (Closed but not bounded) Consider the set $E=[0,\infty)$ in the metric space $\R=M$ with the usual metric. Is $E$ compact?
+
+\textit{Solution:} Let $U_n=(n-2/3,n+2/3)$. Then $E\subseteq \{U_n\}$. If we remove $U_n$ for some $n$, the new subset leaves $n$ uncovered. So there is no finite subcover, and $E$ is not compact.
+
+\subsection{Sequential Compactness}
+It would be good to have other notions of compactness. Then we have another definition.
+
+\defn Let $(M,d)$ be a metric space and $K\subset M$. We say $K$ is \textit{sequentially compact} if every sequence of points in $K$ has a subsequence that converges to a limit in $K$.
+
+\ex Is $K=[0,1]$ compact?
+
+\textit{Solution:} If $\{x_m\}$ is a sequence in $K$, then there exists a convergent subsequence by Bolzano-Weierstrass since $K$ is bounded. The limit of this subsequence is in $K$ because $K$ is closed.
+
+We want to also show that in a metric space, compactness is the same as sequential compactness. We then will need many lemmas, some which we will prove, some which we won't.
+
+\lem If $K\subseteq M$ is compact, then $K$ is closed.
+\begin{proof}
+    We will prove that the complement $M\bslash K$ is open. If $M\bslash K=\emptyset$, then $M$ closed. 
+
+    Otherwise, pick any $x\in M\blash K$. We want to choose an $\varepsilon>0$ such that $B(x,\varepsilon)\subseteq M\bslash K$. For each $n\in N$, consider $\omega_n=\{y\in M:\;d(y,x)>1/n\}$, the complement of closed ball $B(x,1/n)$. Then each $\omega_n$ open. Now we want to show that $K\subseteq \cup_{n=1}^\infty \omega_n$. Pick some $y\in K$. Let $\zeta = d(y,x)>0$. Pick $1/n<\zeta$. Then $y\in \omega_n$. We then have an open subcover of $K$. But $K$ is compact so we can choose a finite subcover $\omega_{n_1},\dots,\omega_{n_m}$. By how we defined these sets, $\omega_{n_1}\subseteq \omega_{n_2}\subseteq \cdots \subseteq \omega_{n_m}$. Remember that $\omega_{n_m}=\{y\in M:\; d(x,y)>1/n_m\}$. Use $\varepsilon>1/n_m$. Then $B(x,\varepsilon)\subseteq M\bslash K$, so $M\bslash K$ is open.
+\end{proof}
+
+\lem A closed subset $K$ of a compact metric space $(M,d)$ is compact.
+\begin{proof}
+    Cool and brisk proof. Too sleepy to type.
+\end{proof}
+
+\prop \textit{(Bolzano-Weierstrass)} Let $(M,d)$ be a metric space. Then $K\subset M$ is compact if and only if $K$ is sequentially compact.
+
+\begin{proof}
+    We will prove on direction. See Marsden for proof of the converse. Suppose for the sake of contradiction that $K$ is compact but not sequentially compact. Then there exists a sequence $\{x_n\}$ of points in $K$ which has no convergent subsequence that converges to a point in $K$. Evidently, the sequence can not have finitely many distinct terms since we would simply be able to build a constant subsequence. Then $x_n$ has infinitely many distinct points. Let $S=\{x_1,\dots, x_n\}$. Then $S\subseteq K$. Next, we build an open cover of $S$. Given $x_j\in S$, we want to find an $\varepsilon_j>0$ such that $B(x_j, \varepsilon_j)$ contains no points of $S$ other than $x_j$ itself. If not, look at $B(x_j,1/n)$ for each $n\in N$. If each had some element of $S$ other than $x_j$, then we could build a sequence of points in $S\subseteq K$ that converges to $x_j\in K$. But by assumption, this does not exist. $S$ would have to be closed and therefore be compact because $S\subseteq K$ and $K$ is compact by Lemma 2. But $S$ is closed because $S$ has no limit points and therefore contains all of its limit points. Then there is a contradiction because we have showed that $S$ is both compact and non-compact.
+\end{proof}
+
+\lem If $(M,d)$ is a metric space and $K\subseteq M$ is compact, then $K$ is bounded.
+\begin{proof}
+    Pick any point $x\in K$. Pick $\omega_n=B(x,n)$. Then $K\subseteq \bigcup_{n=1}^\infty \omega_n$. By the compactness of $K$, we can pick a finite subcover $\omega_{n_1},\dots,\omega_{n_k}$. $\omega_{n_k}$ is the largest and contains $K$ so $K$ is bounded.
+\end{proof}
+
+\end{document}

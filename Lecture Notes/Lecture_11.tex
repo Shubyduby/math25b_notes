@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 11: Differentiation}\\
+{\large Wednesday, 15 February 2023}\\
+
+\end{center}
+\section{Differentiability}
+We can now describe what it means for a function to be differentiable. Here is the general notion taught by most first calculus classes.\:
+\begin{mdframed}[backgroundcolor = blue!10]
+
+\vspace{+0.2cm}
+
+\defn Let $f:\Omega\subseteq \R\to \R$ where $\Omega$ is open. We say that $f$ is \textit{differentiable} at $x_0\in\Omega$ if 
+$$
+\lim_{x\to x_0}\frac{f(x)-f(x_0)}{x-x_0}
+$$
+ exists. The limit will be denoted as $f'(x_0)$ and called the \textit{derivative} of $f$ at $x_0$.
+\end{mdframed}
+\note Since $\Omega$ is open and $x_0\in\Omega$, $x_0$ is a limit point.
+
+\ex Let $\Omega=(0,\infty)$ and $f:\Omega\to \R$ be $f(x)=\sqrt{x}$. Find the derivative of $f$ at $x_0$.
+
+\textit{Solution:} Pick any $x_0\in(0,\infty)$. We claim that $f'(x_0)$ exists. Observe,
+$$
+\lim_{x\to x_0}\frac{\sqrt{x}-\sqrt{x_0}}{x-x_0}\cdot\frac{\sqrt{x}+\sqrt{x_0}}{\sqrt{x}+\sqrt{x_0}}=\lim_{x\to x_0}\frac{1}{\sqrt{x}+\sqrt{x_0}}=\frac{1}{2\sqrt{x_0}}.
+$$
+The last equality holds because of the continuity of $f$ at $x_0$. Indeed, we know the square-root function is continuous and thus $\lim_{x\to x_0}\sqrt{x}=\sqrt{x_0}$.
+
+We have a proposition that stems from this idea.
+
+\prop If $f:\Omega\subseteq \R\to\R$ is differentiable at $x_0$, then $f$ is continuous at $x_0$.
+
+\begin{proof}
+    Assume that $f'(x_0)$ exists. We want to show that $\lim_{x\to x_0} f(x)=f(x_0)$. Notice that
+    $$
+    \lim_{x\to x_0} f(x)=\lim_{x\to x_0} \left[\left(\frac{f(x)-f(x_0)}{x-x_0} \right)(x-x_0)+f(x_0)\right]=f'(x_0)\cdot 0 +f(x_0).
+    $$
+    The last equality holds since the product of limits is equal to the limits of products.
+\end{proof}
+\note Continuity at $x_0$ does not imply differentiability.
+\ex $f:\R\to\R$ defined as $f(x)=|x|$ is not differentiable at $x=0$.
+
+\ex $g:\R\to\R$ defined as $g(x)=\sqrt[3]{x}$ is not differentiable at $x=0$.
+
+\ex The piecewise function $h$ defined as 
+$$
+h(x)\left\{\begin{aligned}
+&x\sin{\left(\frac{1}{x}\right)},&x\neq0\\
+&0,&x=0.
+\end{aligned}\right.
+$$
+is continuous but not differentiable at 0. We can show that it is continuous. Let $\varepsilon>0$ and choose $\delta=\varepsilon$. Then when $|x-0|<\delta$, we have 
+$$
+|f(x)-h(0)|=|h(x)-0|=\left\{\begin{aligned}
+    &\left|x\sin{\left(\frac{1}{x}\right)}\right|\leq x,&x\neq 0\\
+    &0,&x=0
+\end{aligned}\right.<\varepsilon.
+$$
+Using normal calculus you can find that it is indeed not differentiable at 0.
+
+\section{Differentiation Rules}
+Suppose $f:\Omega\subseteq \R\to\R$ and $g:\Omega\subseteq \R\to \R$, where $\Omega$ is open. We have $x_0\in\Omega$ and $c\in \R$. If $f,g$ are differentiable at $x_0$, then so are $f+g$, $f-g$, $cf$, and $fg$. So is $f/g$, provided that $g(x_0)\neq 0$.
+
+\subsection{Sum Rule}
+We prove that the sum rule.
+\begin{proof}
+    Let $\varepsilon>0$ be given. Since $f$ is differentiable at $x_0$, there exists a $\delta>0$ such that if $0<|x-x_0|<\delta_1$, we have that 
+    $$
+    \left|\frac{f(x)-f(x_0)}{x-x_0}-f'(x_0)\right|<\varepsilon.
+    $$
+    Then if we multiply both sides by $|x-x_0|$,
+    $$
+    |f(x)-f(x_0)-f'(x_0)(x-x_0)|\leq\varepsilon |x-x_0|.
+    $$
+    The equation above is \textbf{the equivalent} to being differentiable at $x_0$. Ponder what it is saying! We can do the same with $g$. Find a $\delta_2$ such that $|x-x_0|<\delta_2$ implies
+    $$
+    |g(x)-g(x_0)-g'(x_0)(x-x_0)|\leq\varepsilon |x-x_0|.
+    $$
+    Let $\delta=\min\{\delta_1,\delta_2\}>0$. Then whenever $|x-x_0|<\delta$, we have
+    $$
+    |(f+g)(x)-(f+g)(x_0)-[f'(x_0)+g'(x_0)](x-x_0)|\leq 2\varepsilon|x-x_0|
+    $$
+    by the triangle inequality.
+\end{proof}
+\note A consequence of this is that $(f+g)'(x_0)=f'(x_0)+g'(x_0)$.
+
+\subsection{Product Rule}
+Recall the product rule:
+$$
+(fg)'(x_0)=f'(x_0)g(x_0)+f(x_0)g'(x_0).
+$$
+You will prove this on this week's problem set. Here is the heuristic proof:
+
+We have
+$$
+\begin{aligned}
+\lim_{h\to 0}\frac{(fg)(x_0+h)-(fg)(x_0)}{h}&=\lim_{h\to 0}\frac{f(x_0+h)g(x_0+h)-f(x_0)g(x_0)}{h}\\
+&= \lim_{h\to 0}\frac{f(x_0+h)g(x_0+h)-f(x_0+h)g(x_0)+f(x_0+h)g(x_0)-f(x_0)g(x_0)}{h}\\
+&=\lim_{h\to 0}\left\{f(x_0+h)\left(\frac{g(x_0+h)-g(x_0)}{h}\right)+g(x_0)\left(\frac{f(x_0+h)-f(x_0)}{h}\right)\right\}\\
+&=f(x_0)g'(x_0)+g(x_0)f'(x_0).
+\end{aligned}
+$$
+
+\subsection{Quotient Rule}
+Let $r(x)=p(x)/q(x)$, where $p(x)$ and $q(x)$ are differentiable. Rearrange into $p(x)=r(x)q(x)$ and use the product rule. Then solve for $r'(x)$.
+
+\subsection{Chain Rule}
+Let $f:\Omega_1\subseteq \R\to\R$ and $g:\Omega_2\subseteq \R\to\R$, where $\Omega_1$ and $\Omega_2$ are open sets and $f(\Omega_1)\subseteq\Omega_2$. If $f$ is differentiable at $x_0\in\Omega_1$ and $g$ differentiable at $f(x_0)\in\Omega_2$, then $g\circ f$ is differentiable at $x_0$ and $(g\circ f)'(x_0)=g'(f(x_0))\cdot f'(x_0)$. Wes will post the proof for the chain rule on Canvas.
+
+\section{Continuity of the Derivative}
+Recall that $f(x)=\sqrt{x}$ and $x_0>0$, we have $f'(x_0)=1/(2\sqrt{x_0})$. It is a function in its own right. Will it always be continuous though?
+
+\ex If $f$ is differentiable, $f'$ need not be continuous! Consider
+$$
+f(x)\left\{\begin{aligned}
+&x^2\sin{\left(\frac{1}{x}\right)},&x\neq0\\
+&0,&x=0.
+\end{aligned}\right.
+$$
+We have that 
+$$
+\lim_{h\to 0}\frac{f(h)-f(0)}{h}=\lim_{h\to 0}\frac{h^2\sin(1/h)}{h}=\lim_{h\to 0}h\sin(1/h)=0=f'(0).
+$$
+
+If $x\neq 0$, we have $f'(x)=2x\sin(1/x)-\cos(1/x)$. This function has pretty wacky behavior as it approaches the origin. Confirm to yourself the function is not continuous at $x=0$.
+
+\section{Terminology}
+Let $f:\Omega\subseteq \R\to \R$, where $\Omega$ is open. 
+
+\defn Let $I$ be a nontrivial interval $I\subseteq \Omega$. Say $f$ is \textit{increasing on} $I$ if given $x,y\in I$ with $x<y$ we have $f(x)\leq f(y)$. We say $f$ has a \textit{local maximum} at $x_0\in\Omega$ if there exists $\varepsilon>0$ with $(x_0-\varepsilon,x_0+\varepsilon)\subseteq \Omega$ and $f(x_0)\geq f(x)$ for all $x$ in the $\varepsilon$ interval.
+
+\note Just because the derivative is positive at a single point, it does not mean that it is increasing over an interval. Marsden and Hoffman use the term "increasing at a point" to refer to a positive having a positive derivative but it is \textit{not} equivalent to increasing over an interval.
+\end{document}

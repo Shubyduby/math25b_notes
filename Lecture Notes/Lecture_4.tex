@@ -1,0 +1,79 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 4: Limit Points and Closures}\\
+{\large Monday, 30 January 2023}\\
+
+\end{center}
+
+\section{Limit Points}
+Recall from the problem set the definition of a limit point:
+\defn Let $(M,d)$ be metric space and $E\subseteq M$. We say that $p\in M$ is a \textit{limit point} of $E$ if every open neighborhood of $p$ contains some $q\in E$ with $q\neq p$.
+
+Limit points would them seem to have a close relation to sequences. Let us solidify this relationship:
+
+\prop Let $(M,d)$ be metric space and $E\subseteq M$. A point $p\in M$ is a limit point of $E$ if and only if $\{x_n\}\to p$ as $n\to\infty$ for some sequence $\{x_n\}\in E\bslash\{p\}$.
+
+\begin{proof}
+    Suppose that $p$ is a limit point. Then consider the open ball $B(p,1)$. Since $p$ is a limit point of $E$, there exists a point $x_1\in B(p,1)\cap E$ such that $x_1\neq p$. Like wise, we can pick any $x_n\in B(p,1/n)\cap E$ such that $x_n\neq p$. This creates a series that converges to $p$.  
+\end{proof}
+The converse of this proof is in the textbook.
+
+Recall that for any $E\subseteq M$, the interior of $E$, notated int$(E)$, the largest open subset of $E$. 
+
+\defn The \textit{closure} of $E$ is the intersection of all closed sets containing $E$.
+
+\note This is equivalent to saying that the closure of $E$ is smallest closed set containing $E$.
+
+\ex If $E=[0,1)$, then int$(E)=(0,1)$ and cl$(E)=[0,1]$.
+\end{document}

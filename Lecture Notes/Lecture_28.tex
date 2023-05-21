@@ -1,0 +1,167 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 28: Implicit Function Theorem Continued and Midterm Review}\\
+{\large Wednesday, 5 April 2023}\\
+\end{center}
+
+\section{Examples of the Implicit Function Theorem}
+
+Recall the example we ended last lecture with:
+$$
+\begin{cases}
+    \frac{du}{dt}=\frac{\alpha_1}{1+v^\beta}-u\\
+    \frac{dv}{dt}=\frac{\alpha_2}{1+u^\gamma}-v
+\end{cases}
+$$
+We have that $(u,v)=(1,2)$ is an equilibrium solution if $\alpha_1=5$, $\alpha_2=4$, $\beta = 2$, and $\gamma=2$. We want to know if this is the only equilibrium solution in the vicinity, which is equivalent to solving for $(u,v)$ in terms of $\alpha_1,\alpha_2,\beta,\gamma$ near this point. Consider the map
+$$
+F:\R^4\times \R^2\to \R^2
+$$
+defined by
+$$
+(\alpha_1,\beta,\alpha_2,\gamma,u,v)\mapsto \left(\frac{\alpha_1}{1+v^\beta}-u, \frac{\alpha_2}{1+u^\gamma}-v\right).
+$$
+As stated above, we have that $F(5,2,4,2,1,2)=(0,0)$. The Jacobian matrix outlined in the implicit function theorem in this case is
+$$
+\mat -1 & \frac{-\alpha_1\beta v^{\beta-1}}{(1+v^\beta)^2} \\
+\frac{-\alpha_2 \gamma u^{\gamma-1}}{(1+u^\gamma)^2} & -1\trix=\mat -1 & -4/5 \\ -2 & -1 \trix.
+$$
+Then determinant of this matrix is non zero, so by the implicit function theorem, there exists open neighborhoods $U$ and $V$ such that we can uniquely solve $F(\alpha_1,\beta,\alpha_2,\gamma,u,v)=0$ for
+$$
+\mat u\\ v \trix = f\left(\mat \alpha_1 \\ \beta \\ \alpha_2 \\ \gamma \trix \right).
+$$
+Then small changes in parameters preserve exactly one equilibrium in this region defined by $U$ and $V$. Also, if we vary the parameters, the equilibrium varies smoothly.
+
+Now we instead consider the the equilibrium $(1,1)$ that results from the parameters $\alpha_1=2$, $\alpha_2=2$, $\beta = 2$, $\gamma =2$. Then the  Jacobian matrix here is 
+$$
+\mat -1 & -1 \\ -1 & -1\trix,
+$$
+and thus we cannot apply the implicit function theorem. This does not mean there is no solution! We simply just cannot apply the theorem. The issue is that varying parameters can spawn new equilibria points near $(1,1)$.
+
+\section{Midterm Review}
+Functions of class $C^1$ are locally Lipschitz!
+
+\ex A function that is locally but not globally Lipschitz:
+$$
+f(x)=x^2.
+$$
+\ex A function that is globally Lipschitz but not differentiable:
+$$
+f(x)=|x|.
+$$
+\ex A function that is differentiable everywhere but does not have a continuous derivative:
+$$
+f(x)=\begin{cases}
+    x^2\sin\left(\frac{1}{x}\right), &x\neq0\\
+    0, &x=0
+\end{cases}
+$$
+\ex A function $f:[0,1]\to\R$ that is Riemann integrable and has infinitely many discontinuities:
+$$
+f(x)=\begin{cases}
+    0, &\mbox{if } x \mbox{ is not in the form } 1/n \mbox{ for } n\in\N\\
+    12, &\mbox{if } x=1/n \mbox{ for some } n\in\N
+\end{cases}
+$$
+\ex A function that does not satisfy the inverse function theorem at $(0,0)$ but has an inverse:
+$$
+f(x)=x^3
+$$
+Or 
+$$
+f\left(\mat x\\y\\x \trix \right)=\mat x^3 \\ y^3 \\ z^3 \trix.
+$$
+
+\note If $f_n:[a,b]\to \R$ are bounded and Riemann integrable and $f_n\to f$ uniformly on $[a,b]$, then $f$ is Riemann integrable on $[a,b]$ and 
+$$
+\lim_{n\to \infty}\int_a^b f_n(x)~dx = \int_a^b \lim_{n\to\infty} f_n(x)~dx
+$$
+Recall that we need uniform convergence to interchange the limit and integral. The example of the moving triangle integral is an example of where the interchange fails. However, for certain pointwise convergent sequences, the limit and integral can be switched, (e.g. $f_n(x)=x^n$ for $x\in[0,1]$).
+
+\note If $f_n\to f$ pointwise and $f_n'\to g$ uniformly, then $f'=g$. An equivalent statement is, with the same conditions,
+$$
+\frac{d}{dx}\left(\lim_{n\to\infty} f_n(x)\right)=\lim_{n\to \infty} \left(\frac{d}{dx}f_n(x)\right)=g(x)
+$$
+Since a sequence of functions can also be a sequence of partial sums, consider the ramifications of this for sums.
+
+\ex A sequence of functions that converges uniformly to a function and whose derivatives converge pointwise and thus the limit of the derivatives is not equal to the derivative of the limit of the functions:
+$$
+f_n(x)=\frac{x^{n+1}}{n+1}, \quad x\in[0,1].
+$$
+You can see that $f_n$ converges uniformly to 0 but the derivatives converge pointwise to
+$$
+f_n'(x)=x^n\to \begin{cases}
+    0, &x\in[0,1)\\
+    1, &x=1
+\end{cases},
+$$
+so cannot interchange limits and derivatives. 
+
+\note Recall that the norm for our linear transformations $T:\R^n\to\R^m$ has been
+$$
+\|T\|=\max_{\|x\|\leq 1}\|Tx\|.
+$$
+The analogous norm for the second derivative (cursed be its name) is
+$$
+\|D^2f(x_0)\|=\max_{\|y\|\leq 1}\|D^2f(x_0)(y)\|=\max_{\|y\|\leq 1}\max_{\|z\|\leq 1}|D^2f(x_0)(y,z)|.
+$$
+\end{document}

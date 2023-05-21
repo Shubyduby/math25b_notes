@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 34: Flux Integrals and the Divergence}\\
+{\large Wednesday, 19 April 2023}\\
+\end{center}
+
+\section{Flux Integrals}
+Suppose a fluid in $\R^3$ has a constant unit density and $F:\R^3\to \R^3$ is velocity field of the fluid. Given a patch of surface $S$, how can we calculate the \textit{mass flux}: the rate of mass flow across $S$ per unit area? To begin, we must orient our surface $S$. We will do this with a unit normal vector $N$. Suppose we parameterize $S$ with the map $r:A\subseteq \R^2\to\R^3$ where $A$ is connected and bounded, and $r$ is $C^1$ regular. We choose a point $(s_0,t_0)\in A$. Since $r$ was a $C^1$ regular parameterization, we have that $r_s(s_0,t_0)$ and $r_t(s_0,t_0)$ are linearly independent. For small $\Delta S$ and $\Delta t$, the vectors $r_s(s_0,t_0)\Delta s$ and $r_t(s_0,t_0)\Delta t$ approximately span a small path of $S$ with total are $\|r_s(s_0,t_0)\times r_t(s_0,t_0)\|\Delta s \Delta t$. The unit vector $N$ that orients the surface will be normal to the surface.
+
+\note Notice that 
+$$
+N=\pm \frac{r_s\times r_t}{\|r_s\times r_t\|}
+$$
+Then the mass flux is calculated as
+$$
+(F\cdot N)\|r_s\cross r_t\|\Delta s \Delta t.
+$$
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn Suppose $S$ is a bounded, connected surface that admits a $C^1$ regular parameterization. Suppose $r:\Omega \subseteq \R^2\to \R^3$ where $\Omega$ is open and connected. Let $F:\R^3 \to \R^3$ be continuous. Assume $S$ oriented such that $r_s\times r_t$ has the same direction as the unit normal $N$. Then the \textit{flux integral} of $F$ across the surface is 
+$$
+\int_S F = \iint_S F\cdot N.
+$$
+\end{mdframed}
+\ex Let $S=\dell B(0,1)$, the sphere of radius 1 centered at the origin in $\R^3$, with orientation of inward pointing normal vectors. Evaluate
+$$
+\int_S F,
+$$
+where
+$$
+F\left(\mat x \\ y \\ z \trix\right)= \mat -x/\rho^2 \\ -y/\rho^2 \\ -z/\rho^2 \trix.
+$$
+We can parameterize $S$ as
+$$
+r(\phi,\theta)=\mat \sin\phi\cos\theta \\ \sin\phi\sin\theta \\ \cos\phi \trix,
+$$
+so
+$$
+r_\phi(\phi,\theta) = \mat \cos\phi \cos\theta \\ \cos\phi \sin \theta \\ -\sin\phi \trix,\quad r_\theta (\phi, \theta)=\mat -\sin\phi\sin\theta \\ \sin\phi\cos\theta \\ 0 \trix .
+$$
+Thus,
+$$
+r_\phi \times r_\theta = \mat \sin^2 \phi \cos\theta \\ \sin^2\phi \sin\theta \\ \cos\phi\sin\phi\trix.
+$$
+Then the surface is oriented outward. At $(\pi/2,0)$, the cross  product is
+$$
+\mat 1\\ 0\\0 \trix,
+$$
+so it is outward. Then we have that
+$$
+\begin{aligned}
+\int_S F& = -\int_S F\cdot N \\
+&=-\int_0^{2\ou} \int_0^\pi F(r(\phi, \theta))\cdot (r_\phi\times r_\theta) \\
+&= etc.
+\end{aligned}
+$$
+
+\section{Divergence Theorem}
+\subsection{Divergence}
+Recall that from the problem set, we defined the divergence of some $C^1$ function $F:\R^2\to \R^2$ as 
+$$
+(\mathrm{div}F)(x_0,y_0) = \frac{\dell F_1}{\dell x}(x_0,y_0)+\frac{\dell F_2}{\dell y}(x_0,y_0)=\lim_{\varepsilon\to 0^+} \frac{1}{\pi\varepsilon^2} \oint_{\dell B_\varepsilon}F\cdot N,
+$$
+where $B_\varepsilon$ is the ball of radius $\varepsilon$ centered at $(x_0,y_0)$, and $N$ is outward unit normal. The divergence represents the outward flow of some fluid of constant unit density. If $F:\R^3\to\R^3$, then
+$$
+(\mathrm{div}F)=\frac{\dell F_1}{\dell x}+\frac{\dell F_2}{\dell y}+\frac{\dell F_3}{\dell z}=\lim_{\varepsilon\to 0^+}\frac{1}{\frac{4}{3}\pi \varepsilon^3}\oint F\cdot N.
+$$
+Sometimes we use the absolute heinous piece of notation
+$$
+\mathrm{Div}F = \nabla\cdot F =\left(\frac{\dell }{\dell x}, \frac{\dell }{\dell y}, \frac{\dell }{\dell z}\right)\cdot (F_1,F_2,F_3)=\frac{\dell F_1}{\dell x} + \frac{\dell F_2}{\dell y} +\frac{\dell F_3}{\dell z}.
+$$
+\ex Consider the vector field $F:\R^2\to\R^2$ defined as
+$$
+\mat x \\ y \trix \mapsto \mat x \\ y \trix.
+$$
+We have that 
+$$
+(\mathrm{Div}F)(x,y)=2.
+$$
+
+\subsection{The Divergence Theorem}
+Wes has about 7 minutes to do all this. Will he make it??
+\begin{shaded}
+\theorem (\textit{Divergence Theorem})(\textit{Two Dimensions}) Let $K\subseteq \R^2$ be a compact and connected set with nonzero area whose boundary $\dell K$ is a Jordan curve that admits a $C^1$ regular parameterization. If $F$ is a $C^1$ vector field on some open set containing $K$ then 
+$$
+\oint_{\partial K} F\cdot N = \iint_K \nabla\cdot F.
+$$
+where $N$ is outward unit normal to $\dell K$.
+\end{shaded}
+
+\begin{proof}
+    We will prove a special case of this when $K$ is a rectangle $[a,b]\times [c,d]$. A parameterization for the left edge is
+    $$
+    \gamma_\mathrm{left}(t)=\mat a \\ t\trix\implies \gamma'_\mathrm{left}\mat 0 \\ 1 \trix,\quad c\leq t \leq d.
+    $$
+    Then $N_\mathrm{left}=\mat -1 \\ 0 \trix$. So we have
+    $$
+    \begin{aligned}
+    \int_\mathrm{left} F\cdot N &= \int_c^d F(\gamma_\mathrm{left}(t))\cdot \mat -1 \\ 0 \trix \|\gamma_\mathrm{left}'(t)\|~\dt \\
+    &=\int_c^d F_1(a,t)~dt.
+    \end{aligned}
+    $$
+    Analogously,
+    $$
+    \begin{aligned}
+    \int_\mathrm{right}F\cdot N &= \int_c^d F_1(b,t)~dt\\
+    \int_\mathrm{top} F\cdot N&=\int_a^b F_2 (s,d)~ds\\
+    \int_\mathrm{bottom} F\cdot N &= -\int_a^b F_2(s,c)~ds.
+    \end{aligned}
+    $$
+    So we have that 
+    $$
+    \begin{aligned}
+        \oint_{\dell K} F\cdot N &= \int_c^d F_1(b,t)-F_1(a,t)~dt + \inta^b F_2(s,d)-F_2(s,c)~ds\\
+        &=\int_c^d\int_a^b \frac{\dell F_1}{\dell s}~ds\,dt + \int_a^b\int_c^d \frac{\dell F_2}{\dell t}~dt\,ds,
+    \end{aligned}
+    $$
+    and Fubini completes our proof.
+\end{proof}
+\end{document}

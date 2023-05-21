@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 32: Line Integrals and Associated Theorems}\\
+{\large Friday, 14 April 2023}\\
+\end{center}
+\section{Line Integrals}
+\subsection{Scalar-Valued Line Integrals}
+We now study the integrals of curves, particular $C^1$ regular curves. If $\gamma:[a,b]\to \R^n$ is $C^1$ on some open set containing $[a,b]$ and $\gamma'(t)\neq 0$ for all $t\in[a,b]$, then we have that
+\begin{enumerate}
+    \item The length of $C = \gamma([a,b])$ is finite. In particular, 
+    $$
+    \int_a^b \|\gamma' (t)\|~dt
+    $$
+    exists because $\|\gamma'\|$ is a continuous function and $[a,b]$ is bounded.
+    \item The condition $\gamma'(t)\neq 0$ guards against differentiable curves that fail to be regular.
+\end{enumerate}
+For curves that satisfy the conditions above, we can define a line integral. These apply to both scalar and vector-valued functions. 
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn Let $f:\Omega\subseteq \R^n\to \R$ be continuous on the open set $\Omega$. Let $C$ be a curve contained in $\Omega$ that admits a $C^1$ regular parameteization $\gamma:[a,b]\to \Omega$. The \textit{line integral} $\int_C f~dt$ is defined as 
+$$
+\int_a^b f(\gamma(t))\|\gamma'(t)\|~dt.
+$$
+\end{mdframed}
+\note This is actually independent of which $C^1$ regular parameterization is used.
+
+A nice interpretation of this: If $f(x)$ represent a density at point $x$, then the line integral $\int_C f~ds$ represents the mass of the 1-dimensional wire formed by the curve.
+
+\subsection{Vector-Valued Line Integrals}
+Again, let some curve $C$ be a $C^1$ regular curve in $\R^n$. We now can defined a vector-valued line integral.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn A curve $\gamma:[a,b]\to \Omega$ is \textit{oriented} if it starts at $\gamma(a)$ and ends at $\gamma(b)$.
+
+\defn If $F:\Omega\subseteq \R^n\to \R^m$ is continuous on the open set $\Omega$ and $C$ is an oriented curve contained in $\Omega$ that admits a $C^1$ regular parameterization $\gamma:[a,b]\to \Omega$ then the \textit{line integral} denoted as $\int_C F~dt$ is defined as 
+$$
+\int_a^b \langle F(\gamma(t)),\gamma'(t)\rangle ~dt.
+$$
+\end{mdframed}
+\note Like the scalar valued line integral, the value of the integral is \textit{independent} of which $C^1$ regular parameterization is being used for the curve.
+
+\ex Consider the function $F:\R^2\to \R^2$ defined by
+$$
+\mat x\\y\trix \mapsto \mat -y \\ x \trix
+$$
+and let $C$ be the line segment going from $(0,0)$ to $(-3,4)$. Evaluate
+$$
+\int_C F~ds.
+$$
+
+\textit{Solution:} One parametrization for he line segment $C$ we can use is
+$$
+\gamma(t)=\mat -3t \\ 4t \trix \implies \gamma'(t) = \mat -3 \\ 4 \trix.
+$$
+Then we have the composition
+$$
+F(\gamma(t)) =\mat -4t \\ 3t \trix.
+$$
+Then we evaluate the integral
+$$
+\begin{aligned}
+\int_C F~ds = \int_0^1 \left\langle \mat -4t\\ -3t \trix, \mat -3 \\ 4 \trix \right\rangle ~dt= \int_0^1 0 ~dt=0.
+\end{aligned}
+$$
+
+Compare this to if we have evaluated the line integral going along some new curve $\xi$ from $(0,0)$ to $(-3,4)$. In this case, let it be the curve parameterized by 
+$$
+\eta(t)=\mat 3\cos(t) - 3 \\ 4\sin(t) \trix, \quad t\in [0,\pi/2]. 
+$$
+Then we have that
+$$
+\begin{aligned}
+\int_\xi F~ds &= \int_0^{\pi/2} \left\langle \mat -4\sin (t) \\ 3\cos(t)-3 \trix, \mat -3\sin t \\ 4\cos t \trix \right\rangle~dt \\
+&=\int_0^{2/\pi} 12\sin^2 t +12\cos^2t -12\cos t ~dt \\
+&= \left. 12t - 12\sin t \right|_0^{\pi/2}\\
+&= 12\left(\frac{\pi}{2}-1\right)\neq 0.
+\end{aligned}
+$$
+\note It is quite common to work with \say{natural} parameterization. For example, we often like ot parameterize by arc length:
+$$
+r(t) = \int_a^t \|\gamma(\tau)\|~d\tau.
+$$
+
+\note If $-C$ is the same curve as some curve $C$ but with opposite orientation, then
+$$
+\int_{-C} F~ds = -\int_C F~ds.
+$$
+\note Changing the path $C$ can change $\int_C F~ds$ (e.g. in Example 1). However, this is not always the case, in particular, when the integral is path-independent. 
+\section{Properties of Vector Fields}
+
+In the spirit of Note 5, we want to know when integrals are path independent.
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+
+\defn A vector field $F:\Omega\subseteq \R^n\to\R^n$, where $\Omega$ is open, is called \textit{conservative} if there exists a $C^1$ function $f:\Omega\subseteq \R^n\to \R$ such that $F=\nabla f$ on $\Omega$. Such  function $f$ is called a \textit{potential function} for $F$.
+
+\end{mdframed}
+
+\ex Is the function $F:\R^2\to \R^2$ defined as
+$$
+F\left(\mat x\\y \trix\right) = \mat -y \\ x \trix 
+$$
+conservative?
+
+\textit{Solution:} If there exists some $C^1$ function $f:\R^2\to \R$ such that $F=\nabla f$, then we have that
+$$
+\frac{\dell f}{\dell x}=-y,\quad \frac{\dell f}{\dell y}=x.
+$$
+However, notice that 
+$$
+\frac{\dell^2 f}{\dell y\dell x}=-1 \quad \frac{\dell^2 f}{\dell x \dell y} = 1,
+$$
+which cannot happen by Clairaut's theorem. Then there exists no such potential function for $F$ and thus $F$ is not conservative.
+
+\prop If $F:\Omega\subseteq \R^2\to \R^2$ is of class $C^1$ and $F$ is conservative, then
+$$
+\frac{\dell F_1}{\dell y}=\frac{\dell F_2}{\dell x}.
+$$
+\begin{proof}
+    The proof follows directly from Clairaut's theorem.
+\end{proof}
+
+\note The proposition only goes in \textit{one} direction.
+
+\ex Then vector field
+$$
+F\left(\mat x \\ y \trix\right)=\frac{1}{x^2+y^2}\mat -y \\ x \trix 
+$$
+defined over $\R^2\bslash\{0\}$ is not conservative even though $\dell F_1/\dell x = \dell F_2/\dell y$.
+
+\prop Let $F:\Omega\subseteq \R^n \to \R^n$ have a $C^1$ potential function $f:\Omega\subseteq\R^n \to \R$. Then given any points $A,B\in \Omega$ and any oriented $C^1$ regular curve in $\Omega$ from $A$ to $B$, we have that
+$$
+\int_C F~ds = f(B)=f(A).
+$$
+
+\begin{proof}
+    Let $\gamma:[a,b]\to \Omega$ parameterize the curve $C$, $\gamma(a)=A$, and $\gamma(b)=B$. Then , by the cahin rule, we have that
+    $$
+    \begin{aligned}
+        \int_C F~ds &= \int_a^b \langle F(\gamma(t)),\gamma'(t)\rangle ~dt\\
+        &= \int_a^b \langle \nabla f(\gamma(t)),\gamma'(t)\rangle ~dt\\
+        &= \int_a^b \frac{d}{dt}[f(\gamma(t))]~dt\\
+        &= f(\gamma(b))-f(\gamma(a))\\
+        &= f(B)-f(A).
+    \end{aligned}
+    $$
+\end{proof}
+\note If $F$ has a potential function on an open set $\Omega$, this result still if holds if $C$ is continuous and only piecewise $C^1$ regular. This is helpful for polygonal paths.
+
+\note If $F$ is conservative, $\int_C F~ds$ has \textit{independence of path}.
+
+\textit{Corollary:} If $F$ is conservative and $C$ is a curve that is $C^1$, regular, closed, and simple, then
+$$
+\oint_C F~ds=0
+$$
+because $A=B$ so $f(A)-f(B)=0$.
+
+\section{Towards Green's Theorem}
+
+Recall now that a simple, closed and continuous curve in $\R^2$ is called a Jordan curve. Then if $\gamma:[0,1]\to\R^2$ is a Jordan curve, we have that $\gamma(0)=\gamma(1)$ and $\gamma|_{[0,1]}$ is injective (excluding endpoints).
+
+\begin{shaded}
+\theorem (\textit{Jordan Curve Theorem}) If $C$ is a Jordan curve in $\R^2$ then $\R^2\bslash C$ consists of exactly 2 connected components.
+\end{shaded}
+\begin{proof}
+    (\textit{Proof by it's obvious}) It's obvious. Thing inside, thing outside,
+\end{proof}
+
+Jokes aside, this is difficult to formally prove.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn Let $C$ be an oriented Jordan curve in $\R^2$ with parameterization $\gamma:[a,b] \to \R^2$. We say that $C$ is \textit{positively oriented} if the interior component of $\R^2\bslash C$  is always left of $\gamma(t)$ as we follow $C$ in the direction of increasing $t$.
+
+\end{mdframed}
+\end{document}

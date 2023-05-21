@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 25: Maxima, Minima, Optimization}\\
+{\large Wednesday, 29 March 2023}\\
+\end{center}
+
+Recall these facts about optimization:
+\begin{enumerate}
+    \item A real-valued function $f$ has a local maximum at a point $x_0$ in its domain if there exists an open neighborhood $\Omega$ of $x_0$ such that $x\in\Omega$ is in the domain of $f$, then $f(x)\leq f(x_0)$.
+    \item If $f:(a,b)\to\R$ is differentiable at $f$ has a local extremum at $c\in(a,b)$, then $f'(c)=0$. 
+    \item The extreme value theorem: if $f:[a,b]\to\R$ is continuous, then $f$ achieves an absolute maximum and minimum somewhere on $[a,b]$. We search for these at critical points or endpoints.
+\end{enumerate}
+But what do we mean by critical points?
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+
+\defn Let $f:\Omega\subseteq \R^n\to \R$, where $\Omega$ is open. A \textit{critical point} of $f$ is a point $x_0\in\Omega$ such that either $\nabla f(x_0)=0$ or $\nabla f(x_0)$ does not exist.
+
+\end{mdframed}
+
+\prop Let $f:\Omega\subseteq \R^n\to\R$ with $\Omega$ open be differentiable and assume $f$ has a local extremum some $x_0\in \Omega$. Then $\nabla f(x_0)=0$.
+
+\begin{proof}
+    Let $f$ achieve a local maximum at $x_0$, and assume for the sake of contradiction that $\nabla f(x_0)\neq 0$. Now let $\varepsilon=\|\nabla f(x_0)\|/2>0$. Let $\delta>0$ such that $B(x_0,\delta)\subseteq \Omega$, which we can find since $\Omega$ is open, and $\|x-x_0\|<\delta$ implies that $\|f(x)-f(x_0)-\nabla f(x_0)(x-x_0)\|\leq \varepsilon\|x-x_0\|$, which exists as well since $f$ is differentiable. In particular, let the unit vector $u=\nabla f(x_0)/\|\nabla f(x_0)\|$ and consider $x=x_0+hu$ with $|h|<\delta$. Since $|h|<\delta$, we have that
+    $$
+    |f(x_0+hu)-f(x_0)-\nabla f(x_0)\cdot (hu)|\leq \varepsilon|h|
+    $$
+    So 
+    $$
+    |f(x_0+hu)-f(x_0)-\|\nabla f(x_0)\| h|\leq \varepsilon|h|.
+    $$
+    In particular, 
+    $$
+    -\varepsilon|h|\leq f(x_0+hu)-f(x_0)-\|\nabla f(x_0)\|h.
+    $$
+    If $0<h<\delta$,
+    $$
+    -\varepsilon h\leq f(x_0+hu)-f(x_0)-\|\nabla f(x_0)\|h,
+    $$
+    so by how $\varepsilon$ is defined we have that
+    $$
+    f(x_0+hu)\geq f(x_0)+\frac{1}{2}\|\nabla f(x_0)\|h,
+    $$
+    so $f(x_0)$ is not a local maximum, a contradiction \mbox{\lightning}.
+    
+\end{proof}
+
+\section{Extreme Value Theorem}
+
+If $f:K\subseteq \R^n\to \R$, where $K$ is compact, is continuous, the extreme value theorem applies. Absolute extrema then are achieved on $\dell K$ or on a critical point of $\mathrm{int}(K)$. 
+
+\ex Consider the function $f:\R^2\to \R$ defined as $z\mapsto \|z\|$. Restrict the domain to the ellipse
+$$
+K=\left\{(x,y)\in \R^2:\frac{x^2}{4}+\frac{y^2}{9}\leq 1\right\}.
+$$
+
+Note that the function $f$ is continuous because for any $z_1,z_2\in K$, we have
+$$
+|f(z_1)-f(z_2)|=|\|z_1\|-\|z_2\||\leq \|z_1-z_2\|.
+$$
+Let us find the critical points. We have
+$$
+f(x,y)=\sqrt{x^2+y^2}\implies \frac{\dell f}{\dell x}=\frac{2x}{2\sqrt{x^2+y^2}}.
+$$
+When we do the same the the partial derivative with respect to $y$, we find that the only possible critical point is at $(0,0)$. At the origin,
+$$
+\lim_{h\to 0} \frac{f(h,0)-f(0,0)}{h}=\lim_{h\to 0} \frac{|h|}{h},
+$$
+so $\nabla f(0,0)$ does not exist and thus $f$ is not differentiable at $(0,0)$. Then $(0,0)$ is the only critical point. We know $f(0,0)=0$.
+
+Now we scan the boundary. We can begin by parameterizing the boundary:
+$$
+\gamma(t)=\mat 2\cos t \\ 3\sin t \trix.
+$$
+Then we optimize $f(\gamma(t))$ with our familiar single variable optimization.
+
+\note Critical points are not always maxima of minima! You will often run into critical points that do now yield optimized points.
+
+\ex The function $f:\R\to\R$ defined as $f(x)=x^3$ has a critical point at $x=0$ but that is evidently not an extremum.
+
+\ex Consider the function $f:\R^2\to\R$ defined as $f(x,y)=x^2-y^2$ (visualize this funciton, it looks something like a saddle). The gradient is $\nabla f(x,y)=\mat 2x &-2y\trix$ so we have a critical point at $(0,0)$. But it is not an extremum, it is a \textit{saddle point} since every open neighborhood of $(0,0)$ contains points $(x_1,y_1)$ with $f(x_1,y_1)>f(0,0)$ and $(x_2,y_2)$ wit $f(x_2,y_2)<(0,0)$. 
+
+\section{Second Derivative Test}
+To do optimization, we want to generalize the second derivative test. Recall that the second derivative test from $\R\to\R$ was that if $f\in C^2(a,b)$, $f:(a,b)\to \R$, $f'(x_0)=0$, and $f''(x_0)>0$, then $f$ as a local minimum at $x_0$. This requires the use of bilinear forms.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+
+\defn A bilinear form $B:\R^n\times\R^n\to \R$ is called \textit{positive definite} if $B(x,x)\geq 0$ for all $x\in \R^n$ with equality if and only if $x=0$.
+
+\defn A bilinear form is \textit{positive semidefinite} if $B(x,x)\geq 0$ for all $x\in\R^n$
+
+\end{mdframed}
+
+\note Since $B(y,z)=y^T Mz$ where $M_{ij}=B(e_i,e_j)$, we will say that a matrix $M$ is \textit{positive definite} if $x^TMx >0$ for all $x\in\R^n\bslash\{0\}$.
+
+\prop (\textit{Second Derivative Test}) Let $f:\Omega\subseteq \R^n\to\R$ where $\Omega$ is open be of class $C^2$. Suppose $f$ has a critical point at $x_0\in\Omega$. If the bilinear form $D^2f(x_0)$ is positive definite, then $f$ has a local minimum at $x_0$. 
+
+\begin{proof}
+    Our goal here is to show that there exists some $\delta>0$ such that $B(x_0,\delta)\subseteq \Omega$ and if $\|x-x_0\|<\delta$ then $f(x)\geq f(x_0)$. Like the earlier proof today, we will single out a special direction in $\R^n$. Since $D^2f(x_0)(x,x)>0$ for all $x\in\R^n\bslash\{0\}$, this inequality is true for unit vectors $u\in\R^n$. Let 
+    $$
+    S^{n-1}=\{u\in\R^n:\|u\|=1\}.
+    $$
+    This sphere is compact and $D^2f$ is continuous since $f$ is of class $C^2$, so the map defined as $u\mapsto D^2f(x_0)(u,u)$ is continuous and real valued. By the extreme value theorem, there exists a $u^*\in S^{n-1}$ such that $\varepsilon=D^2f(x_0)(u^*,u^*)$ is minimal. Note that $\varepsilon>0$. So we look at the value of $D^2f(x_0)(x,x)$ for $x\neq 0$. We know $x=x/\|x\|\cdot\|x\|$, so
+    \begin{equation}
+    D^2f(x_0)(x,x)=\|x\|^2 D^2f(x_0)\underbrace{\left(\frac{x}{\|x\|},\frac{x}{\|x\|}\right)}_{\mbox{unit vectors}}\geq \varepsilon\|x\|^2.
+    \end{equation}
+    We are almost ready to apply Taylor-Lagrange! Since $\Omega$ is open and $D^2f$ is continuous, we can choose a $\delta>0$ such that $\|x-x_0\|<\delta$ implies 
+    \begin{equation}
+    \|D^2f(x)-D^2f(x_0)\|<\varepsilon/2
+    \end{equation}
+    and $B(x_0,\delta)\subseteq\Omega$. The convexity of the ball allows us to apply Taylor-Lagrange:
+    $$
+    f(x)=f(x_0)+\underbrace{\nabla f(x_0)(x-x_0)}_{=0}+\frac{1}{2}Df^2(c)(x-x_0,x-x_0)
+    $$
+    for some $c$ on the line segment connection $x$ to $x_0$. By inequalities (1) and (2), we have that
+    \begin{align*}
+        D^2(c)(x-x_0,x-x_0) & = D^2f(c)(x-x_0,x-x_0)\\
+        &\quad-D^2f(x_0)(x-x_0,x-x_0)+D^2f(x_0)(x-x_0,x-x_0)\\
+        &= D^2f(x_0)(x-x_0,x-x_0)\\
+        &\quad - (D^2(x_0)(x-x_0,x-x_0) - D^2(c)(x-x_0,x-x_0))\\
+        &\geq D^2f(x_0)(x-x_0,x-x_0)\\
+        &\quad - \|D^2f(x_0)(x-x_0,x-x_0)-D^2(c)(x-x_0,x-x_0)\|\\
+        &\geq \varepsilon\|x-x_0\|^2-\frac{\varepsilon}{2}\|x-x_0\|^2\\
+        &=\frac{\varepsilon}{2}\|x-x_0\|^2.
+    \end{align*}
+    Thus,
+    $$
+    f(x)\geq f(x_0)+\frac{\varepsilon}{4}\|x-x_0\|^2,
+    $$
+    so $f$ has a strict local minimum at $x_0$.
+\end{proof}
+\end{document}

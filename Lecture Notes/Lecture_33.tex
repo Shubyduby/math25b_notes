@@ -1,0 +1,189 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 32: Line Integrals Concluded, Surface Integrals}\\
+{\large Monday, 17 April 2023}\\
+\end{center}
+
+\section{Green's Theorem}
+
+We now conclude our study of line integrals with Green's Theorem.
+
+\begin{shaded}
+\theorem (\textit{Green}) Let $F:\Omega\subseteq \R^2\to \R^2$ be of class $C^1$ on the open set $\Omega$. Let $\Gamma$ be a piecewise $C^1$ regular Jordan curve contained in $\Omega$ and let $D$ be the region consisting of $\Gamma$ and the enclosed by $\Gamma$. If $D\subseteq \Omega$ and $\Gamma$ is positively oriented, then 
+$$
+\oint_\Gamma F = \iint_D \frac{\dell F_2}{\dell x} -\frac{\dell F_1}{\dell y}.
+$$
+\end{shaded}
+
+\begin{proof}
+    For homework, we will prove the case where $D$ is a rectangle.
+\end{proof}
+
+\ex Let $F:\R^2\to\R^2$ be defined as
+$$
+F\left(\mat x \\ y \trix\right) = \mat 1 & 1 \\ -1 & 1 \trix \mat x \\ y \trix = \mat x + y \\ -x + y \trix
+$$
+and let $\Gamma$ be the unit circle, positively oriented. Evaluate
+$$
+\oint_\Gamma F.
+$$
+
+\textit{Solution:} We begin by parameterizing $\Gamma$ as $\gamma(t) = \mat\cos t \\ \sin t \trix$ for $0\leq t\leq 2\pi$. Then we have that
+$$
+\begin{aligned}
+    \oint_\Gamma F &= \int_0^{2\pi} \langle F(\gamma(t)). \gamma'(t) \rangle ~dt \\
+                &= \int_0^{2\pi} \left\langle \mat \cos t + \sin t \\ -\cos t + \sin t \trix , \mat -\sin t \\ \cos t \trix \right\rangle ~dt\\
+                &=\int_0^{2\pi} -\sint^2 t - \cos^2 t~dt\\
+                &=\int_0^{2\pi} -1~dt\\
+                &=-2\pi.
+\end{aligned}
+$$
+However, we also have that since $D=\overline{B(0,1)}$, we can evaluate the integral as
+$$
+\iint_D \frac{\dell F_2}{\dell x} - \frac{\dell F_1}{\dell y}= \iint_D -1-1 = -2(\mbox{area of } D) = -2\pi.
+$$
+
+\note Sometimes the expression 
+$$
+\frac{\dell F_2}{\dell x}-\frac{\dell F_1}{\dell y}
+$$
+is sometimes called the \textit{2-D curl} or \textit{rotation} of $F$, as it is a numerical indication of counterclockwise flow.
+
+\section{Surface Integrals}
+\subsection{Manifolds}
+We will begin our discussion of surfaces with an informal definition of a surface and manifold.
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn An \textit{n-manifold} $\Sigma$ is an object for which each point on $\Sigma$ has a neighborhood (on the surface) that is homeomorphic to $\R^n$.
+\end{mdframed}
+\ex The unit circle in $\R^2$, that is, $S^1=\{(x,y)\in\R^2: x^2+y^2=1\}$ is a $1$-manifold.
+
+Suppose $|x_0|<1$. We can pick an $\varepsilon>0$ such that $(x_0-\varepsilon,x_0+\varepsilon)\subseteq (-1,1)$. First, we project the interval onto the $x$-axis with the map $\pi$:
+$$
+\left(x_0,\sqrt{1-x_0^2}\right) \overset{\pi}{\mapsto} (x_0,0).
+$$
+This is a continuous bijection with a continuous inverse. Second, we translate this interval sideways with the map $\tau$: 
+$$
+(x_0-\varepsilon, x_0+\varepsilon)\overset{\tau}{\mapsto} (-\varepsilon,\varepsilon).
+$$
+The map $\tau$ is also a continuous bijection with a continuous inverse. Third and finally, let the bijection $f:(-\varepsilon,\varepsilon)\to \R$ be defined as 
+$$
+f(x)=\frac{x}{\varepsilon^2 -x^2}.
+$$
+
+Then we have that the composition 
+$$
+f\circ \tau \circ \pi
+$$
+is a homoemorphism, and thus $S^1$ is a $1$-manifold.
+
+\subsection{The Cross Product in $\R^3$}
+We will focus on 2-manifolds, surfaces in $\R^3$.
+\ex If $T:\R^2\to\R^3$ is a linear transformation, then the image $T(\R^2)$ is a 2-manifold if and only if rank$(T)=2$.
+
+Now, consider a surface $S$ in $\R^3$ parameterized by $r:A\subseteq \R^2\to \R^3$, where $A$ is connected an open. We need to extend the idea of a $C^1$ regular parameterization to surfaces. Then consider the grid curves of $r$. Let $(s_0,t_0)\in A$. Consider the curves $C_{s_0}(t) = r(s_0,t)$ and $C_{t_0}(s)=r(s,t_0)$ defined for $(s,t)$ near $(s_0,t_0)$. We have that $C_{s_0}'(t_0)$ is tangent to the its grid lines as is $C_{t_0}'(s_0)$ to its own. We would like $C_{s_0}'(t_0)$ and $C_{t_0}'(s_0)$ to be linearly independent, that way, locally near $r(s_0,t_0)$, we a get a well defined tangent plane
+$$
+r(s_0,t_0)+rC_{t_0}'(s_0)+tC_{s_0}'(t_0).
+$$
+
+In preparations for surface integrals, we ask the question: how can we estimate the area or the image of a small rectangle $[s_0,s_0+\Delta s]\times [t_0, t_0 + \Delta t]$ under a $C^1$ regular parameterization $r$ or a surface?
+
+We first start with an aside on cross products.
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn Given two vectors $u,v\in\R^3$, the \textit{cross product} of $u$ and $v$is the vector
+$$
+u\times v = \mat u_2v_3 - u_3v_2\\  u_3v_1 - u_1v_3 \\ u_1v_2 - u_2v_1 \trix.
+$$
+\end{mdframed}
+Some properties:
+\begin{enumerate}
+    \item The cross products of two vectors $u\times v$ is orthogonal to both $u$ and $V$ using the standard Euclidean norm.
+    \item $u\times v = -(v\times u)$.
+    \item $\|u\times v\| = \|u\| \|v\|\sin\theta$, where $\theta\in [0,\pi]$ is the angle between $u$ and $v$. This is also the same thing as the area of the parallelogram formed by $u$ and $v$.
+\end{enumerate}
+
+\subsection{Surface Integrals}
+We now answer the question we asked earlier. Instead of writing $C_{s_0}' (t)$ and $C_{t_0}'(s)$, we can write
+$$
+r_s(s,t) = \mat \dell r_1 / \dell s \\ \dell r_2 / \dell s \\ \dell r_3 / \dell s\trix ,\quad 
+r_t(s,t) = \mat \dell r_1 / \dell t \\ \dell r_2 / \dell t \\ \dell r_3 / \dell t\trix ,
+$$
+where all partials are evaluated at $(s,t)$. Notice that these partials are just the columns of the Jacobin for $Dr(s,t)$. Now consider the linear approximation of the function near $(s_0,t_0)$:
+\begin{align*}
+    r(s_0+\Delta s ,t_0)&\approx r(s_0,t_0) + r_s(s_0,t_0)\Delta s\\
+    r(s_0 ,t_0+\Delta t)&\approx r(s_0,t_0) + r_t(s_0,t_0)\Delta t.
+\end{align*}
+Then the are of the image of a rectangle under $r$ is approximately
+$$
+\|r_s(s_0,t_0)\Delta s \cross r_t(s_0,t_0)\Delta t \| = \|r_s\times r_t\|\Delta s \Delta t.
+$$
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn Assume $\Omega\subseteq \R^2$ is open, connected, and bounded. Let $S$ be the image of $\Omega$ under a $C^1$ regular parameterization $r:\Omega\to \R^3$. Assume $S$ is bounded. Now, let $f$ be continuous, bounded, and real valued on $\overline{ r(\Omega)}$. Then the we define the \textit{surface integral} $\int_S f$ as
+$$
+\iint_\Omega f(r(s,t)) \|r_s\times r_t\|.
+$$
+In particular, $\int_S 1$ is a surface area.
+\end{mdframed}
+\end{document}

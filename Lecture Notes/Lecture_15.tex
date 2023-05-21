@@ -1,0 +1,146 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 15: Convergence of Functions}\\
+{\large Monday, 27 February 2023}\\
+\end{center}
+
+\section{Continuity and Uniform Convergence}
+\prop Let $f_k:A\subseteq M\to P$ where $(M,d_M)$ and $(P,d_P)$ are metric spaces, and each $f_k$ is continuous. If $f_k$ converges to $f$ uniformly, then $f:A\subseteq M\to P$ is continuous as well.
+\begin{proof}
+    Let $\varepsilon>0$ be given. Pick some point $x_0\in A$ and we shall demonstrate that $f$ is continuous at $x_0$. Since $\{f_k\}\to f$ uniformly, there exists an $N\in \N$ such that $d_P(f_N(x),f(x))<\varepsilon/3$ for all $x\in A$. By the continuity of $f_N$, there exists a $\delta>0$ such that if $x\in A$ and $d_N(x_0,x)<\delta$, then $d_P(f_N(x_0),f_N(x))<\varepsilon/3$. Finally, if $x\in A$ and $d_M(x_0,x)<\delta$, then
+    \begin{align*}
+        d_P(f(x),f(x_0))&\leq d_P(f(x),f_N(x))+d_P(f_N(x),f_N(x_0))+d_P(f_N(x_0),f(x_0))\\
+        &<\frac{\varepsilon}{3}+\frac{\varepsilon}{3}+\frac{\varepsilon}{3}=\varepsilon.
+    \end{align*}
+\end{proof}
+\section{Pointwise Convergence}
+We now bring our attention to functions defined in terms of series. 
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn Let $f:A\to N$, where $N$ is a normed vector space over $\R$. We say that $\sum_{k=1}^n f_k$ converges \textit{pointwise} to $f:A\to N$ if the sequence of partial sums $S_n=\sum_{k=1}^{n}f_k$ converges pointwise to $f$.
+\end{mdframed}
+
+\ex Consider the sum
+$$
+\sum_{k=1}^\infty (-1)^kx^{2k},
+$$
+for $x\in(-1,1)$. Let the sequence of functions $f_k:(-1,1)\to \R$ be defined as $f_k(x)=(-1)^k x^{2k}$. By the ratio test, the series converges over its domain. The partial sums of this series will be
+$$
+S_n(x)=1-x^2+x^4\cdots+(-1)^{n-1}x^{2n-2}=\frac{1+(-1)^{n-1}x^{2n}}{1+x^2}.
+$$
+If $x\in(-1,1)$, then the functions converge pointwise to 
+$$
+f(x)=\frac{1}{1+x^2}.
+$$
+Notice also that 
+$$
+|S_n(x)-f(x)|=\frac{x^{2n}}{1+x^2}\leq x^{2n}\to 0,
+$$
+when $x\in(-1,1)$. However, the convergence is not uniform.
+
+\section{The Weierstrass M-Test}
+\prop Let $f_k:A\to N$, where $(N,d_N)$ is a complete metric space. Then the sequence $\{f_k\}$ converges uniformly to some function $f$ on the domain $A$ if and only if $\{f_k\}$ satisfies the Cauchy criterion. The Cauchy criterion is achieved if for all $\varepsilon>0$, there exists a $C\in\N$ such that whenever $m,n\geq C$, then $d_N(f_m(x),f_n(x))<\varepsilon$ for all $x\in A$.
+
+We are not proving this now but we will use it to prove the Weierstrass M-test. This result allows us to prove results regarding uniform convergence \textit{without} referencing what a limit function is.
+
+\prop (\textit{Weierstrass M-Test}) Let $N$ be a complete, normed vector space and $g_k:A\to N$ such that there exist constants $M_k$ with $\|g_k(x)\|\leq M_k$ for all $x\in A$. If $\sum_{k=1}^\infty M_k$ converges, then $\sum_{k=1}^\infty g_k$ absolutely and uniformly converges on $A$ (using the metric produced by the norm on $N$),
+
+\begin{proof}
+    Since $\sum_{k=1}^n M_k$ converges, the sequence of partial sums $\sigma_n = \sum_{k=1}^n M_k$ converges which implies that $\{\sigma_n\}$ is Cauchy in $\R$. Now, let $\varepsilon>0$ be given and choose some $N\in \N$ such that if $m,n\geq \N$ we have $|\sigma_m-\sigma_n|<\varepsilon$. Let $S_n=\sum_{k=1}^\infty g_k$. We want to show that $\{S_n\}$ satisfies the Cauchy criterion. Pick some $m,n\in \N$ and, without loss of generality, $m=n+p$ where $p\in \N\cup\{0\}$. Then
+    \begin{align*}
+        \|S_m(x)-S_n(x)\|&=\|g_{n+p}(x)+\cdots+g_{n+1}(x)\|\\
+        &\leq \|g_{n+p}(x)\|+\cdots+\|g_{n+1}(x)\|\\
+        &\leq M_{n+p}+\cdots+M_{n+1}<\varepsilon
+    \end{align*}
+    For all $x\in A$. By the proposition then, $\{S_n\}$ converges uniformly.
+\end{proof}
+\ex Consider the sum
+$$
+\sum_{k=0}^\infty \frac{x^k}{k!}.
+$$
+This function converges absolutely and uniformly on each compact set. Pick any $x_0\in \R$ and let 
+$$
+I=\left[-2|x_0|,2|x_0|+1\right].
+$$
+Note that $g_k(x)=x^k/k!$ is continuous on $I$. So is $\sum_{k=1}^n g_k(x)$. On $I$, note that 
+$$
+\|g_k(x)\|\leq M_k = \frac{2|x_0|+1}{k!}.
+$$
+Applying the Weierstrass M-test,
+$$
+\sum_{k=0}^\infty \frac{(2|x_0|+1)^k}{k!}
+$$
+converges by the ratio test. We have that
+$$
+\frac{2|x_0|+1}{k+1}\to e
+$$
+so $\sum_{k=0}^\infty g_k$ converges absolutely and uniformly on $I$. Since each partial sum is continuous and convergent, we have that the function is uniform and continuous.
+
+\note Be careful when interchanging a limit with anything! A sum, derivative, integral, etc. 
+
+\ex Let $f_k:A\subseteq M\to N$, where $M$ and $N$ are metric spaces. Suppose each $f_k$ is continuous and $\sum_{k=1}^\infty f_k$ converges uniformly to $f$ on $A$. You may do the following
+\begin{align*}
+    \lim_{x\to x_0} \sum_{k=1}^\infty f_k(x)=\sum_{k=1}^\infty \lim_{x\to x_0} f_k(x)=\sum_{k=1}^\infty f_k(x_0)=f(x_0)
+\end{align*}
+since the function is continuous.
+
+Now consider $f_k:[a,b]\to \R$, an integrable function, along with $f:[a,b]\to \R$, also integrable. Let $f_k$ converge to $f$ pointwise. Then
+$$
+\lim_{k\to\infty}\int_a^b f_k(x)dx = \int_a^b\lim_{k\to \infty} f_k(x)=\int_a^b f(x)dx.
+$$
+is ONLY VALID when convergence is uniform!!!
+\end{document}

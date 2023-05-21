@@ -1,0 +1,140 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 1: The Real Numbers, Sequences, Convergence, and Completeness}\\
+{\large Monday, 23 January 2023}\\
+
+\end{center}
+\section{Introduction to the Class}
+\subsection{Course Goals}
+\begin{enumerate}
+    \item Rigorous intro to the underpinning of calculus, including multivariate.
+    \item Build stamina for longer proofs.
+    \item Become independent in reading technical mathematics.
+\end{enumerate}
+\textit{Question:} How do we begin?
+
+\section{Entry Points: Why $\R$?}
+\subsection{Approaches to $\R$}
+We begin with another question: what should be axiomatic?  Why develop a calculus for functions that are real-valued ($\R\to\R$) as opposed to functions over the rational numbers ($\mathbb{Q}\to\mathbb{Q}$)? One approach is to build the number system from the ground up.
+
+\ex Let us build the natural numbers. We can take as axiomatic the existence of the empty set $\emptyset$. We identify this with 0. Then we define a successor function $S(n)=n\cup \{n\}$. Then we have
+$$
+S(0)=\emptyset \cup \{\emptyset\} = \{\emptyset\}.
+$$
+We will idenitify this set with 1 and define 1 then as the cardinality of this set. Then we have
+$$
+S(1)=\{\emptyset\}\cup \{\{\emptyset\}\} =\{\emptyset,\{\emptyset\}\}.
+$$
+We will define 2 as the cardinality of this set. So on and so forth. Now to define a function $f:\mathbb{N}\times\mathbb{N}\to \mathbb{N}$ that constitutes addition...
+
+Notice that this takes quite a bit of time and seems more appropriate for a different class, algebra or set theory. If you want to see this approach, the construction of $\R$ from $\mathbb{Q}$, refer to section 8.6 of Abbott.
+
+Let us approach from a different angle. Instead, we will begin with $\R$ already begin constructed and adopt the following theorem:
+\theorem (\textit{Axiom of completeness}) Every non-empty subset of $\R$ that is bounded above has a least upper bound (a \textit{supremum}). While this is a theorem we can prove from more fundamental pieces, we will accept this as an axiom.
+
+This is motivated by the fact that a big part of calculus deals with the notion of a limit. We want to know that a sequence that is bounded above and is monotonically increasing will converge to something.
+
+\ex Consider the sequence
+$$
+1, 1.4, 1.41, 1.414,\dots
+$$
+in $\mathbb{Q}$. It is certainly bounded above by 2 and monotone increasing. Could we say that this sequence converges in $\Q$? No! The value it "approaches," $\sqrt{2}$, does not exist in $\Q$ so it does not converge to anything in $\Q$. In other words,
+$$
+S=\{x\in\Q\;|\; x^2<2\}
+$$
+has no supremum in $\Q$. However, there is no issue in $\R$ of having these "gaps" which is helpful in defining things like compactness and continuity.
+
+\subsection{The Archimedean Property}
+\prop (\textit{The Archimedean Property}) Given any $x\in\R$, there exists an $n\in \mathbb{N}$ such that $n>x$.
+\begin{proof}
+    Suppose that there exists some $x\in\R$ such that for all $n\in \N$, $n\leq x$. Then $\N$ is non-empty and bounded above by $x$, so $\N$ has a supremum $s\in\R$ by the axiom of completeness. Then $s-1$ is \textit{not} an upper bound for $\N$ and so there exists an $n\in N$ with $n>s-1$. Then $s<n+1\in\N$, which contradicts that $s$ was a supremum.
+\end{proof}
+"This innocent result has a beautiful corollary" -Wes
+
+\textit{Corollary:} Given any $\varepsilon>0$ in $\R$, there exists $n\in\N$ such that $1/n<\varepsilon$.
+\begin{proof}
+    Use $x-1/\varepsilon$ in Archemedean property.
+\end{proof}
+We get a lot of mileage out of this property!
+\section{Sequences and Convergence}
+\defn A \textit{sequence} on a set $S$ is a function $f:\N\to S$. By convention, we use subscripts instead of the function notation to denote this (that is, we use $x_n$ instead of $f(n)$). The whole sequence can be denoted $\{x_n\}_{n=1}^\infty = \{x_n\}$.
+\ex Consider the sequence
+$$
+x_n=\frac{n}{n^2+1}.
+$$
+We will notate this as 
+$$
+\left\{\frac{n}{n^2+1}\right\}.
+$$
+\defn Let $\{x_n\}$ be a sequence in $\R$. We say that $\{x_n\}$ \textit{converges} to a \textit{limit} $L$ if for all $\varepsilon>0$, there exists an $N\in\N$ such that $|x_n-L|<\varepsilon$ for all $n\geq N$.
+\ex Let $x_n=1/n$. Prove that  $\{x_n\}\to 0$.
+
+\textit{Solution:} Given any $\varepsilon>0$, choose an $N\in \N$ such that $1/N<\varepsilon$, which we know exists by the Archimedean Property. Then for all $n\in \N$ with $n\geq N$,
+$$
+|x_n-0|=\left|\frac{1}{n}\right|=\frac{1}{n}\leq \frac{1}{N}<\varepsilon.
+$$
+
+Can a sequence have multiple convergence points?
+\prop If a sequence in $\R$ converges, the limit is unique.
+
+\begin{proof}
+    Suppose $\{x_n\}\to L_1$ and $\{x_n\}\to L_2$. Since $\{x_n\}\to L_1$, we know that for all $\varepsilon>0$, there exists an $N_1\in\N$ such that $|x_n-L_1|<\varepsilon/2$ for all $n>N_1$. Furthermore, since $\{x_n\}\to L_2$, we know that for all $\varepsilon>0$, there exists an $N_2\in\N$ such that $|x_n-L_2|<\varepsilon/2$ for all $n>N_2$. Now, let $N=\max \{N_1,N_2\}$. Then for all $n\geq N$, we have
+    $$
+    \begin{aligned}
+    |L_1-L_2|&=|L_1-x_n+x_n-L_2|\\
+    &\leq |L_1-x_n|+|x_n-L_2|\\
+    &<\frac{\varepsilon}{2} +\frac{\varepsilon}{2}=\varepsilon.
+    \end{aligned}
+    $$
+    Then $L_1-L_2=0$ so $L_1=L_2$.
+\end{proof}
+
+\end{document}

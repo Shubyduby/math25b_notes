@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 26: Inverse Function Theorem}\\
+{\large Friday, 29 March 2023}\\
+\end{center}
+
+Today will be a marathon. Very intricate proofs. Hold on tight.
+
+\section{Homeomorphisms and Diffeomorphisms}
+
+Recall that if $(X,d_1)$ and $(Y,d_2)$ are metric spaces, a bijection $f:X\to Y$ with a continuous inverse is called a \textit{homeomorphism}.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+
+If $\Omega_1\subseteq \R^n$ and $\Omega_2\subseteq \R^n$ are open sets, a map $f:\Omega_1\to \Omega_2$ is called a \textit{diffeomorphism} if $f$ is differentiable, bijective, and has a differentiable inverse $f^{-1}:\Omega_2\to \Omega_1$. If $f$ and $f^{-1}$ are of class $C^r$ for some $r\in\N$, the map $f:\Omega_1\to \Omega_2$ if called a $C^r$\textit{-diffeomorphism}.
+
+\end{mdframed}
+
+\ex Let $f:(-2,2)\to (-8,8)$ be given by $f(x)=x^3$. The function $f$ is a homeomorphism but not a diffeomorphism.
+
+\section{The Inverse Function Theorem}
+
+If we geometrically consider real-valued functions, the inverse function theorem says the following: let $f$ be of class $C^1$ on an open set $\Omega$, let $x_0\in\Omega$, and let $y_0=f(x_0)$. Assume $f'(x_0)\neq 0$. Then there is a local diffeomorphism of $f$ onto its image of some open set and 
+$$
+\left(f^{-1}\right)'(y_0)=\frac{1}{f'(x_0)}.
+$$
+
+\ex We need the function to be of class $C^1$, not just differentiable. Consider the following function:
+$$
+f(x)=\begin{cases}
+\frac{x}{2}+x^2\sin\left(\frac{1}{x}\right),&x\neq 0\\
+
+0,&x=0
+\end{cases}
+$$
+This function is differentiable everywhere and $f'(0)=1/2\neq 0$. But $f$ is not invertible in any open interval containing $0$.
+
+\begin{shaded}
+\theorem (\textit{Inverse Function Theorem}) Let $f:\Omega\subseteq\R^n\to\R^n$ be of class $C^1$, where $\Omega$ is open. Suppose $x_0\in \Omega$ is such that $Df(x_0)$ is invertible. Then there exists an open neighborhood $U$ of $x_0$ such that $W=f(U)$ is an open neighborhood of $f(x_0)$ and $f|_U:U\to W$ is a $C^1$ diffeomorphism. Moreover, for each $y\in W$, we have 
+$$
+Df^{-1}(y)=[Df(x)]^{-1}
+$$
+where $x=f^{-1}(y)$.
+
+\end{shaded}
+
+\begin{proof}
+
+We begin with some preliminary simplifications:
+\begin{enumerate}
+    \item Without loss of generality, we will assume that because $Df(x_0)$ is invertible, $Df(x_0)=I$. Here is how we justify this: for the general $f$ and $Df(x_0)$, consider a new function
+    $$
+    F(x)=Df(x_0)^{-1}\circ f(x)\implies DF(x)=Df(x_0)^{-1}\circ Df(x).
+    $$
+    Then if $x=x_0$, we get that $DF(x_0)=I$. $F=Df(x_0)^{-1}\circ f$ is a composition of $C^1$ functions, so we have that $f$ has a $C^1$ inverse from
+    $$
+    f^{-1}(y)=F^{-1}(Df(x_0)^{-1}(y)).
+    $$
+
+    \item Without loss of generality, $x_0=0$ and $f(x_0)=0$.  If not, consider 
+    $\Omega_{-}=\left\{ y-x_0:y\in\Omega\right\}$, a shift of the domain by $x_0$,
+    and consider $h:\Omega_{-}\subseteq \R^n\to\R^n$ defined by $f(x)=f(x+x_0)-f(x_0)$. Then $h(0)=0$ and $0\in\Omega_{-}$ since $x_0\in \Omega$. Since $f\in C^1(\Omega)$, the function $h\in C^1(\Omega_{-1})$.
+
+\end{enumerate}
+    With these simplifications, we proceed to the main part of the proof. We need to show the existence of a local inverse around $x_0$ so we want to establish open neighborhoods $W$ around $y_0=f(x_0)=0$ in the codomain and $U$ around $x_0=0$ in the domain such that for all $y\in W$, there exists a unique $x\in U$ where $f(x)=y$. 
+    
+    Given $y\in\R^n$, define $g_y:\Omega\subseteq \R^n\to \R^n$ according to the rule $g_y(x)=x-f(x)+y$. Then $x\in \Omega$ is a fixed point of $g_y$ if and only if $f(x)=y$. Note that for each $y\in\R^n$, we have $g_y$ is of class $C^1$ on $\Omega$ and $Dg_y(x)=I-Df(x)$. Also, $Dg_y(0)=I-Df(0)=I-I=0$. Since $Dg_y$ is continuous and $Dg_y(0)=0$, there exists an open ball $U\subseteq \Omega$ centered at the origin such that $\|Dg_y(x)\|<1/2$ for all $x\in U$.
+
+    Claim 1: Throughout $U$, $Df(x)$ is invertible for each $x\in U$. To verify this claim, suppose, for the sake of contradiction, that there exists some $x\in U$ such that $Df(x)$ is not invertible. Then there exists a unit vector $v\in \R^n$ such that $Df(x)v=0$. Then 
+    $$
+    \|Dg_y(x)\|=\sup_{\|u\|\leq 1}\|Dg_y(x)u\|\geq \|Dg_y(x)v\|=\|Iv-Df(x)v\|=\|v\|=1.
+    $$
+    This contradicts that $\|Dg_y(x)\|<1/2$ for all $x\in U$ \lightning.
+
+    Claim 2: We can get a Lipschitz estimate for $g_y$. Since $U$ is a ball, $U$ is convex. We also know that $\|Dg_y(x)\|<1/2$ for all $x\in U$. Then by the mean value theorem, for all $x_1,x_2\in U$ and any $y\in \R^n$, 
+    \begin{equation}
+    \|g_y(x_2)-g_y(x_1)\|\leq \frac{1}{2}\|x_2-x_1\|.
+    \end{equation}
+    Before using equation (1) to set up a contraction on a suitable domain, we need one more technical lemma. 
+
+    Recall that $\mathrm{GL}_n (\R)$, the general linear group, is the set of all real, invertible $n\times n$ matrices. Let $\mathcal{L}(\R^n)$ be the set of all linear operators $\R^n\to \R^n$. Then $\mathrm{GL}_n(\R)\subseteq \mathcal{L}(\R)$, $\mathrm{GL}_n(\R)$ is open in $\mathcal{L}(\R^n)$, and the map $\psi : \mathrm{GL}_n\to \mathrm{GL}_n(\R)$ defined as $A\mapsto A^{-1}$ is smooth (as in, of class $C^\infty$). Marsden and Hoffman has a proof for this.
+
+
+    Now, since $Df$ is continuous, the map $\psi$ is continuous, and $\|Df(0)^{-1}\|=\|I^{-1}\|=\|I\|=1$ we can further assume $U$ was chosen so that $\|Df(x)^{-1}\|\leq 2$ for all $x\in U$. Now, $U$ has been established and is an open ball. Let $W=f(U)$. Certainly $f|_U:U\to W$ is surjective by the construction of $W$.
+    
+    Claim 3: $f|_U$ is injective. Suppose for the sake of contradiction that $f|_U$ is not injective. Then there exists $x_1,x_2\in U$ such that $x_1\neq x_2$ and $f(x_1)=f(x_2)$. Then for any $y\in \R^n$,
+    $$
+    \|g_y(x_1)-g_y(x_2)\|\leq \frac{1}{2}\|x_1-x_2\|
+    $$
+    by equation (1). But by the definition of $g_y$, 
+    $$
+    \|g_y(x_1)-g_y(x_2)\|=\|x_1-f(x_1)+y -(x_2-f(x_2)+y)\|=\|x_1-x_2\|,
+    $$
+    a contradiction to the previous inequality \lightning.
+
+
+    We will now be focusing our attention to the restriction $f:U\to W$ and so will accordingly use $f$ to mean this function.
+    
+    Claim 4: The set $W$ is open. To show this, we must show that for any $z\in W$, there exists a $\delta>0$ such that $B(z,\delta)\subseteq W$. Pick any $z\in W$. Since $f^{-1}$ is well-defined (as we have shown it is a bijection), there exists a $\xi\in U$ such that $\xi=f^{-1}(z)$. Then choose a $\delta >0$ such that the closed ball $K=\overline{B(\xi,\delta)}$ is contained in $U$. We claim that $B(z,\delta/2)\subseteq W$. To do so, we can pick $y\in B(z,\delta/2)$ and show that $y\in W$. Given some $x\in K$ and $y\in B(z,\delta/2)$, 
+    $$
+    \begin{aligned}
+        \|g_y(x)-\xi\|&\leq \|g_y(x)-g_y(\xi)\|+\|g_y(\xi)-\xi\|\\
+        &\leq \frac{1}{2}\|x-\xi\|+\|\xi-f(\xi)+y-\xi\|\\
+        &=\frac{1}{2}\|x-\xi\|+\|y-z\|\\
+        &<\delta.
+    \end{aligned}
+    $$ 
+    This shows that $g_y:K\to K$. Since $K$ is a closed subset of a Banach space, $g_y$ is a contraction, which means that there is a unique $x\in K$ with $g_y(x)=x$. Equivalently, $y=f(x)$. But $x\in K$, so $y\in f(K)\subseteq f(U)=W$. 
+
+    We now show that $f^{-1}:W\to U$ is continuous on $W$. Pick any $z_1\in W$ and let $\xi_1=f^{-1}(z_1)$. Given any other $z_2\in W$, let $\xi_2=f^{-1}(z_2)$. Then we have
+    $$
+    \begin{aligned}
+        \|f^{-1}(z_1)-f^{-1}(z_2)\|&=\|\xi_1-\xi_2\|\\
+        &=\|g_0(\xi_1)-f(\xi_1)-g_0(\xi_2)-f(\xi_2)\|\\
+        &\leq\|g_0(\xi_1)-g_0(\xi_2)\|+\|f(\xi_1)-f(\xi_2)\|\\
+        &\leq \frac{1}{2}\|\xi_1-\xi_2\|+\|z_1-z_2\|\\
+        &=\frac{1}{2}\|f^{-1}(z_1)-f^{-1}(z_2)\|+\|z_1-z_2\|.
+    \end{aligned}
+    $$
+    Rearranging this inequality, we get
+    \begin{equation}
+    \|f^{-1}(z_1)-f^{-1}(z_2)\|\leq 2\|z_1-z_2\|,
+    \end{equation}
+    so $f^{-1}$ is continuous on $W$.
+
+    We now show that $f^{-1}$ is differentiable. Fix any $y\in W$ and let $x=f^{-1}(y)$. We will show that $Df^{-1}(y)$ exists and that $Df^{-1}(y)=[Df(x)]^{-1}$. Let $z\in W$ with $z\neq y$ and $w=f^{-1}(z)$. 
+    To show that $f^{-1}$ is differentiable, we need to show
+    \begin{equation}
+        \lim_{z\to y} \frac{\|f^{-1}(z)-f^{-1}(y)-[Df(z)]^{-1}(z-y)\|}{\|z-y\|}=0.
+    \end{equation}
+    Observe that
+    $$
+    \begin{aligned}
+        f^{-1}(z)-f^{-1}(y)-[Df(x)]^{-1}(z-y)&=w-x-[Df(x)]^{-1}(f(w)-f(x))\\
+        &=-[Df(x)]^{-1}(f(w)-f(x)-Df(x)(w-x)).
+    \end{aligned}
+    $$
+    Since $U$ was chosen such that $\|[Df(x)]^{-1}\|\leq 2$ for all $x\in U$, we have the estimate
+    $$
+    \|f^{-1}(z)-f^{-1}(y)-[Df(x)]^{-1}(z-y)\|\leq 2\|f(w)-f(x)-Df(x)(w-z)\|.
+    $$
+    Then we can prove (3) instead by proving that 
+    $$
+    \lim_{z\to y}\frac{\|f(w)-f(x)-Df(x)(w-x)\|}{\|z-y\|}=0.
+    $$
+    The fact that $f$ is differentiable guarantees that
+    $$
+    \lim_{w\to x} \frac{\|f(w)-f(x)-Df(x)(w-x)\|}{\|w-x\|}=0
+    $$
+    and the continuity of $f^{-1}$ implies that as $z\to y$ we also have that $w\to x$.  By equation (2), we have that
+    $$
+    \frac{\|w-x\|}{\|z-y\|}\leq 2.
+    $$
+    Thus, we have that
+    $$
+    \lim_{z\to y} \frac{\|f(w)-f(x)-Df(x)(w-x)\|}{\|z-y\|}=\lim_{z\to y} \frac{\|f(w)-f(x)-Df(x)(w-x)\|}{\|w-x\|}\cdot\frac{\|w-x\|}{\|z-y\|}=0,
+    $$
+    so $f^{-1}$ is differentiable on $W$ and $Df^{-1}(y)=[Df(x)]^{-1}$, where $x=f^{-1}(y)$.
+
+    Finally, recall that the map $\psi:\mathrm{GL}_n(\R)\to \mathrm{{GL}_n(\R)}$ from earlier defined by $A\to A^{-1}$ is smooth. Since $f$ is of class $C^1$ on $U$, we know that $Df$ is continuous on $U$, so $Df^{-1}$is continuous on $W$, implying that $f^{-1}$ is of class $C^1$ on $W$.
+\end{proof}
+\end{document}

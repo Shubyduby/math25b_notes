@@ -1,0 +1,182 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 16: Properties of Uniform Convergence}\\
+{\large Wednesday, 1 March 2023}\\
+\end{center}
+
+\section{Integrals}
+Last class we ended with the following, important issue with pointwise convergence: suppose $f_k:[a,b]\to\R$ are bounded and Riemann integrable for each $k$. If $f_k\to f$ pointwise on $[a,b]$, it might \textit{not} be the case that 
+$$
+\lim_{k\to\infty}\int_a^bf_k(x)~dx=\int_a^b\lim_{k\to\infty} f_k(x)~dx.
+$$
+This is, however, true for uniformly covergent functions! 
+\prop If $f_k:[a,b]\to\R$ are bounded and integrable and $f_k\to f$ uniformly on $[a,b]$, then $f:[a,b]\to \R$ is bounded and integrable and
+$$
+\lim_{k\to\infty} \int_a^b f_k(x)~dx=\int_a^b \lim_{k\to\infty} f_k(x)~dx = \int_a^b f(x)~dx.
+$$
+\begin{proof}
+    Given some $\varepsilon>0$, we want to explain why there exists a partition $P$ of $[a,b]$ with $U(f,P)-L(f,P)<\varepsilon$. Since $f_k\to f$ uniformly, we can choose an $N\in\N$ large enough such that $|f_k(x)-f(x)|<\varepsilon/(4(b-a))$ for all $x\in[a,b]$ whenever $k\geq N$. Let us take a look at some function $f_N$, which is bounded and integrable. By the Riemann criterion, there exists a partition $P=\{x_0,\dots,x_m\}$ such that $U(f_N,P)-L(f_N,P)<\varepsilon$. We define
+    \begin{align*}
+    &M_k(f)=\sup_{[x_{k-1},x_k]}f(x)\\
+    &M_k(f_N)=\sup_{[x_{k-1},x_k]}f_N(x)
+    \end{align*}
+    Then we know 
+    \begin{align*}
+        U(f,P)=\sum_{k=1}^n M_k(f)(x_k-x_{k-1}).
+    \end{align*}
+    In the subinterval $[x_{k-1},x_k]$, we have that
+    $$
+    f(x)<f_N(x)+\frac{\varepsilon}{4(b-a)}
+    $$
+    for all $x$. Then, if we take the supremum of each side over the interval,
+    $$
+    M_k(f)\leq M_k(f_N)+\frac{\varepsilon}{4(b-a)}.
+    $$
+    Then
+    $$
+    U(f,P)\leq \sum_{k=1}^m \left[M_k(f_N)+\frac{\varepsilon}{4(b-a)}\right](x_k-x_{k-1})=U(f_N,P)+\frac{\varepsilon}{4}.
+    $$
+    Analagously, we can find that 
+    $$
+    L(f_N,P)-\frac{\varepsilon}{4}\leq L(f,P).
+    $$
+    So we have that
+    $$
+    L(f_N,P)-\frac{\varepsilon}{4}\leq L(f,P)\leq U(f,P)\leq U(f_N,P)+\frac{\varepsilon}{4}
+    $$
+    so 
+    $$
+    U(f,p)-L(f,P)\leq \underbrace{U(f_N,P)-L(f_N,P)}_{<\varepsilon/2}+\frac{\varepsilon}{2}<\varepsilon.
+    $$
+    So $f$ is Riemann integrable on $[a,b]$ and bounded. Then the expression
+    $$
+    \int_a^b f(x)~dx
+    $$
+    is well-defined. Given $\varepsilon>0$, we can choose an $M\in \N$ such that if $k\geq M$, we have that $|f_k(x)-f(x)|\leq \varepsilon/(b-a)$ for all $x\in[a,b]$. Then we have
+    $$
+    \begin{aligned}
+        \left|\int_a^b f_k(x)~dx-\int_a^b f(x)~dx\right|&=\left|\int_a^b f_k(x)-f(x)dx\right|\\
+        &=\int_a^b\left| f_k(x)-f(x)\right|dx <\varepsilon.
+    \end{aligned}
+    $$
+\end{proof}
+
+\textit{Corollary}. If $f_k:[a,b]\to\R$ is bounded, integrable, and $\sum_{k=1}^\infty f_k$ converges to $f$ uniformly on $[a,b]$, then 
+$$
+\int_a^b \sum_{k=1}^\infty f_k(x)~dx=\sum_{k=1}^\infty \left(\int_a^b f_k(x)~dx\right).
+$$
+We get this from applying the previous result.
+
+\ex Consider $f_k(x)=(-1)^kx^2k$ on $[-a,a]$ where $0<a<1$. Look at $\sum_{k=1}^nf_k(x)$. By the Weierstrass $M$-test, we will show the series converges. First, we have that $|f_k(x)|\leq a^{2k}$. Notice that $\sum_{k=1}^\infty a^{2k}$ is geometric and $|a|<1$ so it converges and thus $f_k$ is continuous and converges so $\sum_{k=0}^\infty f_k$ is uniform. Then $\sum_{k=0}^\infty (-1)^kx^{2k}$ converges uniformly to 
+$$
+f(x)=\frac{1}{1+x^2}
+$$
+on $[-a,a]$. For each fixed $s\in [-a,a]$,
+$$
+\int_0^s \sum_{k=0}^\infty (-1)^kx^{2k}~dx =\sum_{k=0}^\infty \int_0^s  (-1)^kx^{2k}~dx =\sum_{k=0}^n (-1)^k\frac{s^{2k+1}}{2k+1}=\arctan(s)=\arctac(0)
+$$
+because $\arctan(s)=\int_{0}^s 1/(1+x^2)~dx$.
+
+
+\ex (\textit{Is the case the same for derivatives?}) Consider the sequence of functions defined as $f_k(x)=x^{k+1}/(k+1)$ on $[0,1]$. Then $f_k'(x)=x^k$. Notice that $f_k\to 0$ uniformly since $|f_k(x)|\leq 1/(k+1)$. But $f_k'(x)$ converges pointwise to a  discontinuous limit. Then the derivative of the limit is not the same as the limit of the derivates. 
+\section{Derivatives}
+\prop Let $f_k:(a,b)\to\R$ be differentiable and $f_k\to f$ pointwise on $(a,b)$. If $f_k'$ are continuous and $f_k'\to g$ uniformly then $f$ is differentiable and $f'=g$. In other words, if these conditions hold, then
+$$
+\lim_{k\to\infty} \left(f_k'\right)=\left(\lim_{k\to\infty} f_k\right)'
+$$
+\begin{proof}
+    Since $f_k'\to g$ uniformly, pick any $x\in (a,b)$. By proposition 1,
+    $$
+    \int_{x_0}^x f_k'(s)~ds\to\int_{x_0}^x g(s)~ds
+    $$
+    so 
+    $$
+    f_k(x)-f_k(x_0)\to \int_{x_0}^x g(s)~ds
+    $$
+    as $k\to\infty$. Thus,
+    $$
+    f(x)-f(x_0)=\int_{x_0}^x g(s)~ds.
+    $$
+    Since $g$ is a uniform limit of continuous functions, then $g$ is continuous. By the fundamental theorem of calculus, $f$ is then integrable at $x$ and $f'(x)=g(x)$.
+\end{proof}
+
+\textit{Corollary.} Let each $f_k$ have a continuous derivative on an open interval $(a,b)$. If $\sum_{k=1}^\infty f_k$ converges pointwise and $\sum_{k=1}^\infty f_k'$ converges uniformly, then 
+$$
+\left(\sum_{k=1}^\infty f_k\right)'=\sum_{k=1}^\infty f'_k.
+$$
+
+\ex Show that the series
+$$
+\sum_{k=1}^\infty \frac{x^k}{k!}
+$$
+converges to a differentiable function.
+
+\textit{Solution:} Pick any $x_0\in \R$ and consider $I=[-(2|x_0|+1), 2|x_0|+1]$. Then
+$$
+|f_k(x)|\leq \frac{(2|x_0|+1)^k}{k!}
+$$
+on $I$. Using the Weierstrass $M$-test, the sum above converges uniformly. Now notice that
+$$
+f_k'(x)\left\{\begin{aligned}
+    &0,&\;k=0\\
+    &\frac{x^{k-1}}{(k-1)!},&\;k>0. 
+\end{aligned}\right.
+$$
+Then $$
+\sum_{k=1}^\infty f_k'=\sum_{k=0}^\infty f_k.
+$$
+By Weierstass, the above summation converges uniformly on $I$. By the corollary, we know that the right hand term is differentiable.
+ \end{document}

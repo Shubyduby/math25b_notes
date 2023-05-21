@@ -1,0 +1,174 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 35: The Hilbert Space $\mathbf{L}^\mathbf{2}$, Orthogonal Families of Functions}\\
+{\large Friday, 21 April 2023}\\
+\end{center}
+
+\section{Inner Products on Function Spaces}
+Recall that if $V$ is a vector space over $\R$, an inner product $\langle \cdot,\cdot \rangle:V\times V\to \R$ obeys the following properties:
+\begin{enumerate}
+    \item Positive definiteness: for all $u,v\in V$, $\langle u, v\rangle \geq 0$, with equality if and only if $u=0$ or $v=0$.
+    \item Symmetry: for all $u,v\in\R$, $\langle u,v\rangle = \langle v, u \rangle$.
+    \item Linearity in the first slot: for any $u,v,w\in V$ and scalar $c_1\in \R$, we have that
+    $$
+    \langle u+v, w\rangle = \langle u,w\rangle + \langle v, w \rangle 
+    $$
+    and
+    $$
+    \langle cv , u \rangle = c\langle v,u\rangle.
+    $$
+\end{enumerate}
+A consequence of this is that inner products are symmetric, positive definite, bilinear forms. Thus, any vector space with an inner product has a norm induced by the inner product:
+$$
+\|v\|=\sqrt{\langle v,v \rangle}.
+$$
+Norms are a generalization of distance and thus can give us a notion of convergence.
+\ex Let $V$ be space of real-valued continuous functions on $[a, b]$. Then $V$ is an inner product space with the inner product
+$$\langle f, g \rangle = \int_a^b f(x)g(x)~dx.$$
+The inner product is well-defined as $f$ and $g$ are both continuous, so their product is continuous and $[a,b]$ is a compact set. This inner product then induces the norm
+$$
+\|f\| = \left(\int_a^b f(x)^2~dx\right)^\frac{1}{2}.
+$$
+Notice this is not the norm we have been using so far in this class over $C[a,b]$, as the norm we have been using was defined as
+$$
+\|f\|_\infty = \max_{x\in[a,b]}|f(x)|,
+$$
+which was not induced by an inner product. This new norm we have defined is called the $L^2$ norm of $f$ on $[a,b]$. 
+
+This begs the question: is $V$ from the example above with the $L^2$ norm complete? For some functions $f,g\in V$ we have that
+$$
+\|f-g\| = \left( \int_a^b [f(x)-g(x)]^2 ~dx \right)^\frac{1}{2},
+$$
+so $V$ is not complete in the $L^2$ norm. We can see this with can example: consider the sequence of functions $\{f_n\}$ defined as
+$$
+f_n=\left\{ \begin{aligned}
+&1, &a\leq x \leq \frac{a+b}{2}\\
+&1 - \frac{x-\frac{a+b}{2}}{x_n - \frac{a+b}{2}}, &\frac{a+b}{2}< x < x_n\\
+&0, & x_n \leq x\leq \frac{a+b}{2}
+\end{aligned}, \qquad \forall n\in\N
+\right.
+$$
+where 
+$$x_n=\frac{a+b}{2}+\frac{b-a}{2n}.$$
+Each $f_n$ is continuous and the sequence can shown to be Cauchy under the $L^2$ norm, but the sequence does not converge to a continuous function.
+\section{The Hilbert Space $\mathbf{L}^\mathbf{2}$}
+Now, we want to the structure of an inner product space with the property that we can represent each $f\in V$ as the linear combination
+    $$
+    \sum_{k=0}^\infty c_k\phi_k,
+    $$
+    where $\{\phi_k:k\in\N \}$ is an othonormal family of functions and can approximate $f$ as a finite linear combination.
+
+What space of functions can we use? And what inner product accordingly? What even is meant by \say{represent} or \say{approximate}? As found earlier, we cannot use $C[a,b]$ with the $L^2$ inner product as it is not complete. Instead, we use the $L^2$ Hilbert space.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn Be warned, this is not the formal definition! The space $L^2[a,b]$ is the space of \say{functions} $f:[a,b]\to \R$ such that $f^2$ is \say{integrable,} so we have that
+$$
+\int_a^b f(x)^2~dx<\infty.
+$$
+\end{mdframed}
+\note In the formal definition of $L^2$ space, the elements of $L^2$ are not functions but rather \textit{equivalence classes} of functions. In this case, $f\sim g$ when $f$ and $g$ differ only on a set of measure $0$. Furthermore, integrable in this definition means Lebesgue integrable.
+
+\ex Consider the set $\Q\cap [0,1]$. This set has measure zero. What does this mean? Let $\varepsilon>0$ be given, and let $q_1,q_2, \dots$ enumerate the rationals in $[0,1]$. Enclose $q_j$ in an interval of length $\varepsilon/2^j$ (this the the measure of the interval around $q_j$). The total length of these intervals is $\varepsilon$.
+
+We claim that $L^2[a,b]$ is a real inner product space with the inner product
+$$\langle f, g \rangle = \int_a^b f(x)g(x)~dx.$$
+This would be straightforward if all members of $L^2[a,b]$ were continuous, but elements of $L^2[a,b]$ need not be bounded. 
+
+\ex Consider the function $f:[0,1]\to \R$
+$$f(x) = \begin{cases}
+
+0 & x = 0\\
+
+\frac{1}{x^{1/4}} & x \in (0, 1]
+
+\end{cases}$$
+We have that
+$$
+\int_0^1 f(x)^2 ~dx =\int_0^1 \frac{1}{\sqrt{x}} ~dx = \lim_{a\to0^+} \int_a^1 x^{-1/2} ~dx = 2,
+$$
+so $f\in L^2[0,1]$.
+\section{Orthogonal Functions}
+Recall the definition of orthogonality.
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn If $V$ is a real inner product space, two function $f,g\in V$ are said to be \textit{orthogonal} if $\langle f,g\rangle =0$
+\end{mdframed}
+\ex Consider any two functions $f,g\in L^2[-1,1]$ that are piecewise continuous. If $f$ is an odd fucntion and $g$ is an even function, then $f$ and $g$ are orthogonal. That is, $\langle f,g \rangle =0$. This is because the product of an odd function and an even function is an odd function, so when we take the inner product of $f$ and $g$, we are integrating an odd function over an interval symmetric about 0.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn An \textit{orthonormal sequence} of functions $\phi_0,\phi_1,\phi_2,\dots$ in a real inner product space $V$ is a sequence satisfying
+$$
+    \langle \phi_i,\phi_j \rangle =\begin{cases}
+        0, & i\neq j\\
+        1, & i=j
+    \end{cases}.
+$$
+\end{mdframed}
+
+\ex In $L^2[-\pi,\pi]$, the set of functions
+$$
+\frac{1}{\sqrt{2\pi}},\;\frac{\sin{x}}{\sqrt{\pi}},\;\frac{\cos{x}}{\sqrt{\pi}},\;\frac{\sin{2x}}{\sqrt{\pi}},\;\frac{\cos{2x}}{\sqrt{\pi}},\;\dots
+$$
+\end{document}

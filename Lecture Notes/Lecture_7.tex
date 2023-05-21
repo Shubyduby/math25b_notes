@@ -1,0 +1,141 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 7: Connectedness}\\
+{\large Monday, 6 February 2023}\\
+
+\end{center}
+\section{Continuation of Compact Sets}
+Here is our last important theorem for compactness.
+
+\begin{shaded}
+    \theorem \textit{(Heine-Borel)} If $K\subset \R^n$ is closed and bounded, then $K$ is compact.
+\end{shaded}
+ \begin{proof}
+     Suppose $K\subseteq \R^n$ is closed and bounded. We will show that $K$ is sequentially compact. Consider some sequence $\{x_m\}$ with $x_m\in K$ for all $m$. We express the term $x_m$ as
+     $$
+     x_m=(x_m^{(1)},x_m^{(2)},\dots,x_m^{(n)}),
+     $$
+     a normal coordinate. We will look at the first component. Consider the sequence $\{x_m^(1)\}$. This sequence is bounded since $K$ is bounded. Then by Bolzano-Weierstrass, we can find a convergent subsequence $x_{m_1}^{(1)},x_{m_2}^{(2)},x_{m_3}^{(3)},\dots$, with $m_1<m_2<m_3<\cdots$. Now, we can look at the second component with the same indices 
+     $$
+     x_{m_1}^{(2)},x_{m_2}^{(2)},x_{m_3}^{(3)},\dots.
+     $$
+     For the same reasons, we can find a convergent subsequence of these. We repeat this process with each component, extracting further subsequences. At the end, we will be left with a subsequence $\{x_m\}$ that converges to some $x\in \R^n$. The limit $x$ must be in $K$ since $K$ is closed. Then $K$ is sequentially compact and therefore compact.
+     \end{proof}
+
+\section{Conncted Sets}
+This will be our last foray into topology before we entrentch ourselves into limits and continuity. 
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn Let $(M,d)$ be a metric space and $E\subseteq M$. We say the open sets $\Omega_!$ and $\Omega_2$ \textit{separate} $E$ if
+\begin{enumerate}
+    \item $E\subseteq\Omega_1\cup \Omega_2$.
+    \item $E\cap \Omega_1 \neq \emptyset$ and $E\cap \Omega_2\neq\emptyset$.
+    \item $E\cap\Omega_1\cap\Omega_2=\emptyset$.
+\end{enumerate}
+Furthermore, $E$ is \textit{disconnected}if there exists a separation of $E$. Finally, we say that $E$ is \textit{connected} if it is not disconnected.
+\end{mdframed}
+
+This definition should make good intuitive sense: if a set is not connected, we can draw two shapes around the two or more sections that are not connected.
+
+\ex Consider $M=\R$ with the usual metric and $E=\Q\subset \R$. Then $E$ is disconnected because $\Omega_1=(-\infty,\sqrt2)$ and $\Omega_2=(\sqrt2,\infty)$ are a separation for $\Q$.
+
+\ex If $E={x}$ consists of a single points, then there does not exist a separation of $E$ so $E$ is connected.
+
+\ex The empty set $\emptyset$ is connected.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+    \defn A subset $I\subseteq \R$ is called an \textit{interval} if whenever $x,y\in I$ are such that $x<y$, $x<z<y$ implies that $z\in I$.
+\end{mdframed}
+
+This should also be pretty reasonable; if a value is between two values of an interval, it should also be in the interval.
+
+\note The empty set, single points, and entirety of $\R$ are considered intervals by this definition.
+
+\prop A set $I\subseteq\R$ is connected if and only if $I$ is an interval.
+
+\begin{proof}
+    First, we will prove the forward direction. Suppose the contraposition, that $I$ is not an interval. Then pick some $x,y,z\in \R$ with $x,y\in I$, $x<y$, and $x<z<y$ with $z\not\in I$. Then we can separate $I$ with the open sets $\Omega_1=(-\infty, z)$ and $\Omega_2=(z,\infty)$ since $I\subseteq\R\bslash\{z\}\subseteq\Omega_1\cup\Omega_2$. Then $I$ is not connected.
+
+    Now we prove the converse. Suppose, for the sake of contradiction, that the interval were not connected. Then there would be two open set $U$ and $V$ with $U\cap [a,b]\neq \emptyset$, $V\cap [a,b]\neq\emptyset$, $[a,b]\cap U\cap V = \emptyset$, and $[a,b]\subset U\cup V$. Further, suppose that $b\in V$. Let $c=\sup(U\cap [a,b])$, which exists as the set is bounded above. Now $U\cap [a,b]$ is closed since its complement is $V\cup (\R\symbol{92}[a,b])$, which is open. Thus, $c\in U\cap [a,b]$. Now, $c\neq b$, since $c\not\in V$ and $b\in V$. Any neighborhood of $c$ intersects $V\cap [a,b]$ since $c\neq b$ and no neighborhood of $c$ can be entirely contained in $U$ as $c=\sup(U\int [a,b])$, so that $c$ is an accumulation point of $V\cap[a,b]$. But as with $U,V\cap[a,b]$ is closed, so $c\in V\cap [a,b]$. This contradicts the fact that $V\cap U\cap [a,b]\neq \emptyset$.
+\end{proof}
+
+ \note \textit{(A terribly sad fact)} Connectedness is much harder to characterize in spaces that are not $\R$. We need an alternate way, just as it is with compactness. We will discuss simple connectedness with integration theory.
+
+ \section{Path-Connected Sets}
+A notion of path-connectedness is useful because a path-connected is connected, though the converse is not necessarily true. We need a notion of continuity to understand path-connectedness so here is a brief preview of it since we will get deeper into it later.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+    \defn Let $\varphi:[a,b]\to M$ where $a<b$ and $(M,d)$ is a metric space. We say that $\varphi$ is \textit{continuous} if for every sequence $\{t_k\}$ in $[a,b]$ that converges to some limit $t\in[a,b]$ we have $\{\varphi(t_k)\}$ converges to $\varphi(t)$.'
+
+    A \textit{continuous path} connecting point $x,y\in M$ is a continuous function $\varphi:[0,1]\to M$ such that $\varphi(0)=x$ and $\varphi(1)=y$.
+
+    A set $E\subseteq M$ is \textit{path-connected} if given an $x,y\in E$, there exists a continuou path $\varphi:[0,1]\to E$ connecting $x$ and $y$.
+    \note For emphasis, $\varphi(t)\in E$ for each $0\leq t\leq 1$.
+\end{mdframed}
+
+\ex Let $x\in \R^n$ and $r>0$. Show that $B(x,r)$ is path-connected.
+
+\textit{Solution:} Here is how we would go about such a problem. Pick $y,z\in B(x,r)$ with $y\neq z$ since if this were the case, we simply use $\varphi:[0,1]\to B(x,r)$ with $\varphi(t)=y$ for all $t\in[0,1]$. Now, we define $\varphi(t)=y+t(z-y)$, with $\varphi(0)=y$ and $\varphi(1)=z$. Next, we show that $\varphi$ is continuous and that $\varphi(t)\in B(x,r)$ for all $t$. We would should this with  by proving $\|\varphi(t)-x\|<r$ for all $t$.
+
+Now to solidify the relation between path-connected sets and connected sets. The proof is laborious.
+
+\prop If $(M,d)$ is a metric space and $A\subseteq M$ is path-connected, then $E$ is connected.
+
+\begin{proof}
+Suppose that $A$ is path-connected and, for the sake of contradiction, that $A$ not connected. Then, by definition, there exists open sets $U,V$ such that $A\subset U\cup V$, $A\cap U \cap V= \emptyset$, $A\cap U \neq \emptyset$, and $A\cap V\neq\emptyset$. Choose some $x\in U\cap A$ and $y\in V\cap A$. Since $A$ is path-connected, there exists a path $\varphi:[a,b]\to\R^n$ in $A$ joining $x$ and $y$. Set $U_0=\varphi^{-1}(U)$ and $V_0=\varphi^{-1}(V)$ so $U_0,V_0\subset[a,b]$. Now $U_0$ is closed, because if we let $t_k\to t$, with $t_k\in U_0$, then, by the continuity of $\varphi$, $\varphi(t_k)\to \varphi(t)$; but since $V$ is open, $\varphi(t)\not\in V$, or else $\varphi(t_k)\in V$ for large $k$. Hence $\varphi(t)\in U\cap A$ or $t\in U_0$. Thus $U_0$ is closed. Similarly, $V_0$ is closed. Let $U^{'}=(-\infty,a)\cup (\R\symbol{92} V_0$), and $V^{'}=(b,\infty)\cup (\R\symbol{92} U_0)$, which are open sets. Observe that $U^{'}\cap [a,b]\neq\emptyset$, $V^{'}\cap[a,b]\neq\emptyset$, $U^{'}\cap V^{'}=\emptyset$, and $[a,b]\subset U'\cup V'$. Thus, $[a,b]$ is not connected, a contradiction.
+\end{proof}
+
+\end{document}

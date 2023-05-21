@@ -1,0 +1,135 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\newcommand{\bslash}{\symbol{92}}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 2: Cauchy Sequences}\\
+{\large Wednesday, 25 January 2023}\\
+
+\end{center}
+\section{Continuation of Sequences and Convergence}
+A quick definition clarification:
+
+\defn A sequence $\{x_n\}$ in $\R$ is \textit{monotone increasing} if $x_1\leq x_2\leq\dots$. A sequence is strictly monotone increasing if $x_1<x_2<\dots$.
+
+Now, a related theorem:
+
+\prop \textit{(Monotone convergence theorem)} Every monotone increasing sequence in $R$ that is bounded above converges.
+
+\begin{proof}
+    Let $S=\{x_1,x_2,\dots\}$, which is non-empty and bounded above. So let $s=\sup(S)$, which exists by the axiom of completeness. Now, suppose for the sake of contradiction, suppose there exists some $\varepsilon >0$ such that for all $N\in \N$ there exists an $n>N$ for which $|x_n-s|\geq \varepsilon$. Then  $s-x_n\geq \varepsilon$ for all $n\geq N$. Then reach the conclusion that $x_n\leq s-\varepsilon$ for all $n\in\N$ (fill in the gaps yourself). Thus, $s-\varepsilon$ is a lower upper bound than $s$, a contradiction. Then the negation of the assumption is true: for all $\varepsilon>0$, there exists an $N\in \N$ such that for all $n\geq N$, we have $|x_n-s|<\varepsilon$. Then $S$ converges to $s$.
+\end{proof}
+
+A practice problem to do on your own: show that if $\{x_n\}\to L_1$ and $\{y_n\}\to L_2$, then $\{x_n+y_n\}\to L_1+L_2$, and that $\{x_ny_n\}=L_1L_2$. Also, $\{cx_n\}\to cL_1$.
+
+\prop If a convergent sequence $\{x_n\}$ in $\R$ is bounded then there exists a real constant $M$ such that $|x_n|\leq M$ for all $n\in\N$.
+
+Prove on your own!
+
+\section{Cauchy Sequences}
+
+We want to be able to determine convergence more broadly; a characterization of the convergence of sequences in $\R$ that does not require knowing its limit. This is what motivates the following definition.
+
+\defn A sequence $\{x_n\}$ in $\R$ is called \textit{Cauchy} if given any $\varepsilon>0$, there exists an $N\in\N$ such that $|x_n-x_m|<\varepsilon$ for all $m,n\geq N$.
+
+\ex Is the sequence $\{1/n\}$ Cauchy?
+
+\textit{Solution:} Yes. Let $\varepsilon>0$ be given. We want to show that we can find some $N\in \N$ that satisfies the aforementioned condition. Let's work backwards. We want to make the gap between any $|x_n-x_m|$ as small as possible, the same as $|1/n-1/m|$. Using the triangle inequality,
+$$
+\left|\frac{1}{n}-\frac{1}{m} \right|\leq \left|\frac{1}{n}\right| +\left| \frac{1}{m}\right|.
+$$
+Well then let us choose an $N\in\N$ be the largest $N$ such that $N>\varepsilon/2$. Then we have $1/n\leq \frac{1}{N}<\varepsilon/2$. same with $m$. So
+$$
+\left|\frac{1}{n}-\frac{1}{m} \right|\leq \left|\frac{1}{n}\right| +\left| \frac{1}{m}\right|<\frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon.
+$$
+
+There seems to be a correlation between convergence and Cauchy sequences. Let us solidify this.
+
+\prop If $\{x_n\}$ is a sequence in $\R$ that converges, then $\{x_n\}$ is Cauchy.
+
+\begin{proof}
+    Let $\varepsilon>0$ be given. Let $L=\lim_{n\to\infty} \{x_n\}$. choose $N\in \N$ such that for all $n\geq N$, we have $|x_n-L|<\varepsilon/2$. Pick $m,n\geq N$. Then we have
+    $$
+    |x_m-x_n|=|x_m-L+L-x_n|\leq |x_m-L|+|L-x_n|\leq  \frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon.
+    $$
+\end{proof}
+
+A special property of $\R$ is that the converse is actually true as well. We need some lemmas to prove this assertion first though.
+
+\lem Cauchy Sequences in $\R$ are bounded.
+\begin{proof}
+    Let $\varepsilon=1$. Then for a Cauchy sequence $\{x_n\}$, there exists $N\in\N$ such that $|x_n-x_m|<\varepsilon=1$ whenever $m,n>N$. Consider $x_N$. Then if $m\geq N$, we have $|x_N-x_m|<1$. Now let $M=\max \{x_1,x_2,\dots,|x_{N-1}|,|x_N -1|,|x_N +1|\}$. Then $|x_n|\leq M$ for all $n\in\N$.
+\end{proof}
+
+We need a definition for our next lemma.
+
+\defn A \textit{subsequence} of $\{x_n\}$ is a sequence of the form $x_{k_1},x_{k_2},\dots$, where $k_1<k_2<\dots$ is a strictly increasing sequence in $\N$.
+
+We will now use a theorem as a lemma.
+
+\lem \textit{(Bolzano-Weierstrass Theorem in $\R$)} Every bounded sequence in $\R$ has a convergent subsequence.
+
+\begin{proof}
+    since $\{x_n\}$ is bounded, we know that there exists an $M>0$ such that $|x_n|<M$ for all $n\in\N$. Then $x_n\in[-M,M]$ for all $n\in N$. We will now construct a convergent subsequence. Pick $k_1=1$. Then $x_{k_1}\in I_1=[-M,M]$. We bisect $I_1$. At least one one of $[-M,0],[0,M]$ has infinitely many elements of $\{x_n\}$. Let $I_2$ be such an interval. Now pick a $k_2>k_1$ such that $x_{k_2}\in I_2$. Bisect $I_2$. Pick an $I_3$ with infinitely... so on and so forth. Notice that $I_1\supset I_2\supset\cdots$, $x_{k_j}\in I_j$, and the length of $I_j$ is $2M/2^{j-1}$. Now observe the left endpoints of intervals $a_1,a_2,\dots$ is monotone increasing. This sequence is monotone increasing and bounded above by $M$. So $\{a_j\}$ is convergent by the monotone convergence theorem.
+
+    Now we know
+    $$
+    |x_{k_j}-L|=|x_{k_j}-a_j+a_j-L|\leq \underbrace{|x_{k_j}-a_j|}_{\leq 2M/2^{j-1}}+|a_j-L|.
+    $$
+    We can make both parts less than $\varepsilon/2$, so on.
+\end{proof}
+
+\begin{shaded}
+\theorem If $\{x_n\}$ is a sequence in $\R$ that is Cauchy, then $\{x_n\}$ converges.
+
+\begin{proof}
+    Let $\varepsilon>0$ be given and $\{x_n\}$ be Cauchy. Then by lemma 1, $\{x_n\}$ is bounded. By lemma 2, we can extract a convergent subsequence $\{x_{k_j}\}$. Let $L=\lim\{x_{k_j}\}$. Then $\{x_n\}\to L$. Prove this yourself!
+\end{proof}
+\end{shaded}
+\end{document}

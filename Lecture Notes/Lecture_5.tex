@@ -1,0 +1,143 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\newcommand{\bslash}{\symbol{92}}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 5: }\\
+{\large Wednesday, 1 February 2023}\\
+
+\end{center}
+\section{Metric Spaces Recap}
+Let $(M,d)$ be a metric space. Recall the definition
+\defn A sequence $\{x_k\}_{k=1}^\infty$ of points in $M$ is \textit{Cauchy} if for all $\varepsilon>0$ there exists an $N\in\N$ such that $d(x_m,x_n)<\varepsilon$ whenever $m,n\geq N$. The metric space $M$ is \textit{complete} if every Cauchy sequence in $M$ converges to a limit in $M$.
+
+
+\ex With the usual metric $d(x,y)=|x-y|$, if $M=\R$ then $(M,d)$ is complete. If $M=\Q$, then $(M,d)$ is not complete.
+
+\section{Series and Convergence}
+\subsection{Series}
+It is desirable to study infinite series because we will often define functions in terms of series. For example, we can define the function $f(x)=e^x$ in terms of a series that allows us to show that the function is well-defined, differentiable, and other properties.
+
+\note If $\sum_{k=1}^\infty a_k$ is a series, then the \textit{nth partial sum} is defined as $s_n=\sum_{k=1}^n a_k$.
+
+\defn Let $V$ be a normed real vector space. A series $\sum_{k=1}^\infty x_k$ converges to $x\in V$ if the sequence $\{S_n\}_{n=1}^\infty$ of partial sums converges to $x$.
+
+\ex In $\R$ with usual norm $\|x\|=|x|$. Consider $\sum_{n=1}^\infty 1/n$. This series diverges even though the terms tend to 0.
+
+\ex $\sum_{k=1}^\infty 1/k^2$ is a convergent series.
+
+If you remember, geometric series, a series we study early on in math, are very helpful in determining the convergence of many series.
+
+\defn A series $\sum_{k=1}^\infty a_k$ of real numbers is \textit{geometric} if there exists a real constant $r$ such that $a_{k+1}=ra_k$ for every $k\in \N$. If terms are nonzero, $r=a_{k+1}/a_k$ is the common ratio.
+
+\prop A geometric series $\sum_{k=1}^\infty a_k$ of real numbers with $a_1\neq 0$ converges if and only if $|r|<1$.
+
+\begin{proof}
+    Let us observe the partial sums of a geometric series:
+    $$
+    \begin{aligned}
+        a_2&=ra_1\\
+        a_3&=ra_2=r^2a_1\\
+        a_n=r^{n-1}a.
+    \end{aligned}
+    $$
+    Then 
+    $$
+    \begin{aligned}
+        S_n&=&a_1+&ra_1&+\cdots+&r^{n-1}a_1& \\
+        rS_n&=&&ra_1&+\cdots+&r^{n-1}a_1&+r^na_1.\\
+    \end{aligned}
+    $$
+    $$
+    \begin{aligned}
+    (1-r)S_n=a_1(1-r^n)\\
+    S_n=\frac{a_1(1-r^n)}{1-r}.
+    \end{aligned}
+    $$
+    You can sketch out the rest of the details yourself of the proof. Consider the cases where $r=1$, $|r|<1$, $|r|>1$, and $r=-1$.
+\end{proof}
+
+\subsection{Convergence Tests}
+Now that we are equipped with the geometric series, we can begin exploring the properties of other series.
+\subsection{Comparison Test}
+\prop (\textit{The Comparison Test}) Suppose $\sum_{k=1}^\infty a_k$ is a convergent series of non-negative real numbers and $0\leq b_k\leq a_k$ for all $k\in \N$. Then $\sum_{k=1}^\infty b_k$ converges as well. On the other hand, if $\sum_{k=1}^\infty a_k$ diverges with $a_k\geq 0$ and $0\leq a_k\leq b_k$ for all $k\in \N$ then $\sum_{k=1}^\infty b_k$ also diverges.
+
+\begin{proof}
+    Assume $\sum_{k=1}^\infty a_k$ converges to $L\in \R$ and $0\leq b_k\leq a_k$ for all $k\in N$. Let $A_n=\sum_{k=1}^n a_k$ and $B_n=\sum_{k=1}^n b_k$. Then $0\leq B_n\leq A_n$ for each $n\in\N$. Note that $A_n\leq L$ for each $n$ since all terms are non-negative. Then $\{B_n\}$ is monotone increasing and bounded above by $L$. So $\{B_n\}$ converges. It is worth proving the divergent case on your own time.
+\end{proof}
+
+\subsection{Alternating Series}
+\defn A series of real numbers $\sum_{k=1}^\infty a_k$ is alternating if for each $k\in \N$, $a_ka_{k+1}<0$. That is, $a_k$ and $a_{k+1}$ have opposite signs.
+
+\ex The alternating harmonic series, $\sum_{k=1}^\infty (-1)^k/k$, is an alternating series. We can also show that it converges by showing that the sequence of partial sums is Cauchy. We will return to a alternating series test later.
+
+The condition we will need is for the absolute value of every successive term to be at most as large as the previous term.
+
+\subsection{Absolute Convergence}
+\defn A series $\sum_{k=1}^\infty x_k$, where $x_k$ are in a normed vector space V \textit{converges absolutely} if $\sum_{k=1}^\infty \|x_k\|$ converges.
+
+\prop Under the assumptions made above, if $V$ is complete, then absolute converges implies convergence.
+
+\begin{proof}
+    Not enough time in class! The idea: Show that if $S_n=\sum_{k=1}^n x_k$ then $\{S_n\}$ is Cauchy in $V$.
+\end{proof}
+
+\subsection{Ratio Test}
+\prop \textit{Ratio Test} Suppose $\sum_{k=1}^\infty a_k$ is a series whose terms are non-zero real numbers, and that
+$$
+L=\lim_{n\to\infty}\left| \frac{a_{n+1}}{a_n} \right|
+$$
+exists. If $L<1$, the series converges absolutely. If $L>1$, it diverges.
+
+\begin{proof}
+    Suppose $L<1$. Pick some $b$ such that $L<b<1$. By the definition of $L$, we can choose an $N\in \N$ such that $|a_{n+1}/a_n|<b$ for all $n\geq N$. Then we have $|a_{n+1}|<b|a_n|$. Furthermore, $|a_{N+1}|<b|A_N|$ and $|a_{N+p}|<b^p|a_N|$ for all $p\in \N$. Now let us compare $\sum_{p=1}^\infty |a_{N+p}|$ to $\sum_{p=1}^\infty b^r|a_N|$. The second sum is a geometric series and $0\leq b\leq 1$. Then the second sum converges and the first sum is less that the second sum so it converges. Then the original series converges since we need only to add an extra finite number of terms.
+\end{proof}
+
+
+\end{document}

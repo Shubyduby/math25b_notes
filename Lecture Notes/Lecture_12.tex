@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 12: Key Results Related to Differentiation and Optimization}\\
+{\large Friday, 17 February 2023}\\
+
+\end{center}
+
+
+\section{Differentiation and Extrema}
+
+\prop If $f:\Omega\to \R$ where $\Omega\subseteq \R$ and $f$ has a local extremum at $x_0\in\Omega$. Then $f'(x_0)=0$.
+
+\begin{proof}
+    Suppose $f$ has a local maximum at $x_0$. Assume $f'(x_0)$ exists and is nonzero. Assme that $f(x_0)>0$. For all $\varepsilon>0$, there exists an $\delta>0$ such that if $0<|x-x_0|<\delta$, then
+    $$
+    \left|\frac{f(x)-f(x_0)}{x-x_0}-f'(x_0)\right|<\varepsilon.
+    $$
+    Set $\varepsilon=f'(x_0)/2>0$. Then we have
+    \begin{align*}
+        -\varepsilon&<\frac{f(x)-f(x_0)}{x-x_0}-f'(x_0)\\
+        \frac{1}{2}f'(x_0)&<\frac{f(x)-f(x_0)}{x-x_0}\\
+        f(x)&>f(x_0)+\frac{1}{2}f'(x_)(x-x_0).
+    \end{align*}
+    If $x>x_0$, we get $f(x)>f(x_0)$, a contradiction.
+\end{proof}
+
+\textit{Corollary 1.} If $I$ is an interval and $f:I\to\R$ is continuous on $I$ and $f$ has a local extremum at some interior point $c\in I$, then either $f'(c)=0$ or $f'(c)$ does not exist.
+
+\ex The function $f(x)=|x|$ on $[-1,1]$ has an undefined derivative at the minimum.
+
+\section{The Mean Value Theorem}
+
+\begin{shaded}
+\theorem (\textit{Rolle}) Suppose $f:[a,b]\to \R$ is continuous and is differentiable on $(a,b)$, and that $f(a)=f(b)=0$. Then there exists a $c\in(a,b)$ such that $f'(c)=0$.
+\end{shaded}
+
+\begin{proof}
+    If $f=0$ on $[a,b]$, then this is straightforward as $f'(c)=0$ at every interior point $c$.
+
+    Otherwise, without loss of generality, assume that $f$ takes on a positive value somewhere in its domain. By the extreme value theorem, there exists some $c\in[a,b]$ such that $f(c)=\sup\{f(x):x\in[a,b]\}$. So $f$ achieves an absolute and therefore local extremum at $c$. Then, by proposition 1, $f'(c)=0$. 
+\end{proof}
+
+\textit{Corollary 2.} (\textit{Mean Value Theorem}) If $f$ is continuous on $[a,b]$ and differentiable on the interior $(a,b)$, then there exists some $c\in(a,b)$ such that 
+$$ 
+f'(c)=\frac{f(b)-f(a)}{b-a}.
+$$
+\begin{proof}
+    Let 
+    $$
+    L(x)=f(a)+\frac{f(b)-f(a)}{b-a}(x-a).
+    $$
+    Consider $g(x)=f(x)-L(x)$. Then $g(a)=g(b)=0$ and $g$ is differentiable on $(a,b)$ since $f$ and $L$ are. Then Rolle's theorem.
+\end{proof}
+
+\textit{Corollary 3.} If $f$ continuous on $[a,b]$ and differentiable on $(a,b)$ and $f'(x)=0$ on $[a,b]$, then $f$ is constant on $[a,b]$.
+
+\begin{proof}
+    Let $a<x\leq b$. Then $f$ is continuous $[a,x]$ and differentiable $(a,x)$. By the mean value theorem, we can choose $c\in(a,x)$ with 
+    $$
+    f'(c)=\frac{f(x)-f(a)}{x-a}.
+    $$
+    But $f'(c)=0$, so $f(x)=f(a)$.
+\end{proof}
+
+\textit{Corollary 4.} If $f$ and $g$ are continuous on $[a,b]$ and differentiable on $(a,b)$ and $f'(x)=g'(x)$ on $(a,b)$, then there exists a constant $C$ such that $f(x)=g(x)+C$ for all $x\in[a,b]$.
+\begin{proof}
+    Apply Corollary 3 to the function $f-g$. 
+\end{proof}
+
+\section{Optimization}
+We are going to set up the 1st derivative test.
+\prop Let $f$ be continuous on the closed interval $[a,b]$ and differentiable on the interval $(a,b)$. Then $f$ is increasing on $[a,b]$ if and only if $f'(x)\geq 0$ for all $x\in(a,b)$, and decreasing on $[a,b]$ if and only if $f'(x)\leq 0$ for all $x\in (a,b)$. 
+\begin{proof}
+    Let us prove the case of increasing $f$. Assume that $f'(x)\geq0$ on $(a,b)$. Pick any two points $x_1,x_2\in[a,b]$ and $x_1<x_2$. By the mean value theorem, there exists some $c\in(x_1,x_2)$ such that 
+    $$
+    f'(c)=\frac{f(x_2)-f(x_1)}{x_2-x_1}.
+    $$
+    Then we have $f(x_2)=f(x_1)+\underbrace{(x-2)(x_1)f'(c)}_{\geq 0}$.
+
+    Now suppose that $f$ is differentiable on $(a,b)$ and increasing on $[a,b]$. Pick any $x_0\in (a,b)$. Then given any $x\neq x_0$ in $(a,b)$, 
+    $$
+    \frac{f(x)-f(x_0)}{x-x_0}\geq 0.
+    $$
+    So we have
+    $$
+    \lim_{x\to x_0}\frac{f(x)-f(x_0)}{x-x_0}=f'(x_0)\geq 0.
+    $$
+\end{proof}
+
+\begin{shaded}
+    \theorem (\textit{1st Derivative Test}) Let $f$ be continuous on $[a,b]$ and for some $c\in(a,b)$, $f$ is differentiable from $(a,c)$ and $(c,b)$. Furthermore, suppose there exists some $\delta>0$ such that 
+    \begin{enumerate}
+        \item $(c-\delta,c+\delta)\subseteq (a,b)$
+        \item $f'(x)\geq 0$ on $(c-\delta, c)$
+        \item $f'(x)\leq 0$ on $(c,c+\delta)$.
+    \end{enumerate}
+    Then $c$ is a local maximum on the interval $[a,b]$. There is an analgous result of local minima.
+\end{shaded}
+\begin{proof}
+    If $x\in(c-\delta,c)$, then by the mean value theorem, we can choose some $\tilde{x}\in(x,c)$ such that $f(c)-f(x)=\underbrace{f'(\Tilde{x})}_{\geq 0}\cdot \underbrace{(c-x)}_{>0}$. So $f(c)\geq f(x)$ for all $x$. Same can we done with other half. 
+\end{proof}
+\note The converse is not true! Consider the function $f:\R\to\R$ defined as
+$$
+f(x)\left\{\begin{aligned}
+    &2x^4+x^4\sin(1/x),& x\neq 0\\
+    &0,&x=0
+\end{aligned}\right..
+$$
+Check that $f$ has an absolution minimum at $x=0$ but $f'(x)$ takes on both positive and negative values in all neighborhoods of $x$.
+
+\begin{shaded}
+    \theorem (\textit{Inverse Function Theorem}) Suppose $f:(a,b)\to \R$ is differentiable and either $f'(x)>0$ for all $x\in(a,b)$ or $f'(x)<0$ for all $x\in (a,b)$. Then $f$ is a bijection from $(a,b)$ onto its range, and $f^{-1}$ is differentiable on its domain, and if $y=f(x)$, then $(f^{-1})'(y)=1/f'(x)$.
+\end{shaded}
+Another theorem!! Three theorems in one class?!? This is unheard of! Find the proof in the textbook.
+\end{document}

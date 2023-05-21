@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 9: Continuity (Cont.)}\\
+{\large Friday, 10 February 2023}\\
+
+\end{center}
+
+\section{Continuity}
+\subsection{Topological Approach}
+\prop A function $f:M\to N$ is continuous if and only if for each closed $K\subset N$, the preimage $f^{-1}(K)$ is closed in $M$.
+
+\begin{proof}
+    Let $\{x_j\}$ be a sequence of points in $f^{-1}(K)$. Assume $x_j\to x$ as $j\to \infty$. We want to show that $x\in f^{-1}(K)$. By continuity of $f$, if $x_j\to x$ then $f(x_j)\to f(x)$. Each $f(x_j)$ is in $K$. Since $K$ is closed then $f(x)\in K$. So $x\in f^{-1}(K)$.
+\end{proof}
+
+\prop If $f:M\to N$ and $g:N\to P$ are continuous, then $g\circ f:M\to P$ is continuous.
+
+\begin{proof}
+    Pick some open set $\Omega\subset P$. Since $g$ is continuous, we have $g^{-1}(\Omega)$ is open in $N$. The preimage $f^{-1}(g^{-1}(\Omega))$ is open in $M$ since $f$ is continuous. Then $(g\circ f)^{-1}(\Omega)$ is open in $M$.
+\end{proof}
+
+\section{Properties of Continuous Functions}
+
+\subsection{Addition and Multiplication}
+We also want to define a notion of adding and multiplying functions. Let $(M,d_M)$ be a metric space and $N$ be a real normed vector space. Consider the functions $f:A\subseteq M\to N$ and $g:A\subseteq M\to N$. Then we defined the function $f+g:A\subseteq M\to N$ as $(f+g)(x)=f(x)+g(x)$ and $cf:A\subseteq M\to N$ as $(cf)(x)=cf(x)$.
+
+\prop If $f$ and $g$ are continuous on $A$, so are $f+g$ and $cf$.
+
+\begin{proof}
+    Let $\varepsilon>0$. Pick some $x_0\in A$. Since $f$ is continuous at $x_0$, there exists a $\delta_1>0$ such that for all $x\in A$ with $d_M(x,x_0)<\delta_1$ we have $\|f(x)-f(x_0)\|<\varepsilon/2$. Similarly, we can find a $\delta_2$ for $g(x)$. Let $\delta = \min\{\delta_1,\delta_2\}$. Then $d_M(x_1,x_0)<\delta$ implies that 
+    $$
+    \begin{aligned}
+    \|(f+g)(x)-(f+g)(x_0)\|&=\|f(x)+g(x)-f(x_0)-g(x_0)\|\\
+    &\leq \|f(x)-f(x_0)\|+\|g(x)-g(x_0)\|\\
+    &<\frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon
+    \end{aligned}
+    $$
+    The proof for the scalar product is similar.
+\end{proof}
+
+If we are working in a space that has a product, then products of continuous functions are also continuous. Furthermore, constant functions are continuous and the function $f(x)=x$ is continuous. This is easy to prove yourself.
+
+\textit{Corollary:} Polynomials $\R\to\R$ are continuous.
+
+\subsection{Topological Properties}
+
+If $f:M\to N$ is continuous, is the image of an open set open? No, let $f:\R^m\to\R^n$ be $f(x)=0$ for all $x\in\R^m$. Then $f(\R^m)=\{0\}\subseteq \R^n$ is open. The it goes to show that for continuous functions \textit{the pre-image of an open set is open but the image of one is not necessarily}.
+
+\prop Let $f:M\to N$ be continuous and $M$ compact then $f(M)$ is compact in $N$. 
+
+\begin{proof}
+    In metric spaces, compactness is equivalent to sequential compactness. Let us show that $f(M)$ is sequentially compact. Let $\{y_k\}$ be a sequence in $f(M)$. Since each $y_k$ is in $f(M)$, we can express each as $y_k=f(x_k)$ for some $x_k\in M$. Then $x_k$ forms a sequence $\{x_k\}\subseteq M$ that must have a convergent subsequence with a limit $x\in M$ by the compactness of $M$. Let this subsequence be $\{x_{k_l}\}\to x$ as $l\to\infty$. Since $f$ is continuous, $f(x_{k_l})\to f(x)$ as $l\to \infty$ and $f(x)\in f(M)$ because $x\in M$.
+\end{proof}
+
+\subsection{Connectedness}
+
+Intuitively, the images of connected sets should be connected if the function is continuous. Furthermore, we can think of examples where the preimage of a disconnected set is connected. How are these related?
+
+\prop If $f:M\to N$ is continuous and $M$ is connected, $f(M)$ must be connected.
+
+\begin{proof}
+    Suppose $f(M)$ is not connected. Pick a separation. Let the open sets $\Omega_1$ and $\Omega_2$ separate $f(M)$. That is,
+    \begin{enumerate}
+        \item $f(M)\subseteq \Omega_1\cup \Omega_2$
+        \item $\Omega_1\cap f(M)\neq\emptyset,\;\Omega_2\cap f(M)\neq\emptyset$
+        \item $\Omega_1\cap\Omega_2\cap f(M)=\emptyset$
+    \end{enumerate}
+    We want to show $M$ is not connected. Since $f$ is continuous and $\Omega_1,\Omega_2$ is open, $f^{-1}(\Omega_1)$ and $f^{-1}(\Omega_2)$ are open in $M$. We will show that these separate $M$.
+    \begin{enumerate}
+        \item $f^{-1}(\Omega_1)\cup f^{-1}(\Omega_2)=f^{-1}(\Omega_1\cup\Omega_2)\supseteq f^{-1}(f(M))=M$
+        \item $f^{-1}(\Omega_1)\cap M=f^{-1}(\Omega_1)\cap f^{-1}(f(M))=f^{-1}(\Omega_1\cap f(M))\neq\emptyset.$
+        \item etc.
+    \end{enumerate}
+\end{proof}
+
+\section{Extreme Value Theorem}
+Here are some examples that will give us some intuition for the extreme value theorem.
+
+\ex $f:[1,\infty)\to \R$ defined as $f(x)=1-1/x$.
+\ex $f:(0,1)\to \R$ defined as $f(x)=x^2$. No absolute maximum is achieved.
+\ex $f:[-1,1]\to \R$ defined as 
+$$
+f(x)\left\{\begin{aligned}
+    &x+1,&-\leq x<0\\
+    &0, &x=0\\
+    &x-1, &0<x\leq 1
+\end{aligned} \right.
+$$
+achieves no absolute maximum.
+
+\begin{shaded}
+\theorem \textit{(Extreme Value Theorem)} Let $f:K\subseteq M\to \R$ be continuous and $K$ is compact and $(M,d)$ is a metric space. Then $f(K)\subseteq \R$ is bounded and there exists an $x,y\in K$ such that $f(x)=\sup\{f(K)\}$, the absolute maximum, and $f(y)=\inf\{f(K)\}$.
+\end{shaded}
+\begin{proof}
+    Note that $f(K)$ is compact since $f$ is continuous and $K$ is compact. By Heine-Borel, $f(K)$ is closed and bounded. Since $f(K)$ is closed, $f(K)$ contains $\sup\{f(K)\}$. Thus, there exists a point $x\in K$ such that $f(x)=\sup\{f(K)\}$. The same is done for the infimum.
+\end{proof}
+\end{document}

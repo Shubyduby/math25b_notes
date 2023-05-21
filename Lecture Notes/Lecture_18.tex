@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 18: The Space of Continuous Functions, Contraction Mapping Principle}\\
+{\large Monday, 6 March 2023}\\
+\end{center}
+\section{The Space of Continuous Functions}
+
+Today's lecture will use the following notation for function spaces, following the M\& H textbok:
+
+Let $(M,d)$ be a metric space and $N$ be a normed real vector space. The set of functions $f:A\subseteq M\to N$ is a vector space $S$. Now, we will define the set $C(A,N)=\{f:A\subseteq M\to N\;|\;\mbox{$f$ is continuous on $A$}\}$ is a subspace of $S$. Note that if $K$ is compact then $C(K,N)$ is a normed vector space with $\|f\|=\sup\{\|f(x)\|_N : x\in K\}$, the supremum can be replaced by maximum by the extreme value theorem.
+
+Sometimes, we will not use a compact domain:
+
+\ex $C((0,\infty),\R)$ contains $f(x)=\ln{x}$, but the function is unbounded.
+
+So we will use the notation $C_b (A,N)$ to mean bounded continuous function from $A\to N$. We can still use the supremum norm defined above.
+
+\prop If $N$ is a complete, normed vector space then the space $C_b (A,N)$ is a complete, normed vector space.
+
+\begin{proof}
+    Proved this for homework!
+\end{proof}
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+
+\defn A complete, normed vector space is called a \textit{Banach space}.
+
+\defn A complete inner product space is a \textit{Hilbert space}.
+\end{mdframed}
+\note A Hilbert space is implied to be a Banach space since any inner product induces a norm.
+
+\section{The Contraction Mapping Principle}
+Last week, we proved that there exists a unique function $E:\R\to\R$ satisfying $E'(t)=E(t)$ for all $t$ and $E(0)=1$. We would like to know: can we generalize this uniqueness result to differential equation of the form 
+$$
+\left\{\begin{aligned}
+&x'(t)=F(x(t))\\
+&x(0)=b
+\end{aligned}\right. .
+$$
+The answer to this is that sometimes we can, if the function $F$ is "reasonable" (we will find later that this is Lipschitz). Fixed point theorems are useful in understanding what is needed for the function $F$.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn Let $(M,d)$ be a metric space and $\Phi:M\to M$. We say that $\Phi$ is a \textit{contraction} if there exists a constant $c\in[0,1)$ such that given any $x,y\in M$, we have that $$d\left(\Phi(x),\Phi(y)\right)\leq cd(x,y).$$
+\end{mdframed}
+\note If $\Phi$ is a contraction in a normed vector space, $d(x,y)=\|x-y\|$, we have that
+$$
+\|\Phi(x)-\Phi(y)\|\leq c\|x-y\|.
+$$
+This is the same as being globally Lipscitz with a constant less than 1.
+
+\begin{shaded}
+\theorem (\textit{Banach}) (\textit{Contraction Mapping Principle}) Let $M$ be a complete metric space. If $\Phi:M\to M$ is a contraction, then $\Phi$ has a unique fixed point.
+\end{shaded}
+
+\begin{proof}
+    Let $M$ be a complete metric space and $\Phi: M\to M$ be a contraction. Pick \textit{any} point $x_0\in M$. Let $x_1=\Phi(x_0)$ and $x_{n+1}=\Phi(x_{n})$ for each $\n\in \N$. We claim there is a fixed point. If $x_1=x_0$ then $x_0$ is the fixed point. Otherwise, assume that $x_1\neq x_0$. Since $\Phi$ is a contraction, there is a $c\in[0,1)$ such that $d(\Phi(x),\Phi(y))\leq cd(x,y)$ regardless of $x,y\in M$. Look at $d(x_{n+p},x_n)$ where $p\in \N$. We will use the triangle inequality to argue that the sequence $\{x_n\}$ is Cauchy:
+    \begin{align*}
+        d(x_{n+p},x_n)&\leq d(x_{n+p},x_{n+p-1})+d(x_{n+p-1},x_{n+p-2})+\cdots+d(x_{n+1},x_n)
+    \end{align*}
+    Note that $d(x_{n+1},x_n)\leq c^n d(x_1,x_0)$. So 
+    \begin{align*}
+        d(x_{n+p},x_n)&\leq c^{n+p-1}d(x_1,x_0)+\cdots +c^n d(x_1,x_0)\\
+        &=c^n d(x_1,x_0) \left[c^{p-1}+c^{p-2}+\cdots+1\right]\\
+        &\leq c^n d(x_1,x_0) \frac{1}{1-c}.
+    \end{align*}
+    Given any $\varepsilon>0$, we can choose an $N\in \N$ such that $c^nd(x_1,x_0)/(1-c)<\varepsilon$ since $c\in [0,1)$. This shows that $\{x_n\}$ is Cauchy. Since $M$ is complete, the sequence must converge some some limit $\{x_n\}\to x^*\in M$. Let us show that $x^*$ is a fixed point of $\Phi$. Given any $\eta>0$ and any point $x_0\in M$, we can choose $\delta=\eta/(c+1)$ to imply that
+    $$
+    d(x,x_0)<\delta\implies  d(\Phi(x),\Phi(x_0))<\eta.
+    $$
+    Then $\Phi$ is continuous. Since $\Phi$ is continuous,
+    \begin{align*}
+        &\Phi\left(\lim_{n\to \infty} x_n\right)=\lim_{n\to \infty} \Phi(x_n)\\
+        &\implies \Phi(x^*)=\lim_{n\to\infty} x_{n+1}=x^*.
+    \end{align*}
+    We now show that $x^*$ is unique. Let $x^{**}$ be another, distinct fixed point of $\Phi$. We have
+    \begin{align*}
+        d(x^{*},x^{**})=d(\Phi(x^*),\Phi(x^{**}))\leq cd(x^*,x^{**}).
+    \end{align*}
+    if $d(x^*,x^{**})\neq 0$, then $c\geq 1$, a contraction.
+\end{proof}
+
+\note An equivalent variation of the theorem above: if $S$ is a closed subset and subspace of a Banach space and $\Phi:S\to S$ is a contraction, then $\Phi$ has a unique fixed point. This is because any closed subset and subspace of a Banach space is still a Banach space.
+\note Fun way to think about this. I am currently in Cambridge. If I place down a map of Cambridge here (Science Center 507), there is place on the map that is on top of its exact location, and it is the only one.
+
+\ex Show that $x=\cos (x)/2$ has a unique solution.
+
+\textit{Solution:} Let $f(x)=\cos (x)/2$. Then given any $x,y\in\R$ and, without loss of generality, $x<y$,
+\begin{align*}
+    f(y)-f(x)=f'(c)(y-x)
+\end{align*}
+for some $c\in (x,y)$. We have $|f'(c)|\leq 1/2$ so 
+$$
+|f(y)-f(x)|\leq \frac{1}{2}|y-x|,
+$$
+showing that $f$ is a contraction. Then there exists a unique fixed point of $f$, so there is a unique solution to the given equation.
+
+\section{Towards next Lecture: Applications to Initial Value Problems}
+
+We said that the initial value problem $x'(t)=x, x(0)=1$ has a unique solution. We cannot take this for granted for general differential equations.
+\ex Consider the initial value problem
+$$
+\frac{dx}{dt}=3x^{\frac{2}{3}}, x(0)=0.
+$$
+This is the example of an ill-posed problem. if we naively separate variables, we get $x(t)=t^3$, which indeed solves the problem. However, $x(t)=0$ also is a solution. We can also create a bunch of other solutions. There is not enough information to create a unique solution! This is a horrible model! This issue was that the differential equation was not locally Lipshitz at the initial condition! Failed uniqueness
+
+\ex Consider the initial value problem
+$$
+\frac{dx}{dt}= x^2, x(0)=1.
+$$
+there is a unique solution $x(t)=1/(1-t)$ that fails at $t=1$. Then the solution is only defined over $t\in (-\infty,1)$.
+\end{document}

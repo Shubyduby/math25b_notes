@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 19: Initial Value Problems}\\
+{\large Wednesday, 8 March 2023}\\
+\end{center}
+
+\section{Existence and Uniqueness}
+Last lecture we found that the initial value problem
+$$
+\left\{\begin{aligned}
+&\frac{dx}{dt}=3x^\frac{2}{3}\\
+&x(0)=0
+\end{aligned}\right.
+$$
+has many solutions. Again, this is a problem in mathematical modeling when we would like to have just one solution to make a model or predictions. Then we ask the question: given an initial value problem
+$$
+*\left\{\begin{aligned}
+    &\frac{dx}{dt}=f(x)\\
+    &x(0)=b
+\end{aligned}\right.,
+$$
+what conditions on $f$ guarantee the existence of a unique solution, at least for some interval $(\alpha,\beta)$ where $\alpha<0<\beta$?
+
+\prop With the notation above, suppose $f:\Omega\subseteq \R\to \R$ is continuous on the open set $\Omega$ and $b\in\Omega$. Then $x\in C^1((\alpha,\beta),\Omega)$ satisfies $*$ if and only if $x$ satisfies
+$$
+x(t)=b+\int_0^t f(x(s))ds
+$$
+for all $t\in(\alpha,\beta)$. 
+
+\begin{proof}
+Apply the fundamental theorem of calculus.
+\end{proof}
+
+\begin{shaded}
+\theorem (\textit{Picard-Lindelöf}) Suppose $f:\Omega\subseteq \R\to\R$ is locally Lipschitz on $\Omega$, where $\Omega$ is open, and $b\in \Omega$. Then there exists $\eta>0$ and a unique, differentiable function $x:(-\eta,\eta)\to\Omega$ such that
+$$
+*\bconditions
+&\frac{dx}{dt}=f(x)\\
+&x(0)=b
+\econditions.
+$$
+\end{shaded}
+The general plan for proving this will be to rewrite $*$ in terms of an integral and setting up a fixed point result using contraction mapping.
+\begin{proof}
+    Suppose the assumptions of the theorem are met. Then since $\Omega$ is an open set, $b\in\Omega$, and $f$ is locally Lipshitz over $\Omega$, we can choose a $\delta>0$ such that the set $[b-\delta,b+\delta]\subseteq \Omega$ and the restriction $f|_{[b-\delta,b+\delta]}$ is Lipschitz with constant $L$. With the $\delta$ defined as above, let us define the set of functions $S_\eta\subseteq C([-\eta,\eta],\R)$ as $S_\eta=\{x\in C([-\eta,\eta],\R):|x(t)-b|<\delta\;\forall t\in [-\eta,\eta]\}$. 
+
+    Now consider any function $x\in S_\eta$. By definition, $x$ is a continuous function and $x(t)\in [b-\delta,b+\delta]\subseteq \Omega$ for all $t\in [-\eta,\eta]$. We now define a mapping $\Phi: S_\eta\to C([-\eta,\eta],\R)$ as 
+    $$
+    \Phi(x)(t)=b+\int_0^t f(x(s))~ds
+    $$
+    for all $t\in[-\eta,\eta]$. This mapping is well defined since $f$ is locally Lipschitz and thus continuous so the function $f\circ x$ is continuous. Notice that finding a fixed point of $\Phi$ is equivalent to finding a solution of $*$ by Proposition 1.
+
+    We now will show that if $\eta$ is suitably small, then $\Phi:S_\eta\to S_\eta$. Note that if $x\in S_\eta$, then
+    $$
+    \|\Phi(x)-b\|=\sup_{t\in[-\eta,\eta]}|\Phi(x)(t)-b|=\sup_{t\in[-\eta,\eta]} \left|\int_0^t f(x(s))~ds\right|.
+    $$
+    Let $I(t)=[\min\{0,t\},\max\{0,t\}]$. We have that
+    $$
+    \|\Phi(x)-b\|\leq \sup_{t\in[-\eta,\eta]} \int_{I(t)} |f(x(s))|~ds.
+    $$
+    Since $I(t)$ is compact and $|f\circ x|$ is a continuous function, we know that by the extreme value theorem, we can choose a constant $k$ such that 
+    $$
+    \max_{z\in[b-\delta,b+\delta]}|f(z)|=k.
+    $$
+    Then 
+    $$
+    \sup_{t\in[-\eta,\eta]}\int_{I(t)}|f(x(s))|~ds\leq \sup_{t\in[-\eta,\eta]}|t|k=\eta k.
+    $$
+    Pick $x,y\in S_\eta$. Observe that
+    $$
+    \begin{aligned}
+        \|\Phi(x)-\Phi(y)\|&=\sup_{t\in[-\eta,\eta]}|\Phi(x)(t)-\Phi(y)(t)|\\
+        &= \sup_{t\in[-\eta,\eta]} \left|\int_0^t f(x(s))~ds-\int_0^t f(y(s))~ds\right|\\
+        &\leq \sup_{t\in[-\eta,\eta]}\int_{I(t)} |f(x(s))-f(y(s))|~ds\\
+        &\leq \sup_{t\in[-\eta,\eta]}\int_{I(t)} L|x(s)-y(s)|~ds\\
+        &\leq \sup_{t\in[-\eta,\eta]}\int_{I(t)} L\|x-y\|~ds\\
+        &=\sup_{t\in[-\eta,\eta]} |t|L\|x-y\|\\
+        &=\eta L\|x-y\|.
+    \end{aligned}
+    $$
+    Then we can choose an $\eta>0$ small enough such that $\eta L<1$, making $\Phi$ a contraction, and $\eta k\leq \delta$, so $\Phi:S_\eta\to S_\eta$. Since $S_\eta$ is a closed subset of the Banach space $C([-\eta,\eta],\R)$, the contraction mapping theorem tells us that there exists a unique function $x\in S_\eta$ such that $\Phi(x)=x$. Then by Proposition 1, the unique function $x$ satisfies the initial value problem $*$, proving existence and uniqueness of the solution.
+\end{proof}
+\end{document}

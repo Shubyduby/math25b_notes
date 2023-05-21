@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 29: Consequences of the Implicit Function Theorem}\\
+{\large Friday, 7 April 2023}\\
+\end{center}
+
+\section{Constrained optimization}
+
+\subsection{Setup}
+Here is a theorem that will make future proofs much more manageable since much of multivariate proofs involve a thorough \say{setting the table} that makes the proof more quick and painless. 
+
+\begin{shaded}
+\theorem (\textit{Domain Straightening})
+
+Let $f:\Omega\subseteq \R^n\to \R$ be of class $C^r$ where $r\geq 1$ on the open set $\Omega$. Let $x_0\in\Omega$ and assume, without loss of generality, that $f(x_0)=0$ and $\nabla f(x_0)\neq 0$. Then there exist open sets $U\in\R^n$ and $V\in\Omega$ with $x_0\in V$ and a $C^r$ diffeomorphism $h:U\to V$ such that $f(h(x_1,x_2,\dots,x_n))=x_n$ on $U$. 
+
+\end{shaded}
+
+We will not prove this but here is the idea of the theorem: the function $h$ is a change of variables that straightens out the level sets so that $f\circ h$ is the projection onto the last coordinate.
+
+\ex Consider the surface defined as
+$$
+f(x,y)=\frac{y^2}{2}-\frac{x^2}{2}+\frac{x^4}{4}.
+$$
+The gradient for the curve is $\nabla f(x,y)=\mat x^3-x & y \trix$. Consider what the level sets of this function looks like! In any open sets containing the critical points, the theorem cannot apply.
+
+\subsection{Lagrange Multipliers}
+
+Here is a nice consequence of the implicit function theorem and domain straightening theorem is the Lagrange multiplier theorem (we love economics!). 
+
+\ex Find the absolute extrema of $f(x,y)=xy$ on the domain $K=\{(x,y)\in \R^2 : 4x^2+y^2\leq 72\}$. 
+
+\textit{Solution:} The domain is compact and $f$ is continuous so the extreme value theorem guarantees an absolute extrema. First, we find the critical points in $\mathrm{int}(K)$. The gradient of $f$ is $\nabla f=\mat y & x \trix$, so the only critical point is at $f(0,0)=0$. Now we look at the boundary $\dell K$. Instead of parameterizing the boundary, we will optimize $f(x,y)$ subject to the contraint 
+$$
+\underbrace{4x^2+y^2-72}_{g(x,y)}=0.
+$$
+Now picture the level curves of $f$ along with $g$ overlayed. The points that will potenitally yield a maximum or minimum are the points at which a level curve of $f$ is tangent to a level curve of $g(x,y)=0$. These are the same points at which the gradient vectors of $f$ are parallel to the gradient vectors of $g$. We can express this as
+\begin{equation}
+\nabla f(x_0,y_0)=\lambda \nabla f(x_0,y_0)
+\end{equation}
+for some $\lambda\in\R$. We have that $\grad g(x,y)=\mat 8x & 2y \trix$. Then to solve for the points, we solve
+$$
+\begin{cases}
+y=\lambda8 x\\
+x=\lambda 2y\\
+4x^2+y^2=72
+\end{cases},
+$$
+where the first two equations come from the equation (1) and the last equation is the constraint itself. One must be very careful with nonlinear algebra when solving these systems: avoid cancellation and division by variables since they could be 0. Factoring is preferable. By the first and second equation, we have that 
+$$
+y=16\lambda^2\implies (1-16\lambda^2)y=0.
+$$
+We have three cases now: $y=0$, $\lambda =\pm 1/4$. If $y=0$, then $x=0$ by the second equation, but this does not satisfy the last equation so it is not a valid candidate point. 
+
+If $\lambda = 1/4$, then $y=2x$. Then by the constraint, $x=\pm 3$. If $x=3$, the point is at $(3,6)$. If $x=-3$, we have $(-3,-6)$.
+
+If $\lambda = -1/4$, then $y=-2x$ and the points will be $(3,-6)$ and $(-3,-6)$.
+
+So our four candidate points are $(3,6)$, $(-3,-6)$, $(3,-6)$, $(-3,-6)$. If we evaluate all these points on $f$, we get that the absolute maxima are at $(3,6)$ and $(-3,-6)$ as they evaluate to 18 while the absolute minima are at $(3,-6)$ and $(-3,6)$ as they evaluate to $-18$.
+
+We are generally much more interested in the cases where $\nabla g(x_0,y_0)\neq 0$. Now, we want to know if $g(x,y)=0$ locally a graph of a $C^1$ curve near $(x_0,y_0)$? By domain straightening, we can arrange for $\nabla g(x_0,y_0)$ to point upwards, so, without loss of generality. $\dell g/ \dell y (x_0,y_0)\neq 0$. By the implicit function theorem, this means that locally near $(x_0,y_0)$, $g(x,y)=0$ implicitly defines a function $\psi(x)$ such that $g(x,\psi(x))=0$.
+
+\begin{shaded}
+    \theorem (\textit{Lagrange}) Let $f:\Omega \subseteq \R^n\to \R$ and $g:\Omega \subseteq \R^n\to \R$ be of class $C^1$ on the open set $\Omega$. Let $x_0\in \Omega$ be such that $g(x_0)=c_0$ and $\nabla g(x_0)\neq 0$. Let $S=g^{-1}(\{c_0\})$, that is, the level set in which $g=c_0$. If $f|_S$ has a local extremum at $x_0$, then there exists a $\lambda\in\R$ such that $\grad f(x_0)=\lambda \nabla g(x_0)$. Such a $\lambda$ is called a \textit{Lagrange multiplier}.
+\end{shaded}
+
+The proof begins with domain straightening so that the level sets are flat. Fin de differential calculus (until your next differential math course). Congratulations.
+
+\section{Integration}
+
+Recall the way we reached Riemann integrability. We want to generalize this notion of integrable.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+
+\defn Let $a_j,b_j\in \R$ for $j=1,\dots,n$ and $a_j<b_j$ for each $1,2,\dots, n$. A \textit{rectangle} in $\R^n$ (sometimes referred to as an \textit{n-cell} lmao) is the Cartesian product
+$$
+R=[a_1,b_1]\times [a_2,b_2]\times\cdots\times [a_n,b_n].
+$$
+The \textit{volume} of this rectangle $R$ is defined as
+$$
+\prod_{j=1}^n (b_j-a_j).
+$$
+The volume of the interior, 
+$$
+(a_1,b_1)\times (a_2,b_2)\times\cdots\times (a_n,b_n),
+$$
+is the same. A \textit{partition} of $[a_1,b_1]\times [a_2,b_2]\times\cdots\times [a_n,b_n]$ is induced by the partitions $P_1,P_2,\dots, P_m$ of the individual intervals $[a_j,b_j]$.
+\end{mdframed}
+\end{document}

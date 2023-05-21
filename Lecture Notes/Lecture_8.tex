@@ -1,0 +1,127 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 8: Limits and Continuity}\\
+{\large Wednesday, 8 February 2023}\\
+
+\end{center}
+
+\section{Limits}
+Consider the following example, Lauren
+\ex Let $f:\R\bslash\{1\}\to\R$ be defined as
+$$
+f(x)=\frac{2x^2-2}{x-1}.
+$$
+We are used to the idea that $\lim_{x\to1} (x)=4$. The function would seem continuous across the domain except at $x_0=1$. We want to formalize and solidify our notion of what a limit is and what it means for a function to be continuous.
+
+\defn Let $(M,d_M)$ and $(N,d_N)$ be a metric space. Let $f:A\subseteq M\to N$. Let $x_0$ be a limit point of $A$. We say that $L\in M$ is the \textit{limit} of $f$ at $x_0$ if for all $\varepsilon>0$ then there exists $\delta>0$ such that if $x\in A$ and $0<d_M(x,x_0)<\delta$, then $d_N(L,f(x))<\varepsilon$. We express this as 
+$$
+L=\lim_{x\to x_0}f(x).
+$$
+
+\ex Show that in the above example, $\lim_{x\to 1}f(x)=4$.
+
+\textit{Solution:} Given any $\varepsilon>0$, we want to be able to find some $\delta>0$ such that if $x\in \R\bslash\{1\}$ and $0<|x-1|<\delta$, then $|f(x)-4|<\varepsilon$. We can find such a $\delta$ by observing the following:
+\begin{align*}
+    |f(x)-4|&=\left|\frac{2(x^2-1)}{x-1}=4\right|\\
+    &=\left|\frac{2(x+1)(x-1)}{x-1}-4\right|\\
+    &=|2(x+1)-4|\\
+    &=|2x-2|\\
+    &=2|x-1|.
+\end{align*}
+Then for any $\varepsilon>0$, we can choose $\delta=\varepsilon/2$, since $|x=1|<\delta=\varepsilon/2$ will satisfy $|f(x)-4|=2|x-1|<2\delta=\varepsilon$.
+
+
+\prop Let $f:A\subseteq M\to N$, where $M$ and $N$ are metric spaces equipped with the metrics $d_M$ and $d_n$, respectively. If $L=\lim_{x\to x_0} f(x)$ exists, then $L$ is unique. 
+
+\begin{proof}
+    Suppose that $\lim_{x\to x_0}f(x)=L_1$ and $\lim_{x\to x_0}f(x)=L_2$. Then for any $\varepsilon>0$, we can choose a $\delta_1>0$ such that if $x\in A$ and $0<d_M(x,x_0)<\delta_1$, then $d_N(L_1,f(x))<\varepsilon/2$. We can do the same with some $\delta_2>0$ for $L_2$. Now let $\delta=\min\{\delta_1,\delta_2\}$. Then when $0<d_M(x,x_0)<\delta$, we have that
+    $$
+    d_N(L_1,L_2)\leq d_N(L_1,f(x))+d_N(f(x),L_2)<\varepsilon,
+    $$
+    since metrics satisfy the triangle inequality. Since $\varepsilon$ can be chosen to be arbitrarily small, $d_N(L_1,L_2)=0$, so $L_1=L_2$.
+\end{proof}
+\section{Continuity}
+
+Now that we can define what it means for a function to be continuous at a certain point.
+\defn Let $(M,d_M)$ and $(N,d_N)$ be metric spaces and $f:A\subseteq M\to N$. Also, let $x_0\in A$ be a limit point of $A$. We say that $f$ is \textit{continuous} at $x_0$ if given any $\varepsilon>0$, there exists some $\delta>0$ such that if $x\in A$ and $d_M(x,x_0)<\delta$, then $d_N(f(x),f(x_0))<\varepsilon$.
+
+\note Continuity, then, also means that $f(x_0)$ exists and agrees with $\lim_{x\to x_0} f(x)$, which also exists. If $x_0$ is not a limit point of $A$ and $f$ is defined at $x_0$, then $f$ is still continuous at $x_0$.
+
+\ex Show that the function $f(x)=\sqrt{x}$ is continuous for all $x_0\in(0,\infty)$.
+
+\textit{Solution:} For any $\varepsilon>0$, we want to find a $\delta>0$ such that $|x-x_0|<\delta$ implies that $|\sqrt{x}-\sqrt{x_0}|<\varepsilon$. Notice that
+$$
+|\sqrt{x}-\sqrt{x_0}|=\left|\frac{(\sqrt{x}-\sqrt{x_0})(\sqrt{x}+\sqrt{x_0})}{\sqrt{x}+\sqrt{x_0}}\right|=\frac{1}{\sqrt{x}+\sqrt{x_0}}|x-x_0|\leq \frac{1}{\sqrt{x_0}}|x-x_0|.
+$$
+Then if we choose $\delta=\min\{x_0,\varepsilon\sqrt{x_0}\}$, we have $|f(x)-f(x_0)|<\varepsilon$.
+
+\ex Let $T:\R^n\to\R^m$ be a linear transformation. Show that $T$ is continuous given that $\R^n$ and $\R^m$ have the usual metric.
+
+\textit{Solution:} Let $\varepsilon>0$ be given. We would like to find a $\delta$ such that if $\|x_0-x\|<\delta$, then $\|T(x_0)-T(x)\|<\varepsilon$. Note that if $T$ is not the zero map, then 
+$$
+\|T(x_0)-T(x)\|=\|T(x_0-x)\|\leq \|T\|\|x_0-x\|,
+$$
+where $\|T\|$ is defined as $\sup_{\|x\|= 1}\|T(x)\|$. When $T\neq 0$, $\|T\|>0$. In this case, choose $\delta=\varepsilon/\|T\|$.
+
+\prop Let $f:A\subseteq M\to N$. Then $f$ is continuous on $A$ if and only if for every sequence $\{x_n\}$ in $A$ that converges to a limit $x$ in $A$, we have $\{f(x_k)\}\to f(x)$ in $N$. 
+
+\begin{proof}
+    Let us begin by supposing that $f:A\subseteq M\to N$ is a continuous function and that $\{x_k\}\in A$ converges to $x$. Given $\varepsilon>0$, choose $\delta>0$ such that if $d_M(x,y)<\delta$, then $d_N(f(x),f(y))<\varepsilon$. Choose $N\in \N$  large enough such that $d_M(x_k,x)<\delta$ whenever $k\geq N$. Then $d_N(f(x_k),f(x))<\varepsilon$ whenever $k\geq N$. Thus, $\{f(x_n)\}\to f(x)$.
+\end{proof}
+The converse of the proof can be found in the textbook.
+
+\prop Let $f:M\to N$. Then $f$ is continuous if and only if for each open set $\Omega\subseteq N$,the pre-image $f^{-1}(\Omega)$ is open in $M$.
+
+We will prove this next class by proving the case for closed sets.
+\end{document}

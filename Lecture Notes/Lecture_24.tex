@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 24: Higher Order Derivatives, Taylor-Lagrange}\\
+{\large Monday, 27 March 2023}\\
+\end{center}
+
+Much of today's lecture is without proof as they are extremely technical but not unlike previous derivations.
+
+\section{Higher Derivatives, Continued.}
+
+Recall that if $B:\R^n\times\R^n\to \R$ is a bilinear form and $A_{ij}=B(e_i,e_j)$, then $B(x,y)=x^TAy$. 
+
+Let $f:\Omega\subseteq \R^n\to \R$, with $\Omega$ open, and assume that $\dell f/\dell x_i$ exists throughout $\Omega$. We have that $\dell f/\dell x_i:\Omega\subseteq \R^n\to \R$. Then partial derivatives of $\dell f/\dell x_i$ may also exist. We use the notation
+$$
+\frac{\dell}{\dell x_j}\left(\frac{\dell f}{\dell x_i}\right)=\frac{\dell^2 f}{\dell x_j\dell x_i}
+$$
+or $(f_{x_i})_{x_j}=f_{x_ix_j}$. If $i=j$, we can write $\dell^2 f/\dell x_i^2$.
+
+For functions $f:\Omega\subseteq \R^n\to \R$ which have a second derivative on $\Omega$, we can compute with second derivatives much the same way we computed first derivatives and Jacobians. We have that $D^2f(x)\in \mathcal{L}(\R^n,\mathcal{L}(\R^n,\R))$. Recall that our notation is $D^2f(x)(y,z)$ while Marsden and Hoffman use $B_x(y,z)$.
+
+\prop Suppose that $f:\Omega\subseteq \R^n\to\R$ is twice differentiable and let $B_x(y,z)=D^2 f(x)(y,z)$. Then with respect to the standard basis, the matrix associated with this bilinear form is the following:
+$$
+\mat 
+\frac{\dell^2 f}{\dell x_1^2} & \frac{\dell^2 f}{\dell x_1\dell x_2}&\cdots& \frac{\dell^2 f}{\dell x_1\dell x_n}\\
+\frac{\dell^2 f}{\dell x_2 \dell x_1}&\ddots & &\vdots\\
+\vdots &&\ddots &\vdots \\
+\frac{\dell ^2 f}{\dell x_n\dell x_z}&\cdots &\cdots &\frac{\dell^2 f}{\dell x_n^2}
+
+\trix.
+$$
+If $B_x:\R^n\times\R^n\to \R$ and $H$ denotes this matrix, then $B_x(y,z)=y^THz$ for all $y,z\in\R^n$. This matrix is called the \textit{Hessian}.
+
+
+\prop (\textit{Clairaut-Schwartz}) If $f:\Omega\subseteq \R^n\to \R$ is twice differentiable on the open set $\Omega$ and $D^2f$ is continuous on $\Omega$, then the bilinear form $B_x(y,z)=D^2f(x)(y,z)$ is symmetric at each $x\in\Omega$, that is, $D^2(x)(y,z)=D^2f(x)(z,y)$.
+
+\textit{Corollary.} Under the above assumptions, mixed partials are equal.
+
+\begin{proof}
+    If the matrix is symmetric, then
+    $$
+    \frac{\dell^2 f}{\dell x_i\dell x_j}(x)=B_x(e_i,e_j)=B_x(e_j,e_i)=\frac{\dell^2 f}{\dell x_j\dell x_i}(x).
+    $$
+\end{proof}
+
+\note In calculus books, one will often see a variation of this result: if $\dell^2 f/(\dell x_i\dell x_j)$ and $\dell^2 f/(\dell x_j \dell x_i)$ exists and is continuous throughout $\Omega$, then these mixed partials are equal throughout $\Omega$.
+
+\note For homework, we have an example of non-equality of mixed partials.
+
+\section{Taylor-Lagrange Theorem}
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+
+\defn A function is of class $C^r$ on its domain if its first $r$ derivatives exist and are continuous. We say $f$ is $C^\infty$ if $f\in C^r$ for all $r\in\N$. Marsden and Hoffman say \textit{smooth} to mean $C^\infty$. Some others author just require $C^1$.
+
+\end{mdframed}
+We now generalize Taylor's theorem to higher dimensions.
+
+\begin{shaded}
+
+\theorem(\textit{Taylor-Lagrange}) Let $f:\Omega\subseteq \R^n \to \R$ be of class $C^{k+1}$ on the open domain $\Omega$. Suppose $x_0\in\Omega$ is fixed and pick $x\in\Omega$ and assume $L(t)=x_0+t(x-x_0)\in \Omega$ for all $t\in[0,1]$. Then there exists a $t\in[0,1]$ such that
+$$
+\begin{aligned}
+    f(x)=&\\
+f(x_0)&+Df(x_0)(x-x_0)+\frac{1}{2!}D^2f(x_0)(x-x_0,x-x_0)+\cdots \\
+&+ \frac{1}{k!}D^{(k)}f(x_0)\underbrace{(x-x_0,\dots,x-x_0)}_{k\mbox{ times}}+\frac{1}{(k+1)!}D^{(k+1)}f(c)\underbrace{(x-x_0,\dots,x-x_0)}_{k+1\mbox{ times}}
+\end{aligned}
+$$
+where $c=L(t_0)$.
+\end{shaded}
+\note For careful book keeping, remember that $D^{(m)}f(x_0)$ is an $m$-linear map applied to $\underbrace{(x-x_0,\dots,x-x_0)}_{m\mbox{ times}}$.
+\note If we write $x=x_0+h$ where $h\in\R^n$, then 
+$$
+f(x_0+h)=f(x_0)+Df(x_0)h+\cdots+\frac{1}{k!}D^{(k)}f(x_0)(h,\dots,h)+E(x_0,h),
+$$
+where $E(x_0,h)$ is the error term. The error term actually satisfies
+$$
+\lim_{h\to 0}\frac{\|E(x_0,h)\|}{\|h\|^k}=0.
+$$
+To see an example of this, let us observe the special case of $f:\R\to \R$. We can express $f(x)$ as
+$$
+f(x)=f(x_0)+f'(x_0)(x-x_0)+\cdots+\frac{1}{k!}f^{(k)}(x_0)(x-x_0)^k+\frac{f^{(k+1)}(c)}{(k+1)!}(x-x_0)^{k+1}.
+$$
+Consider the interval $I$ with endpoints at $x$ and $x_0$. Since $f^{(k+1)}$ is continuous on $I$, we have that by the extreme value theorem,
+$$
+M=\max_{y\in I}|f^{(k+1)}(y)|,
+$$
+so the error term shrinks.
+
+\ex Consider the function $f:\R^2\to \R$ refined as 
+$$
+f(x,y)=\sin x+\cos y +xy.
+$$
+The Taylor expansion about the function at $(0,0)$ is
+$$
+f(x,y)=f(0,0)+\nabla f(0,0)\mat x \\ y\trix +\frac{1}{2!}D^2 f(0,0)\left(\mat x \\ y \trix, \mat x \\ y \trix\right)+\mbox{ higher order error term}.
+$$
+Looking at the partial derivatives, we have
+$$
+\begin{aligned}
+f_x(x,y)&=\cos x +y\\
+f_y(x,y)&=-\sin y +x
+\end{aligned}
+$$
+So the tangent plane at $(0,0,f(0,0))$ is
+$$
+L(x,y)=1+\mat 1 & 0 \trix \mat x \\ y \trix = 1+x.
+$$
+Now, the second derivatives are
+$$
+\begin{aligned}
+    f_{xx}(x,y)&=-\sin x\\
+    f_{xy}(x,y)&=1=f_{yx}(x,y)\\
+    f_{yy}(x,y)&=-\cos y.
+\end{aligned}
+$$
+So the Hessian at $(0,0)$ is
+$$
+\mat f_{xx}(0,0) & f_{xy} (0,0) \\ f_{yx}(0,0) & f_{yy}(0,0)\trix=\mat 0 & 1 \\ 1 & -1 \trix.
+$$
+Then 
+$$
+\begin{aligned}
+    f(x,y)&=f(0,0)+\nabla f(0,0)\mat x \\ y\trix +\frac{1}{2!}D^2 f(0,0)\left(\mat x \\ y \trix, \mat x \\ y \trix\right)+\mbox{ stuff}\\
+    &=(1+x)+\frac{1}{2!}\mat x & y \trix \mat 0 & 1 \\ 1 & -1 \trix\mat x\\ y\trix+\mbox{ stuff}\\
+    &=1+x+\frac{1}{2!}(xy+xy-y^2)+\mbox{ stuff}\\
+    &=1+x+xy-\frac{y^2}{2!}+\mbox{ stuff},
+\end{aligned}
+$$
+so $1+x+xy-\frac{y^2}{2!}$ is our best quadratic estimation of $f(x,y)$. Notice connected this is to the Taylor series of $\sin y$ and $\cos x$.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn Suppose for each $j\in\N$, the operator $D^{(j)}f(x_0)$ exists. The series
+$$
+\sum_{j=0}^\infty \frac{1}{j!} D^{(j)}f(x_0)\underbrace{(x-x_0,\dots,x-x_0)}_{j\mbox{ times}}
+$$
+is the \textit{Taylor series} for $f$ centered at $x_0$. If the series converges in some open neighborhood of $x_0$, we say $f$ is \textit{analytic} at $x_0$.
+\end{mdframed}
+\ex Observe that the function $f:\R\to \R$ defined as
+$$
+f(x)=\begin{cases}
+e^{-1/x},&x>0\\
+0,&x\leq 0
+\end{cases}
+$$
+is smooth but not analytic at 0.
+
+\end{document}

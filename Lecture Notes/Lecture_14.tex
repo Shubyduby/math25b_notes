@@ -1,0 +1,197 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{dirtytalk}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 14: Riemann Integrals (Cont.)}\\
+{\large Friday, 24 February 2023}\\
+
+\end{center}
+
+\section{Riemann Integrability}
+
+Last class, we established a criterion for begin integrable.
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn If $f:[a,b]\to \R$ is bounded, we say that $f$ is \textit{Riemann integrable} on $[a,b]$ if 
+$$
+\underline{\int_a}^b f(x)dx =\overline{\int_a^b} f(x)dx
+$$
+\end{mdframed}
+\note We define the following integrals:
+$$
+\int_a^a f(x)dx=0,\qquad\int_b^a f(x)=-\int_a^b f(x) dx
+$$
+\ex Here is a rather boring example: let $f(x) =c$, a constant, on $[a,b]$. Then given a partition $P=\{x_0,x_1,\dots,x_n\}$, and $a=x_0$ while $b=x_n$.  Let $m_k=\inf\{f(x):x\in[x_{k-1},x_k]\}=c$ and $M_k=\sup\{f(x):x\in[x_{k-1},x_k]\}=c$. So 
+$$
+U(f,p)\sum_{k=1}^n x(x_k-x_{k-1})=L(f,p)=c(b-a)=\underline{\int_a}^b f(x)dx =\overline{\int_a^b} f(x)dx=c(b-a).
+$$
+\ex The Dirichlet function is not Riemann integrable: for every partition $P$, $m_k=\inf\{f(x):x\in[x_{k-1},x_k]\}=0$ and $M_k=1$.
+
+\ex Let $f:\R\to\R$ be defined
+$$
+f(x)\left\{\begin{aligned}  
+6,\;&x>\frac{1}{2}\\
+0,\;&x\leq\frac{1}{2}.
+\end{aligned}\right.
+$$
+The function $f$ is integrable on $[0,1]$. We can use the partition $P_\varepsilon=\{0,1/2-\varepsilon,1/2+\varepsilon, 1\}$. The lower sum will be 
+$$
+L(f,P_\varepsilon)=0\left(\frac{1}{2}-\varepsilon\right)+0\left(2\varepsilon\right)+6\left(\frac{1}{2}-\varepsilon\right)=3-6\varepsilon.
+$$
+Meanwhile the upper sum will be
+$$
+U(f,P_\varepsilon)=0+6(2\varepsilon)+6\left(\frac{1}{2}-\varepsilon\right)=3+6\varepsilon.
+$$
+As $\varepsilon\to 0$, both converge to 3.
+
+Here is a proposition we will prove on the homework:
+\prop (\textit{Riemann Criterion}) Let $f:[a,b]\to \R$ be bounded. Then $f$ is Riemann integrable if and only if given $\varepsilon>0$, there exists a partition $P_\varepsilon$ such that 
+$$
+U(f,P_\varepsilon)-L(f,P_\varepsilon)<\varepsilon.
+$$
+
+\prop Let $f:[a,b]\to \R$ be continuous. Then  $f$ is Riemann integrable on $[a,b]$.
+
+\begin{proof}
+    Since  $f$ continuous and $[a,b]$ is a compact domain, $f$ is uniformly continuous on $[a,b]$. Then given any $\varepsilon>0$, there exists a $\delta>0$ such that if $|x-y|<\delta$, then $|f(x)-f(y)|<\varepsilon/(b-a)$. Accordingly, we create a regular partition $P=\{x_0,x_1,\dots,x_n\}$ where $x_0=a$ and $x_j=a+j(b-a)/n$ for all $j=1,2,\dots,n$, where $n$ is large enough such that $(b-a)/n<\delta$. Now look at any $[x_{j-1},x_j]$. By the extreme value theorem, there exists points $\alpha_j$ and $\omega_j$ in the interval such that 
+    \begin{align*}
+        f(\alpha_j)&=\inf\{f(x):x\in[x_{j_1},x_j]\}=m_j\\
+        f(\omega_j)&=\sup\{f(x):x\in[x_{j_1},x_j]\}=M_j.
+    \end{align*}
+    But $|\alpha_j-\omega_j|<\delta$ so 
+    $$
+    |M_j-m_j|<\varepsilon/(b-a)\implies\sum_{j=1}^n M_j\left(\frac{b-a}{n}\right)-\sum_{j=1}^n m_j\left(\frac{b-a}{n}\right)<\sum_{j=1}^n\frac{\varepsilon}{b-a}\frac{b-a}{n}=\varepsilon,
+    $$
+    satisfying the Riemann criterion.
+\end{proof}
+
+\section{Properties}
+You should prove these on your own:
+\prop (\textit{Linearity of the Integral}) If $f$ and $g$ are Riemann integrable and bounded on $[a,b]$ then
+$$
+\int_a^b (f+g)(x)dx=\int_a^b f(x)dx+\int_a^b g(x)dx.
+$$
+If $c$ is a constant then 
+$$
+\int_a^b(cf)(x)dx=c\int_a^b f(x)dx.
+$$
+\prop If $f(x)\leq g(x)$ for all $x\in[a,b]$, then 
+$$
+\int_a^b f(x)dx\leq \int_a^b g(x)dx.
+$$
+\prop If $f$ is integrable and bounded on $[a,r]$ and $[r,b]$ then 
+$$
+\int_a^r f(x)dx +\int_r^b f(x)dx=\int_a^b f(x)dx.
+$$
+\prop If $|f|$ is integrable on $[a,b]$ then so is $f$ and 
+$$
+\left|\int_a^b f(x)dx\right|\leq \int_a^b |f(x)|dx.
+$$
+Consider the geometric intuition for this last proposition!
+\section{The Fundamental Theorem of Calculus}
+\begin{shaded}
+\theorem (\textit{The Fundamental Theorem of Calculus}) Suppose $f:[a,b]\to \R$ is continuous. Then $f$ has an antiderivative $F$ and 
+$$
+\int_a^b f(x)dx=F(x)-F(a).
+$$
+If $G$ is any other antiderivative of $f$ then $G(x)=F(x)+C$ for some constant $C$.
+\end{shaded}
+\begin{proof}
+    We will begin by first proving the claim that $F:[a,b]\to \R$ defined as 
+    $$
+    F(x)=\int_a^x f(t)dt 
+    $$
+    is an antiderivative for $f$. Pick some $x_0\in (a,b)$. We claim that
+    $$
+    \lim_{x\to x_0} \frac{F(x)-F(x_0)}{x-x_0}=f(x_0).
+    $$
+    Then given any $\varepsilon>0$, we want to be able to find a $\delta>0$ such that if $0<|x-x_0|<\delta$ and $x\in[a,b]$ then 
+    $$
+    \left|\frac{F(x)-F(x_0)}{x-x_0}-f(x_0)\right|<\varepsilon.
+    $$
+    Notice that if we choose some $\delta$ small enough such that $|f(t)-f(x_0)|<\varepsilon$ for all $t\in[x,x_0]$, we have that $f(x_0)-\varepsilon\leq f(t)\leq f(x_0)+\varepsilon$. Then we also have that
+    $$
+    (x-x_0)(f(x_0)-\varepsilon)\leq \int_{x_0}^x f(t)~dt\leq (x-x_0)(f(x_0)+\varepsilon).
+    $$
+    With this, consider the expression that we can now bound:
+    \begin{align*}
+        \left|\frac{1}{x-x_0}\underbrace{\left(\int_a^x f(t)~dt - \int_a^{x_0} f(t)~dt\right)}_{\int_{x_0}^x f(t)~dt}-f(x)\right|.
+    \end{align*}
+    You now have a rough outline of the proof. Be empowered to prove the rest on your own and fill in the gaps!
+\end{proof}
+\ex Calculate the integral
+$$
+\int_{-1}^2 3x^2 ~dx.
+$$
+\section{Pointwise and Uniform Convergence}
+
+We will now start constructing \say{our old friends} functions like $e^x, \cos{x},\ln{x},\arctan{x}$. Let $A$ be a set and $(N,d_N)$ be a metric space.
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn A sequence of functions $\{f_k\}$ converges \textit{pointwise} to a function $f:A\to N$ if for each $x\in A$ we have $\{f_k(x)\}\to f(x)$ in $N$. That is, for all $\varepsilon>0$ and for all $x\in A$ there exists a constant $C\in\N$ which is dependent on $\varepsilon$ and $x$ such that if $K\geq C$, then $d_N(f_k(x),f(x))<\varepsilon$.
+
+\defn We say $\{f_k\}$ converges \textit{uniformly} to $f:A\to N$ if for all $\varepsilon>0$, there exists a $C\in \N$ only dependent on $\varepsilon$ such that if $K\geq C$, then $d_N(f_K(x),f(x))<\varepsilon$ for all $x\in A$. 
+\end{mdframed}
+You can imagine uniform convergence as a criteria that at a large enough $K$, the functions in the sequence all hug the target function around a certain $\varepsilon$ tube. 
+
+\ex Let $f_n:[0,1]\to \R$ be defined as $f_n(x)=x^n$. Then 
+$$
+f(x)\left\{\begin{aligned}
+    1,\;& x=1\\
+    0,\;& 0\leq x<1.
+\end{aligned}\right.
+$$
+Then $f_n\to f$ is pointwise but not uniformly convergent.
+\end{document}

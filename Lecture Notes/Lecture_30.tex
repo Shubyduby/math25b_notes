@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 30: Integration Revisited}\\
+{\large Monday, 10 April 2023}\\
+\end{center}
+\section{Generalizing the Riemann Criterion to $\R^n$}
+
+
+\subsection{Constructing the Riemann Integral}
+Recall the definitions of a rectangle in $\R^n$, the rectangle's volume, and the definition of a partition in $\R^n$. In particular, If $[a_1,b_1]\times\cdots\times [a_n,b_n]$ is a rectangle in $\R^n$ and we partition each $[a_j,b_j]$ with $P_j=\{C_j^{(0)},\dots, C_j^{(n_j)}\}$, then $P=(P_1,\dots,P_n)$ subdivides $R$ into $\prod_{j=1}^n n_j$ subrectangles. 
+
+If $S$ is a subrectangle induced by some partition $P$ of rectangle $R$, let
+$$
+\begin{aligned}
+    m_s(f)&=\inf_{x\in S} f(x)\\
+    M_s(f)&=\sup_{x\in S}f(x).
+\end{aligned}
+$$
+Then the \textit{upper sum} $U(f,P)$ is defined as
+$$
+U(f,P)=\sum_S M_s(f)v(S),
+$$
+where $v(S)$ is the volume of the subrectangle. The \textit{lower sum} is defined as
+$$
+L(f,P)=\sum_S m_s(f)v(S).
+$$
+The lower integral is defined as
+$$
+\underline{\int_{R}}f=\sup_{P\in\mathcal{P}}L(f,P).
+$$
+The upper integral is defined analogously. We say $f$ is \textit{Riemann integrable} on $R\in\R^n$ if the lower and upper integrals are equal.
+
+If $B\in\R^n$ is any bounded domain, we define $\int_B f$ as follows. Pick a rectangle $R$ that contains $B$. Define 
+$$
+f_\mathrm{ext}(x)=\begin{cases}
+f(x), &x\in B\\
+0, &x\notin B
+\end{cases}
+$$
+Then 
+$$
+\int_B f=\int_R f_\mathrm{ext}
+$$
+if the latter exists.
+
+
+We also have an analogous definition of a refinement. We say that a partition $Q$ refines a partition $P$ if every subrectangle $S$ induced by $Q$ is contained in a subrectangle induced by $P$. Certainly, we have that $L(f,P)\leq U(f,P)$. Also, $L(f,Q)\geq L(f,P)$ and $U(f,Q)\leq U(f,P)$. If $P$ and $Q$ are any partitions of rectangle $R$, then $L(f,P)\leq U(f,Q)$.
+
+Riemann's criterion also maintains. A function $f$ is integrable on a rectangle $R$ if and only if given $\varepsilon>0$, there exists a partition $P$ such that 
+$$
+U(f,P)-L(f,P)<\varepsilon.
+$$
+\subsection{Fubini's Theorem and Calculation}
+\begin{shaded}
+\textit{Darboux Criterion:} If $f:R\subseteq\R^n\to \R$ is bounded on rectangle $R$, then $f$ is integrable with integral $I$ if and only if for all $\varepsilon>0$, there exists a $\delta>0$ such that every partition of $R$ into subrectangles of side lengths less than $\delta$ yields 
+$$
+\left| \sum_{j=1}^N f(x_j)v(S_j) - I \right|<\varepsilon
+$$
+where $S_1,\dots,S_N$ are the subrectangles induced by $P$, $x_j$ is any representative from $S_j$, and $v(S_j)$ is the volume of the subrectangle $S_j$.
+\end{shaded}
+
+Now we see how to compute. Consider a special case
+$$
+f:[a,b]\times[c,d]\to \R.
+$$
+For fixed $y\in[c,d]$, we define $g_y(x)=f(x,y)$. The function $g_y:[a,b]\to \R$ is continuous because $f$ was continuous, so $g_y$ is integrable on $[a,b]$. Let us construct a partition:
+$$
+\begin{aligned}
+    a&=x_0<x_1<\cdots<x_n=b\\
+    c&=y_0<y_1<\cdots<y_m=d.
+\end{aligned}
+$$
+By Darboux, we can ensure that $\int_a^b f(x,y_j)dx$ is as close as we like to 
+$$
+\sum_{i=1}^n f(x_i,y_j)(x_i-x_{i-1})
+$$
+if $\max_{1\leq i\leq n}(x_i-x_{i-1})$ is small enough. As a result, we get that
+$$
+\int_{[a,b]\times[c,d]} f
+$$
+is well approximated by
+$$
+\sum_{j=1}^m\left[\int_a^b f(x,y_j)~dx\right](y_j-y_{j-1})
+$$
+provided that $\max_{1\leq j\leq n}(y_j-y_{j-1})$ is also very small. By Darboux, we have sketched the proof that
+$$
+\int_{[a,b]\times[c,d]} f =\int_c^d\left(\int_a^b f(x,y)~dx\right)~dy.
+$$
+Notice that this could have been sliced in the opposite order! What we have done is sketched out a proof for Fubini's theorem.
+ 
+\begin{shaded}
+    \theorem (\textit{Fubini}) Let $R=[a,b]\times [c,d]\subseteq \R^2$ be a rectangle and the function $f:R\to \R$ be continuous. Then $f$ is integrable on $R$ and 
+    $$
+    \int_R f=\int_a^b\left(\int_c^d f(x,y)~dy\right)~dx=\int_c^d\left(\int_a^b f(x,y)~dx\right)~dy.
+    $$
+\end{shaded}
+\note Now we can compute $\int_R f$ by means of interated integrals. Furthermore, we can generalize this pretty easily to function from $\R^n$ to $\R$. 
+
+\note We can even relax the continuity constraint! Much worse to prove however.
+
+
+\ex Let $f:\R^2\to\R$ be defined as $f(x,y)=xe^{xy}$ and $R=[1,2]\times[3,4]$. Evaluate $\int_R f$.
+
+\textit{Solution:} We use Fubini's Theorem:
+$$
+\int_1^2\left(\int_3^4 xe^{xy}~dy\right)~dx=\int_1^2 e^{4x}-e^{3x}~dx
+$$
+etc. Notice that by carefully choosing the order in which we integrate, we completely side-stepped needing to use integration by parts.
+
+\note Fubini's theorem only applies to rectangular domains.
+
+\ex Let $f:K\subseteq \R^2\to \R$ be continuous on $K$, the triangle bounded by the line $y=4$, $x=0$, and $y=2x$. If we want to calculate $\int_K f$, we can compute
+$$
+\int_0^2 \int_{2x}^4 f(x,y)~dydx.
+$$
+However, notice that flipping the integrals yields utter nonsense:
+$$
+\int_{2x}^4\int_0^2 f(x,y)~dxdy.
+$$
+If we do want to flip the integrals, we must take into account the domain:
+$$
+\int_0^4 \int_0^{y/2} f(x,y)~dxdy.
+$$
+
+\section{Change of Variables}
+We will now lay the groundwork for integration techniques for functions of several variables. 
+\begin{shaded}
+\theorem (\textit{Fundamental Theorem of Calculus}) Suppose $f:[a,b]\to \R$ is integrable, $F:[a,b]\to \R$ is continuous and differentiable on $(a,b)$, and $F'(x)=f(x)$ for all $x\in(a,b)$. Then 
+$$
+\int_a^b f(x)~dx=F(b)-F(a).
+$$
+\end{shaded}
+
+\begin{proof}
+    We will use Riemann's criterion to prove this. Let $\varepsilon>0$ be given and $P=\{x_0,\dots,x_n\}$ be a partition of $[a,b]$ such that $U(F',P)-L(F',P)<\varepsilon$. Applying the mean value theorem, we have that on each subinterval $[x_{j-1},x_j]$ there exists a $c_j\in[x_{j-1},x_j]$ such that
+    $$
+    F(x_j)-F(x_{j-1})=F'(c_j)(x_j-x_{j-1}).
+    $$
+    Let $m'_j=\inf\{F'(x):x\in[x_{j-1},x_j]\}$ and $M'_j=\sup\{F'(x):x\in[x_{j-1},x_j]\}$. Then
+    $$
+    m'_j(x_j-x_{j-1})\leq F'(c_j)(x_j-x_{j-1})\leq M_j'(x_j-x_{j-1}).
+    $$
+    Then, summing over $j=1,\dots, n$, we have that
+    $$
+    L(F',P)\leq F(a)-F(b)\leq U(F',P).
+    $$
+    Since $F'$ is integrable, 
+    $$
+    L(F',P)\leq \int_a^b F'(x)~dx\leq U(F',P),
+    $$
+    so
+    $$
+    \left|F(b)-F(a)-\int_a^b F'(x)~dx\right|<\varepsilon.
+    $$
+\end{proof}
+
+\prop (\textit{First substitution theorem}) Let $I=[a,b]$ and $\vaphi:I\to \R$ is of class $C^1$. If $f$ is continuous on some interval $J$ containing $\varphi(I)$, then 
+$$
+\int_a^b f(\varphi(t))\varphi'(t)~dt=\int_{\varphi(a)}^{\varphi(b)} f(x)~dx.
+$$
+\begin{proof}
+    This is a consequence of the chain rule.
+\end{proof}
+\end{document}

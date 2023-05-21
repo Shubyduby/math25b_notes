@@ -1,0 +1,213 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 36: Fourier Series, Bessel's Inequality, Parseval's Theorem, Mean Completeness}\\
+{\large Monday, 24  April 2023}\\
+\end{center}
+\section{Fourier Series}
+Recall that given a finite dimension inner product space and an orthonormal basis $u_1,\dots,u_n$, for any $v\in V$ we have that
+$$
+v=\sum_{k=1}^n \langle v,u_k\rangle u_k.
+$$
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn If $\phi_0,\phi_1,\phi_2,\dots$ is an orthonormal sequence in a real inner product space, V and $f\in V$, we write
+$$
+f=\sum_{k=0}^\infty c_k\phi_k 
+$$
+to mean
+$$
+\lim_{n\to \infty} \left\| f -\sum_{k=0}^n c_k\phi_k \right\| =0,
+$$
+where $\|\cdot\|$ is the norm induced by the inner product.
+
+\end{mdframed}
+\prop Suppose $f\in V$ and
+$$
+f=\sum_{k=0}^\infty  c_k\phi_k
+$$
+for some orthonormal sequence $\phi_0,\phi_1,\phi_2,\dots$. Then $c_k = \langle f, \phi_k\rangle$ for all $k$.
+
+\begin{proof}
+    Let $s_n$ denote the $n$th partial sum of the summation above and some $\varepsilon>0$ be given. Then there exists an $N\in\N$ such that $\|f-s_n\|<\varepsilon$ for all $n\geq N$. Given any $k\in \{0,1,2,\dots\}$, pick $n\geq \max \{k,N\}$ and consider
+    $$
+    \langle f,\phi_k\rangle = \langle f-s_n+s_n,\phi_k\rangle = \langle f-s_n,\phi_k\rangle +\underbrace{\langle s_n,\phi_k\rangle}_{c_k},
+    $$
+    so $c_k=\langle s_n,\phi_k\rangle$ because $s_n$ is a finite sum, $n\geq k$, and $\phi_0,\dots,\phi_n$ are orthonormal. Thus,
+    $$
+    |\langle f, \phi_k\rangle  -c_k| = |\langle f-s_n,\phi_k\rangle|\leq \|f-s_n\|\|\phi_k\|<\varepsilon.
+    $$
+\end{proof}
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+\defn Suppose $\phi_0,\phi_1,\phi_3,\dots$ is an orthonormal sequence in the real inner product space $V$. This sequence is a \textit{complete} orthonormal sequence if every $f\in V$ can be written in the form 
+$$
+f=\sum_{k=0}^\infty c_k\phi_k.
+$$
+
+\defn The series above,
+$$
+\sum_{k=0}^\infty \langle f,\phi_k\rangle \phi_k
+$$
+is the \textit{Fourier series} for $f$.
+\end{mdframed}
+\ex In $L^2[-\pi,\pi]$, recall that the sequence
+$$
+\phi_0 = \frac{1}{\sqrt{2\pi}},\quad \phi_1=\frac{\sin(x)}{\sqrt{\pi}},\quad \phi_2 = \frac{\cos(x)}{\sqrt{\pi}},\quad\phi_3=\frac{\sin(2x)}{\sqrt{\pi}},\quad \phi_4=\frac{\cos(2x)}{\sqrt{2\pi}},\dots
+$$
+form an orthonormal sequence. Consider the functions
+$$
+f(x) = -2+7\cos(2x),\qquad g(x) =\begin{cases}
+f(x), &x\in(\R\bslash \Q)\cap [-\pi,\pi]\\
+0, &x\in\Q\cap[-\pi,\pi].
+\end{cases}
+$$
+Notice that for both $f$ and $g$,
+$$
+c_0=-2\sqrt{2\pi},\quad c_4 = 7\sqrt{\pi}.
+$$
+The funcitons $f$ and $g$ differ on a set of measure 0, namely $\Q\cap[-\pi,\pi]$. So $f\sim g$.
+
+\section{Bessel's Inequality, Parseval's Theorem}
+
+\prop (\textit{Bessel's Inequality}) If $\phi_0,\phi_1,\phi_2,\dots$ is an orthonormal sequence in a real inner product space $V$ then for each $f\in V$, the sum
+$$
+\sum_{k=0}^\infty |\langle f,\phi_k\rangle |^2
+$$
+converges and is at most $\|f\|^2$.
+
+\begin{proof}
+    Let 
+    $$
+    s_n=\sum_{k=0}^n \langle f,\phi_k\rangle \phi_k
+    $$
+    denote the partial sums of the series. We first want to show that $f-s_n$ is orthogonal to $s_n$. If we choose some $j\in\{1,2,\dots, n\}$, the $j$th term in $s_n$ is $\langle f,\phi_j\rangle \phi_j$. Then 
+    $$
+    \begin{aligned}
+    \langle f-s_n,\langle f,\phi_j\rangle \phi_j\rangle&=\langle f,\phi_j\rangle\langle f-s_n,\phi_j\rangle =\langle f,\phi_j\rangle^2  -\langle f,\phi_j\rangle\langle s_n, \phi_j\rangle.
+    \end{aligned}
+    $$
+    Notice that
+    $$
+    \left\langle \sum_{k=0}^n \langle f,\phi_k\rangle \phi_k,\phi_j \right\rangle=\langle f,\phi_j\rangle.
+    $$
+    which implies that $\langle f-s_n, s_n\rangle =0$.
+    By the Pythagorean theorem, we have 
+    $$
+    \|f\|^2=\|f-s_n\|^2+\|s_n\|^2,
+    $$
+    so for each $n$,
+    $$
+    \|s_n\|^2\leq \|f\|^2.
+    $$
+    Note that
+    $$
+    \|s_n\|^2 = \sum_{k=0}^n\langle f,\phi_k\rangle^2,
+    $$
+    so the sequence of partial sums $\left\{\|s_n\|^2\right\}_{n=0}^\infty$ is monotone increasing and bounded above by $\|f\|^2$. Then by the monotone convergence theorem, the infinite sum converges and
+    $$
+    \sum_{k=0}^\infty \langle f,\phi_k\rangle^2 \leq\|f\|^2.
+    $$
+\end{proof}
+\note We did not assume $\phi_0,\phi_1,\dots$ was complete. 
+\prop (\textit{Parseval}) Let $\phi_0,\phi_1,\phi_2,\dots$ be an orthonormal sequence in an inner product space $V$. Then the orthonormal sequence is complete if and only if for each $f\in V$, we have equality in Bessel's inequality rather than inequality.
+
+\begin{proof}
+    If the orthonormal sequence in the assumption is complete, we have that
+    $$
+    \|f\|^2 = \|f-s_n\|^2 +\|s_n\|^2
+    $$
+    from the proof of Bessel's inequality. As $n\to \infty$, $\|f-s_n\|\to 0$, so 
+    $$\|f\|^2=\lim_{n\to \infty} \|s_n\|^2=\sum_{k=0}^\infty \langle f,\phi_k\rangle ^2.$$
+\end{proof}
+
+\begin{shaded}
+\theorem Let $V$ be an inner product space and $\phi_0,\phi_1,\dots,\phi_n$ be a set of orthonomal vectors. Then for every list of real numbers $\alpha_0,\alpha_1,\dots,\alpha_n$,
+$$
+\left\| f - \sum_{k=0}^n \alpha_k\phi_k \right\|\geq \left\| f- \sum_{k=0}^n \langle f,\phi_k\rangle \phi_k\right\|
+$$
+with equality if and only if $\alpha_k=\langle f,\phi_k\rangle$.
+\end{shaded}
+
+\begin{proof}
+    This a result of comparing the sequences of norms.
+\end{proof}
+\ex Let $f(x)=x-x^2$ on $[-\pi,\pi]$ and consider the orthonormal set 
+$$
+\phi_0 =\frac{1}{\sqrt{2\pi}},\quad \phi_1=\frac{\sin{x}}{\sqrt{\pi}},\quad \phi_2 = \frac{\cos{x}}{\sqrt{\pi}}.
+$$
+The best $L^2[-\pi,\pi]$ approximation of $f$ is
+$$
+\langle f,\phi_0\rangle \phi_0+\langle f,\phi_1\rangle \phi_1+\langle f,\phi_2\rangle\phi_2.
+$$
+Note that
+$$
+\langle f,\phi_0 \rangle = \int_{-\pi}^\pi (x-x^2)\frac{1}{\sqrt{2\pi}}~dx = \frac{\sqrt{2}}{3}\pi^{\frac{5}{2}},\quad \langle f,\phi_1\rangle = 2\sqrt{\pi},\quad \langle f,\phi_2\rangle = 4\sqrt{\pi}.
+$$
+Now graph the two functions are see how close they are!
+
+\begin{shaded}
+    \theorem (\textit{Mean completeness}) In the space $L^2[-\pi,\pi]$, the orthonormal sequence in Example 1 is complete.
+\end{shaded}
+
+\ex If we want to send a voice memo, we do not need to send the entire sound wave, just the Fourier coefficients for the sound wave!
+\end{document}

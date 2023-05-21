@@ -1,0 +1,167 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 22: Gradient, The Chain Rule}\\
+{\large Wednesday, 22 March 2023}\\
+\end{center}
+
+\section{Directional Derivatives and the Gradient}
+Recall from lecture that if $f:\Omega:\R^n\to \R$, $\Omega$ open, and $u\in\R^n$ is a unit vector, then the directional derivative of $f$ at $x_0$ in the direction of $u$ is defined as
+$$
+D_uf(x_0)=\lim_{h\to 0} \frac{f(x_0+hu)-f(x_0)}{h}
+$$
+provided that the limit exists.
+
+\ex Let $f(x,y)=x^2+y^2$ and find the directional derivative of $f$ at $(-1,1)$ in the direction of $v=[3,4]^T$.
+
+\textit{Solution:} First, we normalize $v$ to get $u=[3/5,4/5]^T$ Then
+\begin{align*}
+    D_uf(1,-1)&=\lim_{h\to 0} \frac{f(1+3h/5,-1+4h/5)-f(1,-1)}{h}=-2/5.
+\end{align*}
+
+\prop Suppose $f:\Omega\subseteq \R^n\to \R$ is differentiable on the open set $\Omega$ and $x_0\in \Omega$. Then the directional derivatives $D_uf(x_0)$ exists in every direction $u$. Moreover, we have that
+$$
+D_uf(x_0)=\langle \nabla f(x_0), u\rangle,
+$$
+using the standard inner product.
+
+\begin{proof}
+    Let $u$ be any unit vector and $x_0\in\Omega$. Since $f$ is differentiable at $x_0$, 
+    $$
+    \lim_{x\to x_0}\frac{\|f(x)-f(x_0)-\nabla f(x_0)\cdot(x-x_0)\|}{\|x-x_0\|}=0.
+    $$
+    In particular consider $x=x_0+hu$. We get 
+    $$
+    \lim_{h\to 0} \frac{\|f(x)-f(x_0)-\nabla f(x_0)\cdot (hu)\|}{|h|}=0.
+    $$
+    Furthermore,
+    $$
+    \lim_{h\to 0}\left|\frac{f(x_0+hu)-f(x_0)}{h}-\nabla f(x_0)\cdot u\right|=0.
+    $$
+    Note that we can use the absolute value instead of the norm function since the codomain of the function is $\R$. So $D_uf(x_0)$ exists and equals $\langle \nabla f(x_0), u\rangle$.
+\end{proof}
+\note The converse of this proposition is \textit{not} true.
+
+
+\textit{Corollary:} The gradient $\nabla f(x_0)$ points in the direction of steepest ascent. To maximize $D_uf(x_0)$, choose $u=\nabla f(x_0)/\|\nabla f(x_0)\|$. This works if $\nabla f(x_0)\neq 0$.
+
+\section{Derivative Rules}
+
+\subsection{Sum Rule}
+
+If $f:\Omega\subseteq \R^n\to \R^m$ and $g:\Omega\subseteq \R^n\to \R^m$ with $\Omega$ open, are differentiable, then the functions $f+g$ and $\lambda f$ is differentiable, where $\lambda\in \R$.
+
+\begin{proof}
+    You will prove this in the homework. Linearity of the derivative operator is key here.
+\end{proof}
+
+\subsection{Chain Rule}
+Let $\Omega_1\subseteq\R^n$ be open and $f:\Omega_1\to\R^m$. Let $\Omega_2\subseteq \R^m$ be open, $g:\Omega_2\to \R^p$, and $f(\Omega_1)\subseteq \Omega_2$. 
+
+\prop (\textit{Chain Rule}) If $f$ is differentiable at $x_0\in \Omega_1$ and $g$ is differentiable at $f(x_0)\in\Omega_2$, then $g\circ f$ is differentiable at $x_0$ and 
+$$
+D(g\circ f)(x_0)=Dg(f(x_0))\circ Df(x_0).
+$$
+Consequently, the Jacobian for $g\circ f$ at $x_0$ is just the product of the Jacobian matrices of the two operators above.
+
+\begin{proof}(\textit{Sketch})
+    For any $x_0\in \Omega_1$, given $\varepsilon>0$, we want to show that there exists $\delta>0$ such that if $\|x-x_0\|<\delta$, then
+    $$
+    \|(g\circ f)(x)-(g\circ f)(x_0)-Dg(f(x_0))Df(x_0)(x-x_0)\|\leq \varepsilon\|x-x_0\|.
+    $$
+    We can do this by subtracting and adding the right hand side of the chain rule and estimating the LHS of the inequality above using the triangle inequality. Observe,
+    $$
+    \begin{aligned}
+        \mathrm{LHS}&\leq \|g(f(x))-g(f(x_0))-Dg(f(x_0))(f(x)-f(x_0))\|\\
+        &\qquad+\|Dg(f(x_0))[f(x)-f(x_0)-Df(x_0)(x-x_0)]\|.
+    \end{aligned}
+    $$
+    To estimate the second summand, use the fact that $f$ is differentiable at $x_0$. Then choose a $\delta_2>0$ such that if $\|x-x_0\|<\delta_2$, then 
+    $$
+    \|f(x)-f(x_0)-Df(x_0)(x-x_0)\|\leq \frac{\varepsilon}{2\|Dg(f(x_0))\|+1}\|x-x_0\|.
+    $$
+    To estimate the first summand, we can use the same trick we needed to show that differentiability implies continuity. We know $f$ is differentiable and therefore continuous at $x_0$.
+\end{proof}
+
+\ex (\textit{Spherical Coordinates}) We can express any point in $\R^3\bslash\{0\}$ using two angles and a distance. Let $(x,y,z)$ be the Cartesian coordinates for some point in $\R^3$. We use $\rho=\sqrt{x^2+y^2+z^2}$ to denote the distance from the origin, and $r=\sqrt{x^2+y^2}$ to denote the length of orthogonal projection or $\rho$ onto the $x,y$-plane. Let $\theta$ be the angle from the positive $x$-axis and $\phi$ be the angle from the positive $z$-axis. Since $x=r\cos\theta$ , $y=r\sin\theta$, and $r=\rho\sin\phi$, we can make a substitution to express $x$ and $y$ with respect to $\rho$ and $\phi$. We will make our spherical coordinates ordered as $(\rho,\phi,\theta)$. We now have
+$$
+x=\rho\sin\phi\cos\theta,\; y=\rho\sin\phi\sin\theta,\; z=\rho\cos\phi.
+$$
+for $\rho\geq 0$, $0\leq\theta<2\pi$, and $0\leq\rho\leq \pi$. Note that $\theta$ is meaningless when $\rho$ is at the boundaries of its domain and the origin is just denoted as $\rho=0$.
+
+Now to our example. Let temperature be a function $T:\R^4\to \R$ of location such that $T(x,y,z)=x^2+y^2+z^2$. How does temperature respond to a small change in $\rho$, $\phi$, or $\theta$?
+
+\textit{Solution:} Consider the function $f$ defined by
+$$
+\mat \rho\\ \phi\\ \theta \trix \mapsto \mat \rho\sin\phi\cos\theta \\ \rho\sin\phi\sin\theta \\ \rho\cos\phi \trix.
+$$
+Then $T\circ f:\R^3\to \R$ is a function that maps spherical coordinates to temperature. By the chain rule, 
+$$
+\begin{aligned}
+D(T\circ f)(\rho,\phi,\theta)&=DT(f(\rho,\phi,\theta))\circ Df(\rho,\phi,\theta)\\
+&=\mat 2\rho\sin\phi\cos\theta & 2\rho\sin\phi\sin\theta & 2\rho\cos\phi \trix 
+\mat \sin\phi\cos\theta & \rho\cos\phi\cos\theta & \-\rho\sin\phi\sin\theta \\
+\vdots & \vdots & \vdots\\
+\cos\phi & -\rho\sin\phi & 0 \trix\\
+&=\mat 2\rho & 0 & 0\trix.
+\end{aligned}
+$$
+Temperature does no vary with location \textit{on} the planet, but with altitude.
+\end{document}

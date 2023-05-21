@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 37: Convergence Theorems for Fourier Series}\\
+{\large Wednesday, 26 April 2023}\\
+\end{center}
+
+\section{Uniform Convergence}
+Recall from last class the mean completeness theorem, which states that
+$$
+\phi_0 = \frac{1}{\sqrt{2\pi}},\quad \phi_1=\frac{\sin(x)}{\sqrt{\pi}},\quad \phi_2 = \frac{\cos(x)}{\sqrt{\pi}},\quad\phi_3=\frac{\sin(2x)}{\sqrt{\pi}},\quad \phi_4=\frac{\cos(2x)}{\sqrt{2\pi}},\dots
+$$
+is a complete orthonormal sequence for $L^2[-\pi,\pi]$. That is, every $f\in L^2[-\pi,\pi]$ has a unique representation of the form 
+$$
+f-\sum_{n=0}^\infty c_k\phi_k, \quad c_k=\langle f,\phi_k\rangle.
+$$
+
+We want to know, under what circumstances does the Fourier series for $f\in L^2[-\pi,\pi]$ converge \textit{uniformly} to $f$? 
+
+\note It is common to write the Fourier series for a function $f$ as the following:
+$$
+\frac{a_0}{2}+\sum_{k=1}^\infty a_k\cos(kx)+b_k\sin(kx),
+$$
+where 
+$$
+a_k = \frac{1}{\pi}\int_{-\pi}^\pi f(x)\cos(kx)~dx,\quad b_k=\frac{1}{\pi}\int_{-\pi}^\pi f(x)\sin(kx)~dx,
+$$
+and 
+$$
+a_0=\frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\cos(0x)~dx.
+$$
+
+\prop Suppose $f:[-\pi,\pi ]\to\R$ is of class $C^1$ and that $f(\pi)=f(-\pi)$. If $\phi_0,\phi_1\phi_2,\dots$ is the complete orthonormal sequence described above, then the Fourier series 
+$$
+\sum_{k=0}^\infty \langle f,\phi_k\rangle \phi_k
+$$
+converges uniformly to $f$ on $[-\pi,\pi]$.
+
+\begin{proof}
+Since $f\in C^1[-\pi,\pi]$, $f$ and $f'$ are continuous on $[-\pi,\pi]$ and therefore elements of $L^2[-\pi,\pi]$. By mean completeness, $f$ and $f'$ have unique representations as Fourier series. Then we have that
+$$
+f(x)=\frac{a_0}{2}+\sum_{k=1}^\infty a_k\cos(kx)+b_k\sin(kx)
+$$
+and
+$$
+f'(x) = \frac{a'_0}{2}+\sum_{k=1}^\infty a'_k\cos(kx)+b'_k\sin(kx).
+$$
+Now, if $k\in\N$,
+$$
+\begin{aligned}
+a'_k &= \frac{1}{\pi}\int_{-\pi}^\pi f'(x)\cos(kx)~dx\\
+&=\frac{1}{\pi}\left[ \left[f(x)\cos(kx)\right]_{-\pi}^\pi +k\int_{-\pi}^\pi f(x)\sin(kx)~dx\right]\\
+&=k\left(\frac{1}{\pi} \int_{-\pi}^\pi f(x)\sin(kx)~dx \right)\\
+&=kb_k
+\end{aligned}
+$$
+using integration by parts. Similarly, we have that
+$$
+b'_k = -ka_k.
+$$
+We also have that
+$$
+a'_0=\frac{1}{\pi}\int_{-\pi}^\pi f'(x)~dx =0.
+$$
+Note that
+$$
+|a_k\cos(kx)+b_k\sin(kx)|\leq|a_k\cos(kx)|+|b_k\sin(kx)|\leq |a_k|+|b_k|.
+$$
+Let $M_k=|a_k|+|b_k|$, and consider the partial sum $\sum_{k=1}^n M_k$ for some $n\in\N$. By Cauchy Scwartz, we have that
+$$
+\begin{aligned}
+\sum_{k=1}^n |b_k|&=\sum_{k=1}^n \frac{1}{k}|kb_k|\\ 
+&= \sum_{k=1}^n \frac{1}{k}|a_k'|\\
+&\leq \left(\sum_{k=1}^n \frac{1}{k^2}\right)^\frac{1}{2}\left(\sum_{k=1}^n |a'_k|^2\right)^\frac{1}{2}\\
+&\leq \left(\sum_{k=1}^\infty \frac{1}{k^2}\right)^\frac{1}{2}\left(\sum_{k=1}^\infty |a'_k|^2\right)^\frac{1}{2}.
+\end{aligned}
+$$
+Both factors in the right hand side of the last inequality converge, the first one by the p-series test and the second by Bessel's inequality. Thus, $\sum_{k=1}^\infty |b_k|$ converges because $\left\{\sum_{k=1}^n |b_k|\right\}$ is monotone increasing and bounded above. Similarly, $\sum_{k=1}^\infty|a_k|$ converges, so $\sum_{k=1}^\infty M_k$ converges and thus, the Fourier series for $f$ converges uniformly by the Weierstrass M-test.
+\end{proof}
+
+\note Note the following:
+\begin{enumerate}
+    \item The proposition still holds if $f$ is continuous but not of class $C^1$, but it makes the proof harder. 
+    \item The requirement $f(\pi)=f(-\pi)$ can also be removed. If we would like to remove this requirement, then for all $\varepsilon\in [0,\pi]$ we still have uniform convergence on $[-\pi+\varepsilon,\pi-\varepsilon]$.
+    \item Proofs of convergence for Fourier series are far worse than for Taylor series. No access to ratio test.
+\end{enumerate}
+
+\section{Pointwise Convergence}
+Consider the complete orthonormal sequence $\phi_0,\phi_1,\phi_2,\dots $ that we have been working with. Since it is complete, we have that for all $f\in L_2[-\pi,\pi]$, we have that
+$$
+\left\| \;f-\sum_{k=0}^n\langle f,\phi_k\rangle \phi_k\;\right\|_{L_2}\to 0
+$$
+as $n\to\infty$. Since we also had a proof about uniform convergence,
+$$
+\left\|\; f-\sum_{k=0}^n\langle f,\phi_k\rangle \phi_k\;\right\|_{\infty}\to 0.
+$$
+A function $f:[a,b]\to \R$ is piecewise continuous if there exists a finite partition of $[a,b]$, say, $\{x_0,x_1,\dots,x_n\}$ where $f$ is bounded and continuous on each $(x_{k-1},x_k)$. We write
+$$ 
+f(x_0^+)=\lim_{x\to x_0^+} f(x)
+$$
+and
+$$
+f(x_0^-)=\lim_{x\to x_0^-}f(x),
+$$
+provided the limits exist. We say $f$ has a \textit{removable} discontinuity at $x_0$ if $f(x_0^+)=f(x_0^-)\neq f(x_0)$. We say $f$ has a \textit{jump discontinuity} if $f(x_0^+)$ and $f(x_0^{-})$ both exist but are unequal. Finally, we define the right side and left side derivative:
+$$
+f'(x_0^+)=\lim_{h\to 0^+}\frac{f(x_0+h)-f(x_0^+)}{h},\quad f'(x_0^-)=\lim_{h\to 0^+}\frac{f(x_0^-)-f(x_0-h)}{h}.
+$$
+\begin{shaded}
+\theorem Let $f\in L^2[-\pi,\pi]$ be piecewise $C^1$ and that any discontinuities are removable or jump discontinuities. Then, using our usual complete orthonormal sequence, the Fourier series for $f$ converges pointwise to
+$$
+\frac{f(x^+)+f(x^-)}{2}.
+$$
+Notice that if $f$ is continuous, this is $f$ itself.
+\end{shaded}
+
+\section{Concluding Remarks}
+\begin{enumerate}
+    \item We can generalize Fourier series to domains other than $[-\pi,\pi]$. If we us the domain $[0,L]$, where $L>0$, the following sequence is orthonormal:
+    $$
+    \sqrt{\frac{1}{L}},\; \sqrt{\frac{2}{L}}\sin\left(\frac{\pi x}{L}\right), \; \sqrt{\frac{2}{L}}\cos\left( \frac{\pi x}{L} \right), \; \sqrt{\frac{2}{L}}\sin\left( \frac{2 \pi x}{L}\right), \; \sqrt{\frac{2}{L}}\cos\left( \frac{2 \pi x}{L}\right),\dots
+    $$
+    \item Fourier series are used a lot to solve two point boundary value problems for ODEs and PDEs. Bachman, Narici, Beckenstein have a good book on Fourier analysis, \textit{Fourier and Wavelet Analysis}.
+\end{enumerate}
+That was Math 25! Great course!
+\end{document}

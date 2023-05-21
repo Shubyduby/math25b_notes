@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\newcommand{\bslash}{\symbol{92}}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 3: Accumulation Points, lim inf and lim sup}\\
+{\large Friday, 27 January 2023}\\
+
+\end{center}
+
+\section{Accumulation Points}
+
+Last class, we showed that Cauchy is equivalent to convergent in $\R$. We want to explore convergence like properties in other series that are not necessarily convergent. Thus motivate our definition of an accumulation point.
+
+\defn Let $\{x_n\}$ be a sequence in $\R$. An \textit{accumulation point} is a number $x\in \R$ such that for all $\varepsilon>0$, there are infinitely many $n\in \N$ for which $|x-x_n|<\varepsilon$.
+
+\ex Find the accumulation points of $x_n=(-1)^n(1-1/n)$.
+
+\textit{Solution:} There are two accumulation points at $1$ and $-1$. It seems that the odd indices converge to $-1$ while the even ones converge to $1$.
+
+
+Intuitively, it seems that if we have an accumulation point, there is a subsequence that converges to that accumulation point.
+
+\prop A value $x$ is an accumulation point of a real sequence $\{x_n\}$ if and only if there exists a subsequence that converges to $x$.
+
+\begin{proof}
+    Suppose $x$ is an accumulation point of $\{x_n\}$. Let $\varepsilon=1$ and choose and index $n_1$ such that $|x_{n_1}-x|<1$. Next, let $\varepsilon=1/2$. Pick $n_2>n_1$ with $|x_{n_2}-x|<\varepsilon$. We can do this infinitely by the definition of an accumulation point. Then the subsequence $\{x_{n_k}\}$ converges to $x$.
+
+    Prove the converse on your own!
+\end{proof}
+
+\section{The Limit Superior and Limit Inferior}
+
+Now, if $\{x_n\}$ is a bounded sequence in $\R$, by Bolzano-Werierstrass we know there exists a convergent subsequence, so there must exist at least one accumulation point. We will name the largest and smallest ones.
+
+\defn If $\{x_n\}$ is a bounded sequence in $\R$, the \textit{limit superior} is defined as 
+$$
+\limsup_{n\to\infty} \{x_n\}=\lim_{n\to\infty}\left\{\sup_{m\geq n} x_m\ \right\}.
+$$
+The \textit{limit inferior} is similarly
+$$
+\liminf_{n\to\infty} \{x_n\}=\lim_{n\to\infty}\left\{\inf_{m\geq n} x_m\right\}.
+$$
+
+
+\ex Find the lim sup and lim inf of $x_n=(-1)^n(1+1/n)$.
+
+\textit{Solution:} They are 1 and $-1$, respectively.
+
+\ex Suppose $\{x_n\}$ is a bounded sequence. Show that the $\liminf\{x\} \leq \limsup\{x\}$.
+
+\textit{Solution:} Show on your own :]
+
+\section{Metric Space Topology}
+
+The domains of our functions will be critical in analyzing these functions. Then let us seek to understand the domain. Then we want to generalize the notion of an open and closed interval on $\R$. Beginning with understanding what a metric space is.
+
+\defn A \textit{metric} space, notated as $(M,d)$, is a set $M$ with a function $d:M\times M\to \R$ (called a metric) such that three things hold:
+\begin{enumerate}
+    \item Positivity: $d(x,y)\geq 0$, with equality when $x=y$.
+    \item Symmetry: $d(x,y)=d(y,x)$.
+    \item Triangle Inequality: $d(x,y)\leq d(x,z)+d(z,y)$.
+\end{enumerate}
+
+\ex Consider the real inner product space $\R^n$ with standard inner product $\sum_{j=1}^n x_jy_j$. This induces a Euclidean norm $\|x\|=\sqrt{\langle x,x\rangle}$, which induces a metric $d(x,y)=\|x-y\|$ (which we proved in 25a). Then $\R^n$ is a metric space with this metric.
+
+Having a metric allows us to generalize our notion of "openness." But first, we need a little tool to do this.
+
+\subsection{The $\varepsilon$-ball}
+
+\defn Let $(M,d)$ be a metric space, and $x\in M$ and $\varepsilon>0$. The \textit{$\varepsilon$-ball} or \textit{$\varepsilon$-neighborhood} of $x$ is the set $B(x,\varepsilon)=\{y\in M:\;d(x,y)<\varepsilon\}$.
+
+\ex In $\R$, if we pick an $x\in \R$, then $B(x,\varepsilon)$ is the open interval $(x-\varepsilon,x+\varepsilon)$.
+
+Now we define an open set.
+
+\subsection{Open and Closed Sets}
+
+\defn A subset $\Omega\subseteq M$ is open if for all $x\in\Omega$, there exists an $\varepsilon>0$ such that $B(x,\varepsilon)\subseteq \Omega$.
+
+\ex Let $U=\{x\in\R^n : \;|x_n|<2\}$. Show that $U$ is an open set with $\R^n$ with the usual metric.
+
+\textit{Solution:} Let $x\in U$. Let $\varepsilon=\min \{2-x_n,x_n-2\}$. Consider any point $y$. If $y\not\in U$, then either $y_n\geq 2$ or $y_n\leq -2$. If $y_n\geq 2$, then $\|y-x\|\geq |y_n-x_n|\geq 2-x\geq \varepsilon$, so $y\not\in B(x,\varepsilon)$. Then $B(x,\varepsilon)\subseteq U$.
+
+\prop If $(M,d)$ is a metric space and $x\in M$, then the $\varepsilon$-ball $B(x,\varepsilon)$ is open.
+
+\begin{proof}
+    Let $y\in B(x,\varepsilon)$. If $y=x$, just set $\delta=\varepsilon$ so $B(y,\delta)\subseteq B(x,\varepsilon)$. If else, we produce a radius $\delta>0$ such that $B(y,\delta)\subseteq B(x,\varepsilon)$. Choose $\delta=\varepsilon-d(x,y)$. Pick $z\in B(y,\delta)$. We want to show that $z\in B(x,\varepsilon)$. Notice
+    $$
+    d(x,y)\leq d(x,y)+d(y,z)<d(x,y)+\delta=d(x,y)+\varepsilon-d(x,y)=\varepsilon,
+    $$
+    so $d(x,y)<\varepsilon$ and so $z\in B(x,\varepsilon)$.
+\end{proof}
+
+There are other ways to recognize open sets that are useful.
+
+\prop Let $(M,d)$ be a metric space. Then
+\begin{enumerate}
+    \item $\emptyset$ and $M$ are open.
+    \item Intersections of finitely many open sets are also open set.
+    \item Arbitrary unions of open sets are open.
+\end{enumerate}
+
+Prove this yourself!
+A topological space $(X,\tau)$ satisfies these three properties.
+
+\ex Consider $I_n=(-1/n.1/n)$, $n-1,2,3,\dots$. These are open in $\R$. Their intersection is
+$$
+\bigcap_{n=1}^\infty I_n =\{0\},
+$$
+which is not open.
+
+\defn A subset $E\subseteq M$ of metric space $(M,d)$ is \textit{closed} if its complement $E^c=M\bslash E$ is open.
+
+This is on homework and important; you will prove it there:
+
+\prop Let $(M,d)$ be a metric space. A set $K\subseteq M$ is closed if and only if each convergent sequence of points $\{x_n\}\in K$ converges to a limit in $K$.
+\end{document}

@@ -1,0 +1,309 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\brar}{$[-R,R]$}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\newcommand{inv}{{-1}}
+\newcommand{\bslash}{\symbol{92}}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Chapter 4: Continuous Mappings}\\
+\end{center}
+
+\section{Continuity}
+Let's first consider the notion of continuity for functions on the real line $\R$. A continuous function $f$ should be one where if $x$ is close to $x_0$, then $f(x)$ should be close to $f(x_0)$. To but this in more precise terms, the concept to a limit must be defined.
+\defn Let $A\subset \R^n$, $f:A\to\R^m$, and suppose $x_0$ is an accumulation point of $A$. We say tat $b\in\R^m$ is the \textit{limit of f at $x_0$}, written
+$$
+\lim_{x\to x_0}f(x)=b,
+$$
+if given any $\varepsilon>0$ there exists $\delta>0$ (depending on $f$, $x_0$, and $\varepsilon$) such that for all $x\in A$, $x\neq x_0$, $\|x-x_0\|<\delta$ implies that $\|f(x)-b\|<\varepsilon$. 
+
+\note A limit might not exist; for example, let $f:\R\symbol{92}\{0\}\to\R$ be defined by $f(x)=1$ if $x<0$ and 2 if $x>0$. Then 0 is an accumulation point of $\R\symbol{92}\{0\}$ but $\lim_{x\to0}f(x)$ does not exist. Or consider $f:\R\bslash\{0\}\to \R$ where $f(x)=\sin(1/x)$; this function oscillates faster and faster near 0 so can't actually approach anything. Meanwhile,
+
+\prop If there exists a limit, the limit is unique. 
+\begin{proof}
+    Suppose that $\lim_{x\to x_0} f(x)=b$ and $b^'$. To show that $b=b^'$, let $\varepsilon >0$ be given. Then there exists some $\delta_1 > 0$ and $\delta_2$ such that $\|x-x_0\|<\delta_1$ implies $\|f(x)-b\|<\varepsilon/2$ and $\|x-x_0\|<\delta_2$ implies $\|f(x)-b'\|<\varepsilon/2$. Let $\delta=\min(\delta_1,\delta_2)$; then $\|x-x_0\|<\delta$ implies 
+    $$
+    \|b-b'\|\leq \|b-f(x)\| + \|f(x)-b'\|<\varepsilon/2 + \varepsilon/2 =\varepsilon;
+    $$
+    thus $\|b-b'\|<\varepsilon$ for any $\varepsilon$, and so $\|b-b'\|=0$, or $b=b'$.
+\end{proof}
+Compare this with the proof for uniqueness of the limit of a sequence.
+\defn Let $A\subset \R^n$, $f:A\to \R^m$, and let $x_0\in A$. We say that $f$ is \textit{continuous} at $x_0$ if either $x_0$ is not an accumulation point of $A$ or $\lim_{x\to x_0} f(x)=f(x_0)$.
+
+\Note This requires the existence of $\lim_{x\to x_0} f(x)$ in addition to specifying its values. Definition 2 can be rephrased as follows: $f$ is continuous at the point $x_0$ in its domain if and only if for $\varepsilon > 0$, there is a $\delta > 0 $ such that for all $x\in A$, $\|x-x_0\|<\delta$ implies $\|f(x)=f(x_0)\|<\varepsilon$. In Definition 1 we needed to specify that $x\neq x_0$ since our condition is certainly valid if $x=x_0$.
+
+There is some additional notation that is useful. Suppose $f$ is defined at least on $(x_0,a]\subset\R$ for some $a>x_0$. Then
+$$
+\lim_{x\to x_0^+}f(x) =b
+$$
+means the limit of $f$ with domain $A=(x_0,a]$. In other words, for every $\varepsilon>0$ there is a $\delta>0$ such that $|x-x_0|<\delta$, $x>x_0$ implies $|f(x)-b|<\varepsilon$. Thus, we are taking the limit of $f$ as $x$ approached $x_0$ \textit{from the right}. Similarly wecan define
+$$
+\lim_{x\to x_0^-}f(x)=b,
+$$
+the limit as $x$ approaches $x_0$ from the left. These are for obvious reasons, called \textit{one sided limits}. Now we can define continuous:
+\defn A function $f:A\to\R^m$ is called \textit{continuous} on the set $B\subset A$ if $f$ is continuous at each point of $B$. If we just say $f$ is continuous, we mean $f$ is continuous on its domain $A$.
+
+The are other useful ways of formulating continuity. One of these is particularly significant because it involves only the topology (that is, the open set), and so it would be applicable in more general situations.
+\subsection{Continuity Theorem}
+\begin{shaded}
+    \theorem Let $f:A\to\R^m$ be a mapping, where $A\subset\R^n$ is any set. Then the following are equivalent:
+    \begin{enumerate}[(i)]
+        \item $f$ is continuous on $A$
+        \item For each convergent sequence $x_k\to x_0$ in $A$, we have $f(x_k)\to f(x_0)$.
+        \item For each open set $U$ in $\R^m$, $f^{-1}(U)\subset A$ is open relative to $A$; that is, $f^{-1}(U)=V\cap A$ for some open set $V$.
+        \item For each closed set $F\subset \R^m$, $f^{-1}(F)\subset A$ is closed relative to $A$; that is, $f^{-1}(F)=G\cap A$ for some closed set $G$.
+    \end{enumerate}
+\end{shaded}
+Before we prove these, let us establish the intuition and plausibility of Theorem 1. The relation between (i) and (ii) should be clear by the definition of continuity; we just now approach through a sequence rather than accumulation point. The equivalence between (iii) and (iv) are the same since open sets are just the complements of closed ones.
+
+Let us see what exactly (iii) is saying; essentially, if we choose $U$, our open set in the co-domain, to be a small open set containing $f(x_0)$, then $f^{-1}(U)$ being open means that there is also an open disc around $x_0$ contained in $f^{-1}(U)$. For any $x$ in this disc, $x$ gets mapped to $U$, which remember, are the points near $f(x_0)$. Then $U$ is basically a measure of how close $f(x)$ is to $f(x_0)$. If $x$ is near $x_0$, then $x\in f^{-1}(U)$, so $f(x)$ will be near $f(x_0)$. With this intuition, we can prove Theorem 1. 
+We shall prove this (i) $\Rightarrow$ (ii) $\Rightarrow$ (iv) $\Rightarrow$ (iii) $\Rightarrow$ (i).
+\begin{proof}
+    (i) $\Rightarrow$ (ii): Suppose $x_k\to x_0$. To show that $f(x_k)\to f(x_0)$, let $\varepsilon > 0$; we must find an integer $N$ so that $k \geq N$ implies $d(f(x_k),f(x_0))<\varepsilon$. To accomplish this, choose $\delta >0$ such that $d(x,x_0)<\delta$ implies $d(f(x),f(x_0))< \varepsilon$. The existence of a $\delta$ is guaranteed by the continuity of $f$. Then choose $N$ so that $k\geq N$ implies $d(x_k,x_0)<\delta$. The choice of $N$ yields the desired conclusion.
+
+    (ii) $\Rightarrow$ (iv): Let $F\subset \R^m$ be closed. To show $f^{-1}(F)$ is closed in A, we use the fact that a set $B$ is closed relative to $A$ if and only if for every sequence $x_k\in B$ which converges to a point $x\in A$, then $x\in B$. Prove this yourself.
+    Here, let $x_k\in f^{-1}(F)$ and let $x_k\to x$, where $x\in A$. We must show that $x\in f^{-1}(F)$. Now, by (ii), $f(x_k)\to f(x)$, and since $f(x)\in F$ and $F$ is closed, we can conclude that $f(x)\in F$. Thus, $x\in f^{-1}(F)$.
+
+    (iv) $\Rightarrow$ (iii): If $U$ is open, let $F=\R^m\bslash U$, which is closed. Then, by (iv), $f^{-1}(F) = G\cap A$ for some closed set $G$. Thus $f^{-1}(U)=A\cap (\R^n\bslash G)$, so $f^{-1}(U)$ is open relative to $A$.
+
+    (iii) $\Rightarrow$ (i): Given $x_0\in A$ and $\varepsilon>0$, we must find $\delta$ so that $d(x,x_0)<\delta$ implies $d(f(x),f(x_0))<\varepsilon$. Since $D(f(x_0),\epsilon)$ is an open set, $f^{-1}(D(f(x_0),\varepsilon))$ is open by (iii). Thus, by the definition of an open set and the fact that $x_0\in f^{-1}(D(f(x_0),\varepsilon))$, there is a $\delta>0$ such that $D(x_0,\delta)\cap A\subset f^{-1}(D(f(x_0),\varepsilon))$. This is another way of saying
+    $$
+    (x\in A\mbox \;\wedge\; d(x,x_0)<\delta) \Rightarrow d(f(x),f(x_0))<\varepsilon.
+    $$
+\end{proof}
+\ex Let $f:\R^n \to \R^n$ be the identity function $x\mapsto x$. Show that $f$ is continuous.
+
+\textit{Solution:} Fix $x_0\in \R$. By the definition of continuity, we must find some $\delta>0$ for any $\varepsilon>0$ such that $\|x-x_0\|<\delta$ implies $\|f(x)-f(x_0)\|<\varepsilon$. Clearly, if we let $\delta = \varepsilon$, then the statement becomes $\|x-x_0\|<\varepsilon$ implies $\|x-x_0\|<\varepsilon$. Hence, $f$ is continuous.
+
+\ex Let $f:(0,\infty)\to \R$; $x\mapsto 1/x$. Show that $f$ is continuous.
+
+\textit{Solution} Fix $x_0\in(0,\infty)$. To determine how we choose $\delta$, we examine the expression
+$$
+\begin{aligned}
+|f(x)-f(x_0)|&=\left|\frac{1}{x}-\frac{1}{x_0} \right|\\
+&= \frac{|x_0-x|}{|xx_0|}.
+\end{aligned}
+$$
+If $|x-x_0|<\delta$, then we would get 
+$$
+|f(x)-f(x_0)|<\frac{\delta}{|xx_0|}=\frac{\delta}{xx_0}.
+$$
+Now, if we make sure that $\delta<x_0/2$, then we will have $x>x_0/2$ so $\delta/xx_0<(2\delta/x_0^2)$. Now given $\varepsilon>0$, choose $\delta =\min(x_0/2, \varepsilon x_0^2/2)$. Then the above argument shows that $|f(x)-f(x_0)|<\varepsilon$ if $|x-x_0|<\delta$. Thus, $f$ is continuous at $x_0$.
+
+\ex Let $f:\R^n\to \R^m$ be continuous. Show that $\{x\in\R^n\;|\;\|f(x)\|<1\}$ is open.
+
+\textit{Solution:} The above set is nothing but $f^{-1}\{y\;|\;\|y\|<1\}$ which is the inverse image of an open set, so by theorem 1 (iii), it is open.
+
+\section{Images of Compact and Connected Sets}
+
+Some important ideas that result from the notion of continuity.
+\begin{shaded}
+    \theorem Let $f:\;A\to\R^m$ be a continuous mapping. Then
+    \begin{enumerate}[(i)]
+        \item if $K\subset A$ and $K$ is connected [respectively, path-connected], then $f(K)$ is connected [respectively, path-connected],
+        \item if $B\subset A$ and $B$ is compact, then $f(B)$ is compact.
+    \end{enumerate}
+\end{shaded}
+The result (i) is very clear if we consider the path-connected case. Essentially, if $c(t)$ is a path joining $x$ and $y$ in $K$, then $f(c(t))$ is a path joining $f(x)$ and $f(y)$ in $f(K)$. The result of (ii) is a little less intuitive. Bolzano-Weirstrass gives us a good way to link the two ideas though, since if $f(x_k)$ is a sequence in $f(B)$, then $x_k$ has a convergent subsequence, so we get a corresponding convergent subsequence for $f(x_k)$. Let us now prove the Theorem 2.
+\begin{proof}
+    (i) Suppose the contrapositive, that $f(K)$ is not connected. We will show then that $K$ is not connected. Then, by definition, we can write $f(K)\subset U\cup V$, where $f(K)\cap U\neq \emptyset$, $f(K)\cap V\neq \emptyset$, $f(K)\cap U\cap V =\emptyset$, and $U,V$ are open. Now, $f^{-1}(U)=U'\cap A$ for some open set $U'$, and similarly, $f^{-1}(V)=V'\cap A$ for some open set $V'$ by the definition of continuity. From the conditions on $U,V$, we see that $U'\cap V'\cap K=\emptyset$, $K\subset U'\cup V'$, $U'\cap K\neq\emptyset$, and $V'\cap K\neq\emptyset$. Thus, $K$ is not connected, proving out assertion.
+
+    (ii) Let $y_k$ be a sequence in $f(B)$. To show that $f(B)$ is compact, we need to show that $y_k$ has a subsequence converging to a point in $f(B)$, as this would satisfy the Bolzano-Weirstrass formulation of compactness. Now, let $y_k=f(x_k)$ for $x_k\in B$. Since $B$ is compact, there is a convergent subsequence, say, $x_{k_n}\to x$ for $x\in B$. Now, by Theorem 1(ii), since $f$ is continuous, we have $f(x_{k_n})\to f(x)$. Of course, $f(x)\in f(B)$, so $x_{k_n}$ is a convergent subsequence of $y_k$ that converges to a point in $f(B)$. Then $f(B)$ is compact.
+\end{proof}
+\ex Let $K\in\R^2$ be compact. Prove that $A=\{x\in\R\;|\;\exists y \mbox{ such that } (x,y)\in K\}$ is compact.
+
+\textit{Solution:} Let $f:\R^2\to\R$ be defined as $(x,y)\to x$. Then $f$ is continuous (prove yourself). We claim that $A=f(K)$, so $A$ would be compact by Theorem 2. To prove the claim, let $x\in A$. Then $(x,y)\in K$ for some $y$, so $x=f(x,y)\in f(K)$. Conversely, if $x=f(x,y)$ for any $(x,y)\in K$, then $x\in A$ by definition.
+
+\ex Find a continuous map $f:\R\to\R$ and a compact $K\subset \R$ such that $f^{-1}(K)$ is not compact.
+
+\textit{Solution:} Let $f(x)=0$ for all $x\in \R$ and let $K=\{0\}$. Then $f^{-1}(K)=\R$ is not compact.
+
+\ex Let $f:\R^2\to \R$ be continuous, and let $A=\{f(x);|\;\|x\|=1\}$. Show that $A$ is a closed interval.
+
+\textit{Solution:} Clearly, $A=f(S)$ where $S=\{x\in\R^2\;|\;\|x\|=1\}$, the unit circle. Now $S$ is connected and compact so $A$ is connected and compact. A is in interval (prove yourself). But only compact intervals are closed ones, so $A$ is closed.
+
+\section{Operations on Continuous Mappings}
+Intuitively, the composition of continuous functions should be continuous. Then we claim
+\theorem Suppose $f:A-\R^m$ and $g:B\to\R^p$ are continuous functions with $f(A)\subset B$. Then $g\circ f:A\to \R^p$ is continuous.
+
+\begin{proof}
+    Let $U\subset \R^p$ be open. Then $(g\circ f)^{-1}(U)=f^{-1}(g^{-1}(U))$. Now, $g^{-1}(U)=U'\cap B$ for some $U'$ open, and $f^\inv(u'\cap B=f^\inv(U')$, since $f(A)\subset B$. Since $f$ is continuous, $f^\inv(U')=U''\cap A$ for $U''$ open. Thus $g\circ f$ is continuous by Theorem 1.
+\end{proof}
+The other parts of Theorem 1 can prove Theorem 3 just as easily.
+
+\ex The function $e^{\sin x}$ is continuous because $f(x)=\sin X$ and $g(x)=e^x$ are continuous. 
+
+The following theorem gives some of the fundamental properties concerning the arithmetic of limits.
+\begin{shaded}
+    \theorem Let $A\subset \R^n$, and let $x_0$ be an accumulation point of $A$. Then the following are true:
+    \begin{enumerate}[(i)]
+        \item Let $f:A\to\R^m$, and $g:A\to\R^m$ be functions; assume $\lim_{x\to x_0} f(x)$ and $\lim_{x\to x_0}g(x)$ exists and are equal to $a$ and $b$ respectively. Then $\lim_{x\to x_0}(f+g)(x)$ exists and is equal to $a+b$ (where $f+g:A\to \R^m$ is defined by $(f+g)(x)=f(x)+g(x)$).
+        \item let $f:A\to \R$ and $g:\A\to\R^m$ be functions; assume $\lim_{x\to x_0} f(x)$ and $\lim_{x\to x_0}g(x)$ exists and are equal to $a$ and $b$ respectively. Then $\lim_{x\to x_0}(f\cdot g)(x)$ exists and is equal to $ab$ (where $f\cdot g:A\to \R^m$ is defined by $(f\cdot g)(x)=f(x)g(x)$).
+        \item Let $f:A\to \R$ and $g:A\to \R^m$ be functions; assume $\lim_{x\to x_0} f(x)$ and $\lim_{x\to x_0} g(x)$ exist and are equal to $a\neq 0$ and $b$ respectively. Then $f$ is non-zero in neighborhood of $x_0$ and $\lim_{x\to x_0} (g/f)(x)$ exists and is equal to $b/a$ (where $g/f:A\to \R^m$ is defined by $(g/f)(x)=g(x)/f(x)$).
+    \end{enumerate}
+\end{shaded}
+We will not prove this bu tprove its corollaries as the proofs are quite similar.
+
+\textbf{Corollary.} Let $A\subset \R^n$, $x_0\in A$ and accumulation point of $A$. Then
+\begin{enumerate}[(i)]
+    \item Let $f:A\to \R^m$ and $g:A\to \R^m$ be continuous at $x_0$; then the sum of the functions is continuous at $x_0$.
+    \item Let $f:A\to \R$ and $g:A\to \R^m$ be continuous at $x_0$; then the product of the functions is continuous at $x_0$.
+    \item Let$f:A\to \R$ and $f:A\to\R^m$ be continuous at $x_0$ with $f(x_0)\neq 0$; then $f$ is non-zero in a neighborhood $U$ of $x_0$ and the quotient of the functions is continuous at $x_0$.
+\end{enumerate}
+\begin{proof}
+    \begin{enumerate}
+        \item (i) Let $x_0\in A$ and suppose $\varepsilon>0$ is given. Choose $\delta_1>0$ such that $d(x,x_0)<\delta_1$ implies $d(f(x),f(x_0))<\varepsilon /2$ and $\delta_2>0$ such that $d(x,x_0)<\delta_2$ implies $d(g(x),g(x_0))<\varepsilon /2$. Then let $\delta=\min(\delta_1,\delta_2)$. Therefore, if $d(x,x_0)<\delta$, we have the following by the triangle inequality:
+        $$
+        \begin{aligned}
+            \|(f+g)(x)-(f+g)(x_0)\|&=\|f(x)-f(x_0)+g(x)-g(x_0)\|\\
+            &\leq \|f(x)-f(x_0)\|+\|g(x)-g(x_0)\|\\
+            &\leq \frac{\varepsilon}{2} +\frac{\varepsilon}{2}=\varepsilon.
+        \end{aligned}
+        $$
+        \item (ii) Let $x_0\in A$ and suppose $\varepsilon>0$. Choose $\delta_1$ such that $d(x,x_0)<\delta_1$ implies $|f(x)-f(x_0)|<\frac{\varepsilon}{2}\|g(x_0)\|$ and $|f(x)|\leq |f(x_0)|+1$. Also, choose $\delta_2$ such that $d(x,x_0)<\delta_2$ implies that $\|g(x)-g(x_0)\|<\frac{\varepsilon}{2}(|f(x_0)|+1)$. Then for $\delta =\min(\delta_1,\delta_2)$, we have by the triangle inequality that $d(x,x_0)<\delta$ implies
+        $$
+        \begin{aligned}
+            \|fg(x)-fg(x_0)\| &= \|f(x)g(x)-f(x)g(x_0) + f(x)g(x_0) - f(x_0)g(x_0)\|\\
+            &\leq |f(x)|\|g(x)-g(x_0)\|+|f(x)-f(x_0)|\|g(x_0)\|,
+        \end{aligned} 
+        $$
+        using that $\|\alpha x\|=|\alpha|\|x\|$ for $x\in\R^n$, $\alpha\in\R$. Continuing the above estimate, we get 
+        $$
+        \begin{aligned}
+            \|fg(x)-fg(x_0)\|&<(|f(x_0)|+1)\frac{\varepsilon}{2}(|f(x_0)|+1)+\|g(x_0)\|\frac{\varepsilon}{2}\|g(x)\|\\
+            &=\frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon.
+        \end{aligned}
+        $$
+        \item (iii) By proof (ii), it suffices to consider the case $1/f$ since $g/f=g\cdot(1/f)$. To show that $1/f$ is continuous, given $x_0\in A$, choose $\delta_1$ such that $|f(x)-f(x_0)|\leq (|f(x_0)|/2)$ for $\|x-x_0\|<\delta_1$. This is by the continuity of $f$. It follows that $|f(x)|\geq (|f(x_0)|/2)$. Now, given $\varepsilon>0$, choose $\delta_2$ such that $\|x-x_0\|<\delta_2$ implies
+        $$
+        |f(x)-f(x_0)|<\frac{\varepsilon|f(x_0)|^2}{2}.
+        $$
+        Then, if $\delta=\min(\delta_1,\delta_2)$, $\|x-x_0\|<\delta$ implies
+        $$
+        \left| \frac{1}{f(x)}-\frac{1}{f(x_0)} \right|=\left| \frac{f(x_0)-f(x)}{f(x_0)f(x)} \right|\leq \frac{|f(x)-f(x_0)|}{|f(x_0)|^2/2}<\varepsilon.
+        $$
+        This shows that $1/f(x)$ is continuous at $x_0$, and hence it is continuous on $A$.
+        \end{enumerate}
+\end{proof}
+
+
+\ex Since $f(x)=x$ is continuous everywhere in $\R$, all polynomials from $\R\to \R$ are continuous.
+
+\ex (Joint Continuity) Consider $f:\R^2\to\R$, a function of two real variables $f(x,y)$. We distinguish between the continuity of $f$ (joint continuity) and continuity in each variable separately. For example, consider the function
+$$
+f(x,y)=\left\{\begin{aligned}
+   0  & \qquad\mbox{ if $x\neq0$ and $y\neq 0$}; \\
+   1  & \qquad\mbox{ if either $x=0$ or $y=0$}.
+\end{aligned} \right.
+$$
+
+Notice that both $x$ and $y$ considered individually at $(0,0)$ are continuous but $f$ itself is not continuous at $(0,0)$.
+\ex Let $f:\R\to\R^2$ be continuous. Show that $g(x)=f(x^2+x^3)$ is continuous.
+
+\textit{Solution:} Function $g$ is the composition of $f$ on the continuous function $x\mapsto x^2 + x^3$ and so is continuous by Theorem 3.
+
+\ex Let $f(x)=x^2/(1+x)$. Where if $f$ continuous?
+
+\textit{Solution:} We define $f$ for $x\neq -1$. Then, by Theorem 4(iii), $f$ is continuous at all $x\neq -1$.
+
+\section{The Boundness of Continuous Functions on Compact Sets}
+Important property of continuous, real-valued functions: a continuous function that is bounded on a compact set and attains its maximum value and minimum value at some point on the set.
+
+To really appreciate this result, consider what can happen on a noncompact set. Consider the function $f(x)=1/x$ on the open interval $(0,1)$. As $x$ gets closer to $0$, the function becomes arbitrarily large, but $f$ is nevertheless continuous, since $f$ is the quotient of 1 and the continuous function $x\mapsto x$, which does not vanish on $(0,1)$.
+
+Next, we show that even if a function is bounded and continuous, it might not assume its maximum at any point of its domain. Consider the function $f(x)=x$ on the interval $[0,1)$. This function never attains a maximum value because even though there are an infinite number of points as near to 1 as we please, there is no point for which $f(x)=1$. We then present the theorem.
+\theorem Let $A\subset \R^n$ and $f:A\to \R$ be continuous. Let $K\subset A$ be a compact set. Then $f$ is bounded on $k$, that is $B=\{f(x)\;|\; x\in K\subset \R \mbox{ is a bounded set}\}$. Furthermore, there exists points $x_0,x_x\in K$ such that $f(x_0)=\inf(B)$ and $f(x_1)=\sup(B)$. We call $\sup(B)$ the (absolute) maximum of $f$ on $K$ and $\inf(B)$ the (absolute) minimum of $f$ on $K$.
+
+\begin{proof}
+    First, $B$ is bounded above, for $B=\{f(K)\}$ is compact by Theorem 2. so it is closed and bounded by the definition of compactness. Second, we want to produce an $x_1$ such that $x_1\in K$ and $f(x_1)=\sup(B)$. Now, since $B$ is closed, $\sup(B)\in B=f(K)$. The same proof goes for $\inf(B)$.
+\end{proof}
+
+\ex Give an example of a discontinuous function on a compact set which is not bounded.
+
+\textit{Solution:} Let $f:[0,1]\to \R$ be defined by $f(x)=1/x$ if $x>0$ and $f(0)=0$. Clearly, this function exhibits the same unboundedness property as does $1/x$ on $(0,1]$.
+
+\ex Verify Theorem 5 for $f(x)=x/(x^2+1)$ on $[0,1]$.
+
+\textit{Solution:} Note that $f(0)=0$ and $f(1)=1/2$. We shall verify explicitly that the maximum is at $x=1$ and the minimum is at $x=0$. First, as $0\leq x\leq 1$, $x/(x^2+1)\geq 0$ since $x\geq 0$ and $x^2+1\geq 1$, so $f(x)\geq f(0)$ for $0\leq x\leq 1$. Thus, 0 is the minimum. Note tat $0\leq (x-1)^2=x^2-2x+1$, so $x^2+!\geq 2x$ and hence for $x\neq0$,
+$$
+\frac{x}{x^2+1}\leq \frac{x}{2x}=\frac{1}{2}.
+$$
+so $f(x)\leq f(1)=\frac{1}{2}$ and thus $x=1$ is the maximum point.
+
+\section{The Intermediate-Value Theorem}
+
+The idea is that a continuous function on an interval assumes all values between any two given values. Here is the theorem and its proof:
+
+\theorem Let $A\subset \R^n$ and $f:A\to\R$ be continuous. Suppose $K\subset A$ is connected and $x,y\in K$. For every number $c\in \R$ such that $f(x)\leq c\leq f(y)$, there exists a point $z\in K$ such that $f(z)=c$.
+
+\begin{proof}
+    Suppose no such $x$ exists. Then let $U=(-\infty,c)=\{t\in\R \;|\; t<c\}$ and let $V=(c,\infty)$. Clearly, both $U$ and $V$ are open sets. Since $f$ is continuous, we have $f^{-1}(U)=U_0\cap K$ for open set $U_0$, and similarly, $F^{-1}(V)=V_0\cap K$.  By definition of $U$ and $V$, we have $U_0\cap V_0\cap K=\emptyset$, and by the assumption that $\{x\in K\;|\; f(x)=c\}=\emptyset$,we have $K\subset U_0\cup V_0$. Also, $U_0\cap K\neq\emptyset$ since $x\in U$ and $X_0\inK\neq\emptyset$, since $y\in V_0$. Hence, $K$ is not connected, a contradiction.
+\end{proof}
+
+\ex Let $f(x)$ be a cubic polynomial. Argue that $f$ has a (real) root $x_0$.
+
+\textit{Solution:} If $f$ is a cubic polynomial, then $f(x)=ax^3+bx^2+cx+d$, where $a\neq 0$. Suppose that $a>0$. For $x>0$, $x$ large, $ax^3$ is large (and positive) and will be bigger than the other terms so $f(x)>0$. This requires some exact estimates but should be intuitively clear. Similarly, $f(x)<0$ if $x$ is large and negative. Hence, we can apply the intermediate-value theorem to conclude the existence of a point $x_0$ where $f(x_0)=0$.
+
+\ex Let $f:[1,2]\to[0,3]$ be a continuous function with $f(1)=0$, $f(2)=3$. How that $f$ has a fixed point. That is, show that there is a point $x_0\in [1,2]$ such that $f(x_0)=x_0$.
+
+\textit{Solution:} Let $g(x)=f(x)-x$. Then $g$ is continuous, $g(1)=f(1)-1=-1$, and $g(2)=f(2)-2=1$. Hence, by the intermediate-value theorem, $g$ must vanish at some $x_0\in[1,2]$ and this $x_0$ is the fixed point for $f(x)$.
+
+\section{Uniform Convergence}
+
+Here's a slight variant of the definition of continuity that can be useful.
+
+\defn Let $f:A\to\R^m$ and $B\subset A$. We say that $f$ is \textit{uniformly continuous} on the set $B$ if for every $\varepsilon > 0$ there is a $\delta > 0$ such that $x,y\in B$ and $d(x,y)<\delta$ implies that $d(f(x),f(y))<\varepsilon$.
+
+Notice that the definition is similar to continuity excpet that here we must be able to choose $\delta$ to work for \textit{all} $x,y$ once $\varepsilon$ is given. For continuity we were only required to choose a $\delta$ once we were given $\varepsilon>0$ and a \textit{particular} $x_0$. Clearly, then, if $f$ is uniformly continuous then $f$ is continuous.
+
+\ex Consider $f:\R\to\R$, where $x\mapsto x^2$. Then $f$ is certainly continuous, but it is not uniformly continuous. Indeed, for $\varepsilon >0$ and $x_0>0$ given, the $\delta>0$ we need is at least as small as $\varepsilon/(2x_0)$, so if we choose $x_0$ large, $\delta$ must get smaller. No single $\delta$ will do for all $x_0$. this phenomenon cannot happen on compact sets, as the next theorem shows.
+
+\theorem Let $f:A\to\R^m$ be continuous and let $K\subset A$ be a compact set. Then $f$ is uniformly continuous on $K$.
+
+\begin{proof}
+    
+\end{proof}
+\end{document}

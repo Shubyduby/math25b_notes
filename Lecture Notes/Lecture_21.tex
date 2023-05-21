@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 21: Multivariate Calculus}\\
+{\large Monday, 20 March 2023}\\
+\end{center}
+\section{Two Questions Regarding Last Lecture}
+ Recall that if $f:\Omega\subseteq \R^n\to\R^m$,
+ \begin{enumerate}
+     \item If $m=n=1$, differentiability at $x_0$ implies continuity at $x_0$.
+     \item If $f$ is differentiable on $\Omega$, then the partial derivatives $\partial f_i/\partial x_j$ exist and the Jacobian is standard matrix for $Df(x)$.
+ \end{enumerate}
+We have two leading questions. One, is 1 still valid for general $m,n\in\N$?. Two, given that existence of partial derivatives alone is not sufficient to guarantee differentiability, can we formulate stronger conditions that do guarantee it?
+
+\prop The answer to the first question is "yes."
+
+\begin{proof}
+    Let $f:\Omega\subseteq\R^n\to\R^m$ where $\Omega$ is open be differentiable. By the differentiability of $f$, given $\varepsilon_0>0$, there exists $\delta_0=\delta_0(\varepsilon_0,x_0)>0$ such that if $x\in\Omega$ and $\|x-x_0\|<\delta_0$, then 
+    $$
+    \|\underbrace{f(x)-f(x_0)}_y-\underbrace{Df(x_0)(x-x_0)}_z\|\leq \varepsilon_0\|x-x_0\|.
+    $$
+    Note that $\|y-z\|\geq |\|y\|-\|z\||$. Then we have
+    \begin{align*}
+        \|f(x)-f(x_0)\|-\|Df(x_0)(x-x_0)\|&\leq\|f(x)-f(x_0)-Df(x_0)(x-x_0)\|\\
+        &\leq \varepsilon_0\|x-x_0\|,
+    \end{align*}
+    and thus
+    \begin{align*}
+        \|f(x)-f(x_0)\|&\leq \varepsilon_0\|x-x_0\|+\|Df(x_0)(x-x_0)\|\\
+        &\leq (\varepsilon_0+\|Df(x_0)\|)\|x-x_0\|.
+    \end{align*}
+    Given any $\varepsilon>0$, choose $\delta=\min\{\delta_0,\varepsilon/(\varepsilon_0+\|Df(x_0)\|)\}$. Then if $\|x-x_0\|<\delta$ and $x\in\Omega$, then $\|f(x)-f(x_0)\|<\varepsilon$, so $f$ is continuous at $x_0$.
+\end{proof}
+\ex Consider the function $f:\R\to\R$ defined as
+$$
+f(x)\left\{\begin{aligned}
+&x^2\sin{\frac{1}{x^2}},&x\neq0\\
+&0,&x=0.
+\end{aligned}\right.
+$$
+Notice that this function is differentiable everywhere bu $f'$ is unbounded in every open interval containing 0.
+
+We have some special cases for differentiability: when $m=1$ or $n=1$.
+
+\section{Curves in Euclidean Space}
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn A \textit{curve} in $\R^n$ is a continuous function $\gamma:I\to\R^n$ where $I$ is an interval in $\R$.
+
+\defn A curve $\gamma:[a,b]\to\R^n$ is \textit{closed} if $\gamma(a)=\gamma(b)$. A curve is \textit{simple} if $\gamma$ is injective on $[a,b]$ except possibly $\gamma(a)=\gamma(b)$.
+
+\defn If $n=2$, a simple, closed curve is called a \textit{Jordan curve}.
+\end{mdframed}
+
+\ex The curve $\gamma:[0,4\pi]\to\R^2$ defined as
+$$
+\gamma(t)=\begin{bmatrix} \cos t\\\sin t\end{bmatrix}.
+$$
+This curve is closed but not simple.
+
+Now suppose $\gamma:[a,b]\to \R^n$ is differentiable. If $x\in(a,b)$ then $Df(x)$ has  standard matrix
+$$
+Df(x)=\begin{bmatrix}
+    \frac{d\gamma_1}{dx}\\\vdots\\\frac{d\gamma_n}{dx}
+\end{bmatrix}.
+$$
+Then if $\gamma(t)$ is regarded as a "position" at time $t$, then $\gamma'(t)$ can be interpreted as a "velocity" vector at time $t$.
+
+\ex Consider the curve $\gamma:\R\to\R^3$ defined as
+$$
+\gamma=\begin{bmatrix}
+    \cos t\\ \sin t\\ t
+\end{bmatrix}.
+$$
+This is a helix. Wes eats a piece of chalk at this point. We then have that
+$$
+\gamma'(t)=\begin{bmatrix}
+    -\sin t\\ \cos t\\ 1
+\end{bmatrix}\implies
+\gamma'(2\pi)=\begin{bmatrix}
+    0\\1\\1\\
+\end{bmatrix}.
+$$
+A parameterization for the lines tangent to $t=2\pi$ and parallel to the velocity vector is
+$$
+L(s)=\begin{bmatrix}
+    1\\ 0 \\ 2\pi
+\end{bmatrix}+s\begin{bmatrix}
+    0\\1\\1
+\end{bmatrix}
+$$
+\note There are infinitely many lines tangent to the curve at any point!
+
+\ex Consider the curve $\gamma:\R\to \R^2$ defined as
+$$
+\gamma(t)=\mat t^3\\t^2\trix\implies \gamma'(t)=\mat 3t^2\\2t\trix.
+$$
+Then $\gamma(t)$ is differentiable. But notice the curve is not \textit{smooth} so it is not \textit{regular}. This \textit{can} happen for curves such that $\gamma'(t_0)=\begin{bmatrix}
+    0\\\vdots\\0
+\end{bmatrix}.$
+
+\ex Consider the curve
+$$
+\gamma(t)=\mat t^2\\t^2\trix, t\in[-1,1].
+$$
+goofy ah curve.
+
+\prop Let $f:\Omega\subseteq\R^n\to\R^m$ where $\Omega$ is open. If all partial derivatives $\partial f_i/\partial x_j$ exist and are continuous in $\Omega$ then $f$ is differentiable in $\Omega$. 
+\begin{proof}
+    The full proof is in Marsden and Hoffman. Here is a sketch of the proof.
+
+    Let $x\in\Omega$. We want to show that given some $\varepsilon>0$, there exists a $\delta>0$ such that if we pick a point $y\in\Omega$ with $\|x-y\|<\delta$, then there exists a linear transformation $Df(x)$ such that
+    $$
+    \|f(y)-f(x)-Df(x)(y-x)\|\leq \varepsilon\|x-y\|.
+    $$
+    Here are some simplifications that make the proof more manageable:
+    \begin{enumerate}
+        \item It suffices to assume that $m=1$, that is, this applies when $f:\R\to\R$ works. This is because we can use the fact that the Euclidean norm in $\R^m$ satisfies
+        $$
+        \|z\|\leq |z_1|+|z_2|+\cdots+|z_m|
+        $$
+        for all $z\in \R^m$. So we can just work component-wise and then compare the $m$-dimensional norm to the sum of all the 1-dimensional norm.
+
+        \item We know that if $Df(x)$ is to exist, then it must have the Jacobian as its standard matrix. Let that guide the proof!
+
+        \item If $f:\Omega\subseteq\R^n\to\R$, write 
+        \begin{align*}
+            f(y)-f(x)&=f(y_1,y_2,\dots,y_n)-f(x_1,x_2,\dots,x_n)\\
+            &=f(y_1,y_2,\dots,y_n)-f(x_1,y_2,\dots,y_n)\\
+            &+f(x_1,y_2,\dots.y_n)-f(x_1,x_2,y_3,\dots,y_n)\\
+            &\vdots\\
+            &+f(x_1,x_2,\dots,x_{n-1},y_n)-f(x_1,x_2,\dots,x_n).
+        \end{align*}
+        and apply the mean value theorem to each of these lines (for example, for the first line of the long expression we can say it equals $\frac{\dell f}{\dell x_1} (c_1)(y_1-x_1)$ for some $c_1\in \R$). This is like moving component-wise and then aggregating everything to get a whole picture of the multivariate function.
+    \end{enumerate}
+\end{proof}
+Here is a useful generalization of partial derivatives:
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn Suppose $f:\Omega\subseteq \R^n\to \R$ where $\Omega$ is open and $x_0\in \Omega$. Given a unit vector $u\in\R^n$, the \textit{directional derivative} of $f$ at $x_0$ is 
+$$
+\lim_{h\to0} \frac{f(x_0+hu)-f(x_0)}{h}.
+$$
+This is notated as $D_uf(x_0)$.
+\end{mdframed}
+\end{document}

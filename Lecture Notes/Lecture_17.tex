@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\begin{document}
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 17: Constructing the Exponential Function and Taylor's Theorem}\\
+{\large Friday, 3 March 2023}\\
+\end{center}
+
+
+\prop There exists a differentiable function $E:\R\to\R$ such that $E'(x)=E(x)$ for all $x\in\R$ and $E(0)=1$
+
+\begin{proof}
+    Define $E_0(x)=1$ for all $x\in\R$ and for each $n\in\N$, $E_n(x)=1+\int_0^x E_{n-1}(s)ds$. Since $E_0$ is continuous, $E_0$ is Riemann integrable over any finite interval. Also $E_0$ is differentiable on $\R$, and for $n\in \N$, $E_n$ is differentiable by the fundamental theorem of calculus. Furthermore, $E_n'(x)=E_{n-1}(x)$. We have that $E_1(x)=1+x$ for all $x\in \R$ and by induction on $n$, we have that 
+    $$
+    E_n(x)=1+x+\frac{x^2}{2!}+\dots+\frac{x^n}{n!}
+    $$
+    for all $x\in \R$. On any bounded interval $[-R,R]$ where $R>0$, the sequence $\{E_n\}$ converges uniformly. Let $E(x)=\lim_{n\to\infty}E_n(x)$. Since each $x_0\in\R$ is contained in some interval $[-R,R]$, we know that $E(x)$ is continuous at $x_0$. Note that $E_n(0)=1$ for each $n$, so $E(0)=1$. To see why $E'(x)=E(x)$ for all $x$, we have uniform convergence of $\{E_n\}$ on $[-R,R]$ and $E_n'=E_{n-1}$ for all $n\in \N$. So $\{E_n'\}=\{E_{n-1}\}$. So this converges uniformly on $[-R,R]$. We then have that $E(x)$ is differentiable and 
+    $$
+    \underbrace{\left(\lim_{n\to\infty} E_n(x)\right)'}_{(E(x))'}=\lim_{n\to\infty} E_n'(x)=\lim_{n\to\infty} E_{n-1}(x)=E(x).
+    $$
+\end{proof}
+
+\textit{Corollary.} The function $E$ has derivatives of all orders and $E^{(n)}(x)=E(x)$ at each $x\in\R$ and $n\in\N$.
+
+\prop The function $E:\R\to\R$ satisfying $E'(x)=E(x)$ for all $x\in\R$ and $E(0)=1$ is unique.
+
+\begin{proof}
+    Prove this for homework!
+\end{proof}
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn The unique function $E$ mentioned above is called the \textit{standard exponential function}. The constant $E(1)$ is denoted as $e$ (\textit{Euler's number}). The function $E(x)$ is usually denoted as $e^x$.
+\end{mdframed}
+
+Regarding uniqueness, one possible proof leans of Taylor's theorem, which will be used to prove other properties of $E(x)$. Some notation: the set $C^n([a,b],\R)$ is the set of functions with a continuous $n$th derivative.
+\begin{shaded}
+\theorem (\textit{Taylor}) Let $f\in C^{(n+1)}([a,b],\R)$ for some $n\in \N$. If $x_0\in[a,b]$, then for each point $x\in [a,b]$, there exists some point $c$ between $x_0$ and $x$ such that 
+$$
+f(x)=f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\cdots+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+\frac{f^{(n+1)}(c)}{(n+1)!}(x-x_0)^{(n+1)}.
+$$
+\end{shaded}
+\note This is a generalization of the mean value theorem!
+
+\begin{proof}
+    Will not do the whole proof here. Given $x_0$ and $x$ as in the statement, let $I$ be a closed interval with $x_0$ and $x$ as the endpoints. On $I$ let us define 
+    $$
+    F(t)=f(x)-\left[f(t)+(x-t)f''(t)+\frac{(x-t)^2}{2}f''(t)+\cdots + \frac{(x-t)^n}{n!}f^{(n)}(t)\right]
+    $$
+    for $t\in I$. Then 
+    $$
+    F'(t)=-\frac{(x-t)^n}{n!}f^{(n+1)}(t).
+    $$
+    With the proof of the mean value theorem in mind, we define a function 
+    $$
+    G(t)=F(t)-\left(\frac{x-t}{x-x_0}\right)F(x_0)
+    $$
+    for $t\in I$. Then we have $G(x_0)=0$ and $G(x)=F(x)=0$ by the definition of $F$. Apply Rolle's theorem to $G$. The fully fleshed out proof will be posted on canvas.
+\end{proof}
+An interpretation of this theorem is that when approximating a function with a polynomial, the error is strongly determined by how large the next order derivative is.
+
+\prop The exponential function $E:\R\to\R$ is nonzero for all $x\in\R$.
+
+\begin{proof}
+    Suppose for the sake of contradiction that there exists an $x_0\in\R$ such that $E(x_0)=0$. Recall that $E(0)=1$ and look at the interval whose endpoints are 0 and $x_0$. Use Taylor's theorem to write $E(0)$ in terms of $E(x_0)$:
+    $$
+    1 = E(0) = E(x_0)+E'(x_0)(0-x_0)+\frac{E''(x_0)}{2!}(0-x_0)^2+\cdots+\frac{E^{(n)}(x_0)}{n!}(0-x_0)^n+\frac{E^{(n+1)}(c)}{(n+1)!}(0-x_0)^{(n+1)}.
+    $$
+    But $E(x_0)=0$ so $E^{(n)}=0$ for any $n$, so
+    $$
+    1=E(0)=\frac{E^{(n+1)}(c)}{(n+1)!}(-x_0)^{(n+1)}.
+    $$
+    Since $I$ is compact and $E^{(n+1)}$ is continuous, the extreme value theorem gives us some $M\in\R$ such that $|E^{(n+1)}(y)|\leq M$ for all $y\in I$ and in particular, at $y=c$. Then 
+    $$
+    \left|\frac{E^{(n+1)}(c)}{(n+1)!}(-x_0)^{n+1}\right|\leq \frac{M}{(n+1)!}|x_0|^{n+1}
+    $$
+    for each $n$. But the right hand term goes to 0 as $n\to \infty$, a contradiction.
+\end{proof}
+\prop $E(x+y)=E(x)E(y)$ for all $x\in y$.
+\begin{proof}
+    Since $E(y)\neq 0$ by the result above, we can define the quotient $Q(x)=E(x+y)/E(y)$. Then $q'(x)=E'(x+y)/E(y)=E(x+y)/E(y)=q(x)$ and $q(0)=1$. By the uniqueness of the exponential function, $q(x)=E(x)$ for all $x\in\R$.
+\end{proof}
+
+Some notation: if $f:\R\to\R$, we write
+$$
+\lim_{x\to\infty} f(x)=L
+$$
+to mean that for all $\varepsilon>0$, there exists a $y\in\R$ such that if $x\geq y$, $|L-f(x)|<\varepsilon$.
+
+\prop The function $E:\R\to\R$ is strictly increasing, the image $E(\R)$ is $(0,\infty)$, $\lim_{x\to\infty} E(x)=\infty$ and $\lim_{x\to-\infty} E(x)=0$.
+
+\begin{proof}
+    We know that $E(0)=1$ and $E$ is continuous. Then $E(x)$ must be positive for all $x$ since we showed that it is nonzero and that if $E(x_0)<0$, it would violate the condition that $E(x_0)\neq 0$ by the intermediate value theorem. with $0$ and $x_0$ as endpoints of an interval. So $E(x)>0$ for all $x$. But $E'(x)=E(x)>0$ for all $x$, so $E$ is strictly increasing. Let $x_0$. Then
+    $$
+    E(x)\geq 1+ x+\frac{x^2}{2!}+\cdots+\frac{x_n}{n!}
+    $$
+    for each $n\in \N$. So $E(x)\geq 1+x$ for all $x\geq 0$. We have that $E(1)=e\geq 2$ and $E(2)=E(1+1)=E(1)E(1)\geq 2^2$. By induction, we have $E(m)\geq 2^m$. Then $\lim_{x\to\infty} E(x)=\infty$. Similarly, $1=E(0)=E(m-m)=E(m)E(-m)=E(m)/E(m)$, so $E(-m)=1/E(m)\leq 1/2^m$ so as $m\to-\infty$, and by the strict monotonicity of $E$,
+    $$
+    \lim_{x\to-\infty} E(x)=0.
+    $$
+\end{proof}
+\end{document}

@@ -1,0 +1,113 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[2]{\underline{\int_{#1}}^{#2}}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 13: Riemann Integrals}\\
+{\large Wednesday, 22 February 2023}\\
+
+\end{center}
+\section{Partitions}
+Now that we have defined the derivative, we turn our attention towards integration. We will begin with Riemann integration for functions of single variables.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn If $I=[a,b]$ is a closed and bounded interval with $a<b$, a \textit{partition} of $I$ is a finite list of points $x_0,x_1,\dots,x_n$ in $I$ such that $a=x_0<x_1<\cdots<x_n=b$.
+\end{mdframed}
+
+Using this partition $P$, we can divide the interval $I$ into the subintervals $[x_0,x_1],\dots,[x_{n-1},x_n]$. For each $k=1,\dots,n$, we define $m_k=\inf\{f(x):x\in[x_{k-1},x_k]\}$ and $M_k=\sup\{f(x):x\in[x_{k-1},x_k]\}$. Using this we have the following definitions:
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn Let $P=\{x_0,\dots,x_n\}$. The \textit{upper and lower Riemann sums} corresponding to $P$ are defined as $U(f,P)=\sum_{k=1}^n M_k(x_k-x_{k-1})$ and $L(f,P)=\sum_{k=1}^n m_k(x_k-x_{k-1})$, respectively
+\end{mdframed}
+
+\note From this, we have that $L(f,P)\leq U(f,P)$ for bounded $f$ and any $P$. Moving forwards, another definition!
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn A partition $Q$ is called a \textit{refinement} of $P$ if $P\subset Q$.
+\end{mdframed}
+\note Notice some consequences of this definition:
+\begin{enumerate}
+    \item If $Q$ is a refinement of $P$, we hav that $L(f,P)\leq L(f,Q)$ \textit{and} $U(f,P)\geq U(f,Q)$.
+    \item If $M=\sup\{f(x):x\in[a,b]\}$, then $-M(b-a)\leq L(f,P)\leq U(f,P)\leq M(b-a)$.
+    \item For any arbitrary partition $P$ and a refinement $Q$, $L(f,P)\leq U(f,Q)$.
+\end{enumerate}
+
+\section{Integration}
+Moving on to another definition that will get us closer to our standard notion of integration,
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn Let $f:[a,b]\to \R$ be bounded and $\mathcal{P}$ be the set of all paritions of $[a,b]$. The \textit{lower integral} is defined as the following:
+$$
+\underline{\int_a}^b f(x)dx = \sup_{p\in\mathcal{P}}\{L(f,P)\}.
+$$
+The \textit{upper integral} is defined analogously:
+$$
+\overline{\int_a^b}f(x)dx=\inf_{P\in\mathcal{P}}\{U(f,P)\}.
+$$
+\end{mdframed}
+Here is a related proposition that we will not prove:
+\prop If $f:[a,b]\to\R$ is bounded, then
+$$
+\underline{\int_a}^b f(x)dx\leq\overline{\int_a^b}f(x)dx.
+$$
+One final definition for today.
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.2cm}
+\defn Let $f:[a,b]\to\R$ be bounded. We say that $f$ is \textit{Riemann Integrable} on $[a,b]$ if
+$$
+\loint{a}{b} f(x)dx=\upint{a}{b} f(x)dx.
+$$
+\end{mdframed}
+\end{document}

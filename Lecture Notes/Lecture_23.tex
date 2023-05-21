@@ -1,0 +1,182 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{multirow,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{calc}
+\usepackage{multicol}
+\usepackage{cancel}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+\newtheorem{prop}{Proposition}
+\newtheorem{ex}{Example}
+\newcommand{\R}{\mathbb{R}}                      % Wes's shortcut command for the set of all real numbers
+\newcommand{\C}{\mathbb{C}}                      % Wes's shortcut command for the set of all complex numbers
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{enumerate}
+\renewcommand\thesection{\S\arabic{section}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lem}{Lemma}
+\usepackage{mdframed}
+\newcommand{\bslash}{\symbol{92}}
+\newcommand{\upint}[1][2]{\overline{\int_{#1}^{#2}}}
+\newcommand{\loint}[1][2]{\underline{\int_{#1}}^{#2}}
+\usepackage{dirtytalk}
+\newcommand{\bconditions}{\left\{\begin{aligned}}
+\newcommand{\econditions}{\end{aligned}\right.}
+\newcommand{\mat}{\begin{bmatrix}}
+\newcommand{\trix}{\end{bmatrix}}
+\newcommand{\dell}{\partial}
+\begin{document}
+
+
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf Lecture 23: Mean Value Theorem, Higher Derivatives}\\
+{\large Friday, 24 March 2023}\\
+\end{center}
+\section{Gradient Chain Rule and Level Sets}
+Last class we learned about multivariate derivative rules. Here is a useful special case of the chain rule: let $f:\R\to\R^n$ and $g:\R^n\to\R$ be differentiable, and $E(t)=(g\circ f)(t)$. Then 
+$$
+E'(t)=Dg(f(t))\circ Df(t) = \langle \nabla g(f(t)), f'(t)\rangle.
+$$
+We interpret this as the following: if $g$ associates a temperature to each point in $\R^n$ and $f(t)$ represents the position of a bug at time $t$, then $dE/dt$ is the instantaneous rate of change of temperature the bug experiences.
+
+We will discuss some useful geometric facts regarding the gradient vector. Let $f:\Omega\subseteq \R^n\to\R$ be differentiable on the open set $\Omega$. We will think of $n=2$ for now. A \textit{level set} of $f$ is a set in the form
+$$
+L_c=\{(x,y)\in\Omega:f(x,y)=c\}.
+$$
+Sometimes, level sets are curves or families of curves. Suppose we look at a level set where $f(x,y)=c$. Let $f(x_0,y_0)=c$ and assume that locally near $(x_0,y_0)$, $L_c$ is a curve that admits a $C^1$, regular parameterization. Let $\gamma(t)$ be this curve and $\gamma(t_0)=(x_0,y_0)$. Then $f(\gamma(t_0))=C$. For $t$ near $t_0$, $f(\gamma(t))=C$, so near $t_0$,
+$$
+\frac{d}{dt}f(\gamma(t))=\frac{d}{dt}C
+$$
+and
+$$
+\langle \nabla f(\gamma(t)),\gamma'(t)\rangle=0.
+$$
+In particular,
+$$
+\langle \nabla f(\gamma(t_0)),\gamma'(t_0)\rangle=0,
+$$
+where is \textit{tangent} to the curve and $\gamma'(t_0)\neq 0$ since $\gamma$ is regular. Then we have that $\nabla f(\gamma(t_0))$ is \textit{normal} to the curve.
+
+\ex Consider the set of points
+$$
+\left\{(x,y)\in\R^2:\frac{y^2}{2}-\frac{x^2}{2}+\frac{x^4}{4}=0\right\}.
+$$
+When graphed, this looks like lemniscate. We can interpret this as a level set of the function
+$$
+f(x,y)=\frac{y^2}{2}-\frac{x^2}{2}+\frac{x^4}{4}.
+$$
+Then $\nabla f(x,y)=\mat -x+x^3 & y\trix$. Note that $(1,\sqrt2/2)$ is on the curve. We have
+$$
+\nabla f\left(1,\frac{\sqrt2}{2}\right)=\mat 0 & \frac{\sqrt{2}}{2}\trix.
+$$
+Also, $\nabla f(0,0)=\mat 0&0 \trix$.
+
+\ex Find the tangent plane to the sphere $x^2+y^2+z^2=25$ at the point $(4,3,0)$. This is a level set of $f(x,y,z)=x^2+y^2+z^2$. Then $\nabla f(x,y,z)=\mat 2x,2y,2z\trix$ so $\nabla f(4,3,0)=\mat 8&6&0\trix$, which is normal to the sphere at $(4,3,0)$. We have a point and a vector normal to the sphere at the point, so we can construct the plane with relative ease.
+
+\section{Derivative Theorems}
+We would now like to generalize derivative theorems from single variable calculus.
+
+\subsection{Mean Value Theorem}
+
+Recall the mean value theorem from single variable calculus: let $f:[a,b]\to\R$ be continuous on $[a,b]$ and differentiable on $(a,b)$. Then given any $x,y\in[a,b]$, there exists some $c$ between $x$ and $y$ such that $f(y)-f(x)=f'(c)(y-x)$.
+
+Generalizing the mean value theorem requires care. Let's look at an example.
+\ex Let $\gamma;[0,\pi]\to\R^2$ such that
+$$
+\gamma(t)=\mat \cos t \\ \sin t\trix\implies  \gamma'(t)=\mat -\sin t\\ \cos t\trix.
+$$
+We ask: is there a $c\in (0,\pi)$ such that $\gamma(\pi)-\gamma(0)=\gamma'(c)(\pi-0)$? That is,
+$$
+\mat -1 \\ 0 \trix -\mat 1 \\ 0 \trix =\mat -\sin c \\ \cos c \trix \pi.
+$$
+Evidently, no such $c$ exists.
+
+Then we cannot just naively blurt some statement as our generalized mean value theorem. Then we need to build some more structure.
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+
+\defn A set $S\subseteq \R^n$ is called \textit{convex} if given any $x,y\in S$, every point on the line segment $L(t)=x+t(y-x)$, $t\in[0,1]$, is also in $S$.
+
+\end{mdframed}
+
+\ex Show that if $r>0$, then $B(x,r)\subseteq \R^n$ is convex.
+
+\textit{Solution:} Let the points $x,y\in B(x_0,r)$ and the line $L(t)=x+t(y-x)$. We have that for any $t\in [0,1]$,
+$$
+\begin{aligned}
+    \|L(t)-x_0\|&=\|x+t(y-x)-x_0\|\\
+    &=\|(1-t)x + ty -x_0\|\\
+    &=\|(1-t)(x-x_0)+t(y-x_0)\|\\
+    &\leq \|(1-t)(x-x_0)\| +\|t(y-x_0)\|\\
+    &\leq (1-t)\|x-x_0\|+t\|y-y_0\|\\
+    &< r,
+\end{aligned}
+$$
+so $B(x_0,r)$ is convex.
+
+\prop (\textit{Mean Value Theorem}) Let $f:\Omega\subseteq \R^n\to \R$ be differentiable on the open set $\Omega$. If $x,y\in \Omega$ are such that $L(t)=x+t(y-x)\in\Omega$ for all $t\in[0,1]$, then $f(y)-f(x)=\nabla f(L(c))(y-x)$ for some $c\in (0,1)$.
+
+\begin{proof}
+We have that $L:[0,1]\to\Omega\subseteq\R^n$ and $f:\Omega\subseteq \R^n\to \R$. Note that $L$ is differentiable on $[0,1]$ and $L'(t)=y-x$. Let $g:[0,1]\to \R$ be defined as $g(t)=f(L(t))$. Then $g$ satisfies the criterion of the single variable mean value theorem so there exists a $c\in[0,1]$ such that $g(1)-g(0)=g'(c)(1-0)$. But $g'(c)=\langle \nabla f(L(c)),L'(c)\rangle=\langle \nabla f(L(c)),y-x\rangle$. Note that $g(1)=f(y)$ and $g(0)=f(x)$. So 
+$$
+f(y)-f(x)=\nabla f(L(c))\cdot (y-x).
+$$
+\end{proof}
+
+\subsection{Second-Order Derivatives}
+We would also like to generalize Taylor-Lagrange. Recall Taylor's theorem (not gonna type it all out again lmao!). We need a notion of higher-order derivatives for functions from $\R^n\to\R^m$ if we would like to generalize Taylor's theorem. 
+
+Suppose $f:\Omega\subseteq\R^n\to\R^m$ is differentiable on the open set $\Omega$. For each $x\in \Omega$, we can map $x\mapsto Df(x)$. Let us call this map $Df$. Then $Df:\R^n\to\mathcal{L}(\R^n,\R^m)$.The space $\mathcal{L}(\R^n,\R^m)$ is an $m\times n$-dimensional vector space over $\R$. So it may be that $Df$ is differentiable!
+
+\begin{mdframed}[backgroundcolor = blue!10]
+\vspace{+0.1cm}
+
+\defn Using the notation above, if $Df$ is differentiable at $x_0\in\Omega$, Then $D(Df)(x_0)$ is called the \textit{second derivative} of $f$ at $x_0$ and denoted as $D^2f(x_0)$.
+
+\end{mdframed}
+Now, how on earth do we make sense of this creature. If $y\in \R^n$, then $D^2 f(x_0)(y)\in \mathcal{L}(\R^n,\R^m)$. So $D(Df)(x_0):\R^n\to\mathcal{L}(\R^n,\R^m)$. Also, if $z\in \R^n$, we have that $D^2 f(x_0)(y)(z)\in\R^m$. You will notice that while we will often use $D^2f (x_0)(y,z)$, Marsden and Hoffman use the notation
+$$
+B_{x_0}(y,z)=\left[D^2 f(x_0)(y)\right](z).
+$$
+this is the evoke the fact that it is a bilinear form $\R^n\times\R^n\to\R^m$.
+
+
+\subsection{A short digression on bilinear forms}
+Let $B:\R^n\times\R^n\to \R$ be bilinear (that is, $B$ receives two vectors as input and is linear in both arguments). Let $e_j$ be the $j$th standard basis vector in $\R^n$. By linearity, $B$ is completely determined by the values of $A_{ij}=B(e_i,e_j)$. Let $x,y\in \R^n$ and
+$$
+x=\sum_{k=1}^n x_ke_k,\quad y=\sum_{k=1}^n y_ke_k.
+$$
+You can check that $B(x,y)=x^T Ay$. So bilinear forms can be expressed with matrices!
+
+\ex The standard inner product is a bilinear form with the identity matrix as the $A$ matrix. 
+\end{document}
